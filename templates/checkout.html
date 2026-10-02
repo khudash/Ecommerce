@@ -1,0 +1,399 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | HairGlow</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f7f9f4] text-gray-900 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight text-gray-900">
+                Hair<span class="text-green-600">Glow</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <!-- User / Account Icon -->
+                <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                    {% if user.is_authenticated %}
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                    {% endif %}
+                </button>
+                <a href="{% url 'home' %}" class="text-sm font-semibold text-gray-600 hover:text-green-700 flex items-center gap-1 transition">
+                    ← Return to Shop
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-10">
+
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8 flex items-center gap-3">
+            <span>🔒</span> Complete Your Order
+        </h1>
+
+        <form id="checkoutForm" method="POST" action="{% url 'checkout' %}" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {% csrf_token %}
+            <input type="hidden" name="cart_data" id="cartDataInput" value="[]">
+
+            <!-- LEFT COLUMN: Customer Info & Payment -->
+            <div class="lg:col-span-7 space-y-8">
+
+                <!-- Step 1: Customer Details -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">1</span>
+                        Shipping & Contact Details
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" name="full_name" required placeholder="e.g. Muhammad Ali"
+                                class="w-full px-4 py-3.5 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" name="email" required placeholder="ali@example.com"
+                                class="w-full px-4 py-3.5 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Phone / WhatsApp *</label>
+                            <input type="tel" name="phone" required placeholder="0300 1234567"
+                                class="w-full px-4 py-3.5 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm">
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Complete Shipping Address *</label>
+                            <textarea name="address" rows="3" required placeholder="House/Flat No, Street, Sector/Area..."
+                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">City *</label>
+                            <input type="text" name="city" required placeholder="Lahore, Karachi, Islamabad..."
+                                class="w-full px-4 py-3.5 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Postal / Zip Code</label>
+                            <input type="text" name="postal_code" placeholder="e.g. 46000"
+                                class="w-full px-4 py-3.5 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Payment Options -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">2</span>
+                        Select Payment Method
+                    </h2>
+
+                    <!-- Payment Selector Grid -->
+                    <div class="space-y-4">
+
+                        <!-- Option 1: Easypaisa -->
+                        <label class="payment-card border-2 border-green-600 bg-green-50/50 rounded-2xl p-4 flex items-center gap-4 cursor-pointer transition">
+                            <input type="radio" name="payment_method" value="easypaisa" checked class="w-5 h-5 text-green-600 focus:ring-green-600" onchange="switchPayment('easypaisa')">
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-900 text-base">Easypaisa Mobile Account</p>
+                                <p class="text-xs text-gray-500">Send payment to Easypaisa account and enter TID below.</p>
+                            </div>
+                            <span class="font-bold text-xs bg-green-700 text-white px-3 py-1 rounded-full">INSTANT</span>
+                        </label>
+
+                        <!-- Option 2: JazzCash -->
+                        <label class="payment-card border-2 border-gray-200 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:border-green-300 transition">
+                            <input type="radio" name="payment_method" value="jazzcash" class="w-5 h-5 text-green-600 focus:ring-green-600" onchange="switchPayment('jazzcash')">
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-900 text-base">JazzCash Mobile Account</p>
+                                <p class="text-xs text-gray-500">Send payment to JazzCash account and enter TID below.</p>
+                            </div>
+                            <span class="font-bold text-xs bg-red-600 text-white px-3 py-1 rounded-full">INSTANT</span>
+                        </label>
+
+                        <!-- Option 3: Meezan Bank -->
+                        <label class="payment-card border-2 border-gray-200 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:border-green-300 transition">
+                            <input type="radio" name="payment_method" value="meezan" class="w-5 h-5 text-green-600 focus:ring-green-600" onchange="switchPayment('meezan')">
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-900 text-base">Meezan Bank Transfer</p>
+                                <p class="text-xs text-gray-500">Direct online bank transfer / IBFT.</p>
+                            </div>
+                            <span class="font-bold text-xs bg-blue-700 text-white px-3 py-1 rounded-full">BANK</span>
+                        </label>
+
+                        <!-- Option 4: HBL Bank -->
+                        <label class="payment-card border-2 border-gray-200 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:border-green-300 transition">
+                            <input type="radio" name="payment_method" value="hbl" class="w-5 h-5 text-green-600 focus:ring-green-600" onchange="switchPayment('hbl')">
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-900 text-base">HBL Bank Transfer</p>
+                                <p class="text-xs text-gray-500">Habib Bank Limited online transfer / IBFT.</p>
+                            </div>
+                            <span class="font-bold text-xs bg-teal-700 text-white px-3 py-1 rounded-full">BANK</span>
+                        </label>
+
+                        <!-- Option 5: Cash on Delivery -->
+                        <label class="payment-card border-2 border-gray-200 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:border-green-300 transition">
+                            <input type="radio" name="payment_method" value="cod" class="w-5 h-5 text-green-600 focus:ring-green-600" onchange="switchPayment('cod')">
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-900 text-base">Cash on Delivery (COD)</p>
+                                <p class="text-xs text-gray-500">Pay cash when parcel arrives at your doorstep.</p>
+                            </div>
+                            <span class="font-bold text-xs bg-gray-800 text-white px-3 py-1 rounded-full">POPULAR</span>
+                        </label>
+
+                    </div>
+
+                    <!-- Payment Account Details Box -->
+                    <div id="paymentDetailsBox" class="mt-6 p-5 rounded-2xl bg-green-50 border border-green-200">
+                        <!-- Dynamic details injected by JavaScript -->
+                    </div>
+
+                    <!-- Transaction ID Input -->
+                    <div id="tidGroup" class="mt-5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Transaction ID / Reference Number *</label>
+                        <input type="text" name="transaction_id" id="tidInput" placeholder="Enter Transaction ID received after sending payment"
+                            class="w-full px-4 py-3.5 rounded-2xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 outline-none transition text-sm">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Order Summary -->
+            <div class="lg:col-span-5">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 sticky top-28 space-y-6">
+                    <h2 class="text-xl font-bold text-gray-900 pb-4 border-b border-gray-100 flex items-center justify-between">
+                        <span>Order Summary</span>
+                        <span id="summaryItemCount" class="text-xs font-semibold bg-green-100 text-green-700 px-3 py-1 rounded-full">0 Items</span>
+                    </h2>
+
+                    <!-- Items List -->
+                    <div id="summaryItemsList" class="space-y-4 max-h-72 overflow-y-auto pr-1">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Calculations -->
+                    <div class="border-t border-gray-100 pt-4 space-y-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Subtotal</span>
+                            <span id="summarySubtotal" class="font-semibold text-gray-900">Rs. 0</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Delivery Charges</span>
+                            <span id="summaryDelivery" class="font-semibold text-green-700">FREE</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-extrabold text-gray-900 border-t border-gray-100 pt-3">
+                            <span>Grand Total</span>
+                            <span id="summaryTotal" class="text-green-700">Rs. 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="placeOrderBtn"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-2xl transition duration-300 shadow-xl shadow-green-600/25 flex items-center justify-center gap-2 text-base">
+                        <span>Place Order Now</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </button>
+
+                    <p class="text-center text-xs text-gray-400 flex items-center justify-center gap-1">
+                        <span>🛡️</span> 100% Safe & Secure Checkout Guarantee
+                    </p>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+    <script>
+        const accountsData = {
+            easypaisa: {
+                title: "Easypaisa Mobile Account",
+                name: "HairGlow Official",
+                number: "0300-1234567",
+                instructions: "Send the total amount to this Easypaisa account, copy the Transaction ID (TID) from your confirmation SMS, and enter it below."
+            },
+            jazzcash: {
+                title: "JazzCash Mobile Account",
+                name: "HairGlow Official",
+                number: "0301-7654321",
+                instructions: "Send the total amount to this JazzCash account, copy the Transaction ID (TID) from your confirmation SMS, and enter it below."
+            },
+            meezan: {
+                title: "Meezan Bank Limited",
+                name: "HairGlow Private Limited",
+                number: "01020304050678",
+                iban: "PK12MEZN0001000200030004",
+                instructions: "Transfer total amount via Mobile App / Internet Banking IBFT to Meezan Bank, and enter the Transaction / Reference Number below."
+            },
+            hbl: {
+                title: "Habib Bank Limited (HBL)",
+                name: "HairGlow Private Limited",
+                number: "00427901234567",
+                iban: "PK98HABB0009876543210001",
+                instructions: "Transfer total amount via Mobile App / Internet Banking IBFT to HBL, and enter the Transaction / Reference Number below."
+            },
+            cod: {
+                title: "Cash on Delivery",
+                instructions: "No advance payment required! Keep exact cash ready to hand over to the delivery rider when your parcel arrives."
+            }
+        };
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert("Copied: " + text);
+        }
+
+        function switchPayment(type) {
+            document.querySelectorAll('.payment-card').forEach(card => {
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio.value === type) {
+                    card.classList.add('border-green-600', 'bg-green-50/50');
+                    card.classList.remove('border-gray-200');
+                } else {
+                    card.classList.remove('border-green-600', 'bg-green-50/50');
+                    card.classList.add('border-gray-200');
+                }
+            });
+
+            const detailsBox = document.getElementById('paymentDetailsBox');
+            const tidGroup = document.getElementById('tidGroup');
+            const tidInput = document.getElementById('tidInput');
+            const data = accountsData[type];
+
+            if (type === 'cod') {
+                detailsBox.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">📦</span>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-sm">${data.title}</h4>
+                            <p class="text-xs text-gray-600 mt-1">${data.instructions}</p>
+                        </div>
+                    </div>
+                `;
+                tidGroup.style.display = 'none';
+                tidInput.removeAttribute('required');
+            } else {
+                tidGroup.style.display = 'block';
+                tidInput.setAttribute('required', 'true');
+
+                let accountDetailsHtml = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-green-200 pb-2">
+                            <span class="text-xs font-bold text-green-800 uppercase tracking-wider">${data.title}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Account Title:</span>
+                            <span class="text-sm font-bold text-gray-900">${data.name}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Account / Phone No:</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-extrabold text-green-700">${data.number}</span>
+                                <button type="button" onclick="copyToClipboard('${data.number}')" class="text-xs bg-green-200 hover:bg-green-300 text-green-800 font-bold px-2.5 py-1 rounded-full transition">Copy</button>
+                            </div>
+                        </div>
+                `;
+
+                if (data.iban) {
+                    accountDetailsHtml += `
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">IBAN:</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-gray-800 font-mono">${data.iban}</span>
+                                <button type="button" onclick="copyToClipboard('${data.iban}')" class="text-xs bg-green-200 hover:bg-green-300 text-green-800 font-bold px-2.5 py-1 rounded-full transition">Copy</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                accountDetailsHtml += `
+                        <p class="text-xs text-gray-600 mt-2 bg-white/80 p-2.5 rounded-xl border border-green-100">${data.instructions}</p>
+                    </div>
+                `;
+
+                detailsBox.innerHTML = accountDetailsHtml;
+            }
+        }
+
+        function loadSummary() {
+            const rawCart = localStorage.getItem("hairGlowCart");
+            const cart = rawCart ? JSON.parse(rawCart) : [];
+            const summaryItemsList = document.getElementById("summaryItemsList");
+            const summarySubtotal = document.getElementById("summarySubtotal");
+            const summaryTotal = document.getElementById("summaryTotal");
+            const summaryItemCount = document.getElementById("summaryItemCount");
+            const cartDataInput = document.getElementById("cartDataInput");
+
+            cartDataInput.value = JSON.stringify(cart);
+
+            if (cart.length === 0) {
+                summaryItemsList.innerHTML = `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-2xl">
+                        <div>
+                            <p class="font-bold text-gray-900 text-sm">Hair Growth Oil</p>
+                            <p class="text-xs text-gray-400">Qty: 1</p>
+                        </div>
+                        <span class="font-bold text-sm text-gray-900">Rs. 1499</span>
+                    </div>
+                `;
+                summarySubtotal.textContent = "Rs. 1499";
+                summaryTotal.textContent = "Rs. 1499";
+                summaryItemCount.textContent = "1 Item";
+                return;
+            }
+
+            let subtotal = 0;
+            let totalQty = 0;
+
+            summaryItemsList.innerHTML = cart.map(item => {
+                const itemTotal = (item.price || 1499) * (item.quantity || 1);
+                subtotal += itemTotal;
+                totalQty += (item.quantity || 1);
+                return `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border border-gray-100">
+                        <div>
+                            <p class="font-bold text-gray-900 text-sm">${item.name}</p>
+                            <p class="text-xs text-gray-500">Qty: ${item.quantity || 1} x Rs. ${item.price || 1499}</p>
+                        </div>
+                        <span class="font-bold text-sm text-green-700">Rs. ${itemTotal}</span>
+                    </div>
+                `;
+            }).join('');
+
+            summarySubtotal.textContent = `Rs. ${subtotal}`;
+            summaryTotal.textContent = `Rs. ${subtotal}`;
+            summaryItemCount.textContent = `${totalQty} ${totalQty === 1 ? 'Item' : 'Items'}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchPayment('easypaisa');
+            loadSummary();
+        });
+
+        document.getElementById('checkoutForm').addEventListener('submit', () => {
+            localStorage.removeItem('hairGlowCart');
+        });
+    </script>
+
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+</body>
+</html>

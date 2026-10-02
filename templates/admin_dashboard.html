@@ -1,0 +1,1443 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | HairBloom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #15803d;
+            --primary-dark: #0f5c2d;
+            --primary-light: #d1fae5;
+            --sidebar-bg: #0a1f13;
+            --sidebar-text: #a7c5b5;
+            --sidebar-active: #15803d;
+            --bg: #f0f4f1;
+            --card: #ffffff;
+            --border: #e5e7eb;
+            --text: #111827;
+            --muted: #6b7280;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --info: #3b82f6;
+            --info-light: #eff6ff;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --sidebar-width: 250px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            font-size: 14px;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            position: fixed;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform .25s ease;
+        }
+
+        .sidebar-logo {
+            padding: 22px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 17px; color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo .logo-text {
+            font-size: 17px; font-weight: 800;
+            color: #fff; letter-spacing: -.3px;
+        }
+
+        .sidebar-logo .logo-text span { color: #d9a441; }
+
+        .sidebar-label {
+            padding: 18px 20px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: rgba(255,255,255,0.25);
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 20px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            border-radius: 0;
+            transition: all .18s;
+            position: relative;
+        }
+
+        .sidebar nav a .nav-icon {
+            width: 34px; height: 34px;
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            background: rgba(255,255,255,0.05);
+            flex-shrink: 0;
+            transition: background .18s;
+        }
+
+        .sidebar nav a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sidebar nav a:hover .nav-icon { background: rgba(21,128,61,0.3); }
+
+        .sidebar nav a.active {
+            color: #fff;
+            background: rgba(21,128,61,0.15);
+            border-left: 3px solid var(--primary);
+        }
+
+        .sidebar nav a.active .nav-icon {
+            background: var(--primary);
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--primary);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-footer a {
+            display: flex; align-items: center; gap: 10px;
+            color: #ef4444; text-decoration: none;
+            font-size: 13px; font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: background .18s;
+        }
+
+        .sidebar-footer a:hover { background: rgba(239,68,68,0.1); }
+
+        /* ── Main Layout ── */
+        .main-wrap {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── Topbar ── */
+        .topbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 50;
+        }
+
+        .topbar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .topbar-title span { color: var(--primary); }
+
+        .topbar-right {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .user-pill {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--primary-light);
+            border: 1px solid #bbf7d0;
+            padding: 5px 14px 5px 6px;
+            border-radius: 999px;
+        }
+
+        .user-pill .avatar {
+            width: 28px; height: 28px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+        }
+
+        .user-pill .name {
+            font-size: 13px; font-weight: 600; color: #065f46;
+        }
+
+        .btn-site {
+            display: flex; align-items: center; gap: 6px;
+            background: #f3f4f6;
+            color: var(--text);
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 9px;
+            font-size: 12.5px;
+            font-weight: 600;
+            transition: background .18s;
+        }
+
+        .btn-site:hover { background: #e5e7eb; }
+
+        /* ── Page Content ── */
+        .page-content {
+            padding: 28px;
+            flex: 1;
+        }
+
+        /* ── Alerts ── */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 13.5px;
+            font-weight: 500;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .alert-success { background: var(--success-light); color: #065f46; border: 1px solid #a7f3d0; }
+        .alert-error   { background: var(--danger-light);  color: #991b1b; border: 1px solid #fca5a5; }
+        .alert-info    { background: var(--info-light);    color: #1e40af; border: 1px solid #93c5fd; }
+
+        /* ── Stat Cards ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            transition: box-shadow .18s;
+        }
+
+        .stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+        .stat-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.green  { background: #d1fae5; }
+        .stat-icon.blue   { background: #dbeafe; }
+        .stat-icon.amber  { background: #fef3c7; }
+        .stat-icon.purple { background: #ede9fe; }
+        .stat-icon.red    { background: #fee2e2; }
+        .stat-icon.teal   { background: #ccfbf1; }
+
+        .stat-info .label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 4px;
+        }
+
+        .stat-info .value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-info .sub {
+            font-size: 11px;
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* ── Section Header ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all .18s;
+        }
+
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-danger  { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+
+        .btn-warning { background: var(--warning); color: #fff; }
+        .btn-warning:hover { background: #d97706; }
+
+        .btn-ghost {
+            background: #f3f4f6;
+            color: var(--text);
+        }
+        .btn-ghost:hover { background: #e5e7eb; }
+
+        .btn-sm { padding: 5px 11px; font-size: 12px; }
+        .btn-xs { padding: 3px 9px; font-size: 11px; border-radius: 7px; }
+
+        /* ── Card ── */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .card-body { padding: 22px; }
+
+        /* ── Search Bar ── */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar form { display: flex; gap: 8px; align-items: center; }
+
+        .search-input {
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color .18s;
+            min-width: 220px;
+        }
+
+        .search-input:focus { border-color: var(--primary); }
+
+        /* ── Filter Pills ── */
+        .filter-pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-pill {
+            padding: 4px 13px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1.5px solid var(--border);
+            color: var(--muted);
+            transition: all .15s;
+        }
+
+        .filter-pill:hover { border-color: var(--primary); color: var(--primary); }
+        .filter-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* ── Table ── */
+        .table-wrap { overflow-x: auto; }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        thead th {
+            padding: 11px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--muted);
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 13.5px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover td { background: #fafafa; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        /* ── Status Badges ── */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .badge-pending   { background: #fef3c7; color: #92400e; }
+        .badge-confirmed { background: #dbeafe; color: #1e40af; }
+        .badge-shipped   { background: #ede9fe; color: #5b21b6; }
+        .badge-delivered { background: #d1fae5; color: #065f46; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; }
+        .badge-approved  { background: #d1fae5; color: #065f46; }
+        .badge-pending-review { background: #fef3c7; color: #92400e; }
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-gray  { background: #f3f4f6; color: #374151; }
+
+        /* ── Order Detail Row ── */
+        .order-items-cell {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ── Status Inline Form ── */
+        .status-form { display: inline-flex; gap: 5px; align-items: center; }
+        .status-select {
+            padding: 4px 8px;
+            border-radius: 7px;
+            border: 1.5px solid var(--border);
+            font-size: 12px;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* ── Delete Confirm ── */
+        .delete-form { display: inline; }
+
+        /* ── 2-col grid ── */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+
+        /* ── Form Styles ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-control {
+            padding: 9px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text);
+            background: #fff;
+            outline: none;
+            transition: border-color .18s;
+            width: 100%;
+        }
+
+        .form-control:focus { border-color: var(--primary); }
+
+        textarea.form-control { resize: vertical; min-height: 80px; }
+
+        .form-hint {
+            font-size: 11.5px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .checkbox-row {
+            display: flex; align-items: center; gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 16px; height: 16px; cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .form-actions {
+            display: flex; gap: 10px;
+            margin-top: 22px;
+        }
+
+        /* ── Recent Orders Mini Table ── */
+        .mini-table { width: 100%; border-collapse: collapse; }
+        .mini-table th {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            background: #f9fafb;
+            text-align: left;
+        }
+        .mini-table td {
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .mini-table tbody tr:last-child td { border-bottom: none; }
+
+        /* ── Message Card ── */
+        .msg-card {
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .msg-header {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            margin-bottom: 10px; gap: 8px;
+        }
+
+        .msg-name { font-weight: 700; font-size: 14px; }
+        .msg-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .msg-subject { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .msg-body { font-size: 13px; color: #374151; line-height: 1.55; white-space: pre-wrap; }
+
+        /* ── Benefit Cards ── */
+        .benefit-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .benefit-card .b-icon {
+            width: 44px; height: 44px;
+            background: #d1fae5;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .benefit-card .b-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .benefit-card .b-content p { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+        .benefit-card .b-actions {
+            margin-left: auto;
+            display: flex; gap: 6px; flex-shrink: 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Review Card ── */
+        .review-row td { vertical-align: top; }
+
+        .stars { color: #f59e0b; letter-spacing: 1px; }
+
+        /* ── Empty State ── */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+        .empty-state p { font-size: 14px; }
+
+        /* ── Product Image ── */
+        .product-img {
+            width: 44px; height: 44px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .product-img-placeholder {
+            width: 44px; height: 44px;
+            background: #d1fae5;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 12px; color: var(--primary);
+        }
+
+        /* ── Toggle Switch ── */
+        .toggle-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 10px;
+            border-radius: 7px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all .18s;
+        }
+
+        .toggle-btn.on  { background: #d1fae5; color: #065f46; }
+        .toggle-btn.off { background: #fee2e2; color: #991b1b; }
+
+        /* ── Mobile Hamburger ── */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            color: var(--text);
+            font-size: 22px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-wrap { margin-left: 0; }
+            .menu-toggle { display: block; }
+            .two-col { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .page-content { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">H</div>
+        <div class="logo-text">Hair<span>Bloom</span></div>
+    </div>
+
+    <div class="sidebar-label">Main Menu</div>
+    <nav>
+        <a href="{% url 'admin_dashboard' %}" class="{% if section == 'overview' %}active{% endif %}">
+            <span class="nav-icon">📊</span>
+            Overview
+        </a>
+        <a href="{% url 'admin_orders' %}" class="{% if section == 'orders' %}active{% endif %}">
+            <span class="nav-icon">🛍️</span>
+            Orders
+        </a>
+        <a href="{% url 'admin_products' %}" class="{% if section == 'products' or section == 'product_form' %}active{% endif %}">
+            <span class="nav-icon">📦</span>
+            Products
+        </a>
+        <a href="{% url 'admin_reviews' %}" class="{% if section == 'reviews' %}active{% endif %}">
+            <span class="nav-icon">⭐</span>
+            Reviews
+        </a>
+        <a href="{% url 'admin_messages' %}" class="{% if section == 'messages' %}active{% endif %}">
+            <span class="nav-icon">💬</span>
+            Messages
+        </a>
+        <a href="{% url 'admin_benefits' %}" class="{% if section == 'benefits' or section == 'benefit_form' %}active{% endif %}">
+            <span class="nav-icon">✨</span>
+            Benefits
+        </a>
+    </nav>
+
+    <div class="sidebar-label">System</div>
+    <nav>
+        <a href="{% url 'home' %}" target="_blank">
+            <span class="nav-icon">🌐</span>
+            View Website
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <a href="{% url 'logout' %}">
+            <span>🚪</span> Logout
+        </a>
+    </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main-wrap">
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <div style="display:flex;align-items:center;gap:14px;">
+            <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+            <div class="topbar-title">
+                {% if section == 'overview' %}📊 Dashboard <span>Overview</span>
+                {% elif section == 'orders' %}🛍️ <span>Orders</span> Management
+                {% elif section == 'products' %}📦 <span>Products</span> Management
+                {% elif section == 'product_form' %}<span>{{ form_title }}</span>
+                {% elif section == 'reviews' %}⭐ <span>Reviews</span> Management
+                {% elif section == 'messages' %}💬 Contact <span>Messages</span>
+                {% elif section == 'benefits' %}✨ <span>Benefits</span> Management
+                {% elif section == 'benefit_form' %}<span>{{ form_title }}</span>
+                {% else %}Admin <span>Panel</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="topbar-right">
+            <a href="{% url 'home' %}" class="btn-site" target="_blank">🌐 View Site</a>
+            <div class="user-pill">
+                <div class="avatar">{{ request.user.username|slice:":1"|upper }}</div>
+                <span class="name">{{ request.user.first_name|default:request.user.username }}</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content">
+
+        <!-- Django Messages -->
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}info{% endif %}">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- OVERVIEW SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'overview' %}
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon green">🛍️</div>
+                <div class="stat-info">
+                    <div class="label">Total Orders</div>
+                    <div class="value">{{ total_orders }}</div>
+                    <div class="sub">+{{ week_orders }} this week</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon teal">💰</div>
+                <div class="stat-info">
+                    <div class="label">Total Revenue</div>
+                    <div class="value">Rs. {{ total_revenue|floatformat:0 }}</div>
+                    <div class="sub">+Rs. {{ week_revenue|floatformat:0 }} this week</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon amber">⏳</div>
+                <div class="stat-info">
+                    <div class="label">Pending Orders</div>
+                    <div class="value">{{ pending_orders }}</div>
+                    <div class="sub">Needs attention</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue">📦</div>
+                <div class="stat-info">
+                    <div class="label">Products</div>
+                    <div class="value">{{ total_products }}</div>
+                    <div class="sub">Active in store</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">⭐</div>
+                <div class="stat-info">
+                    <div class="label">Reviews</div>
+                    <div class="value">{{ total_reviews }}</div>
+                    <div class="sub">Approved reviews</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">💬</div>
+                <div class="stat-info">
+                    <div class="label">Messages</div>
+                    <div class="value">{{ total_messages }}</div>
+                    <div class="sub">Contact inquiries</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-col">
+            <!-- Recent Orders -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🛍️ Recent Orders</h3>
+                    <a href="{% url 'admin_orders' %}" class="btn btn-ghost btn-sm">View All →</a>
+                </div>
+                <div class="table-wrap">
+                    <table class="mini-table">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in recent_orders %}
+                            <tr>
+                                <td><strong>#HG-{{ order.id }}</strong></td>
+                                <td>{{ order.full_name }}<br><span style="font-size:11px;color:var(--muted);">{{ order.city }}</span></td>
+                                <td><strong>Rs. {{ order.total_amount|floatformat:0 }}</strong></td>
+                                <td>
+                                    <span class="badge badge-{{ order.status }}">{{ order.get_status_display }}</span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No orders yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Messages -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>💬 Recent Messages</h3>
+                    <a href="{% url 'admin_messages' %}" class="btn btn-ghost btn-sm">View All →</a>
+                </div>
+                <div class="card-body" style="padding-top:14px;">
+                    {% for msg in recent_messages %}
+                    <div style="padding:12px 0;border-bottom:1px solid #f3f4f6;{% if forloop.last %}border-bottom:none;{% endif %}">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                            <strong style="font-size:13px;">{{ msg.name }}</strong>
+                            <span style="font-size:11px;color:var(--muted);">{{ msg.created_at|date:"M d" }}</span>
+                        </div>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:3px;">{{ msg.email }}</div>
+                        <div style="font-size:12.5px;color:#374151;">{{ msg.message|truncatechars:80 }}</div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state"><div class="icon">💬</div><p>No messages yet</p></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card">
+            <div class="card-header"><h3>⚡ Quick Actions</h3></div>
+            <div class="card-body" style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="{% url 'admin_product_add' %}" class="btn btn-primary">➕ Add Product</a>
+                <a href="{% url 'admin_benefit_add' %}" class="btn btn-ghost">➕ Add Benefit</a>
+                <a href="{% url 'admin_orders' %}?status=pending" class="btn btn-warning">⏳ View Pending Orders</a>
+                <a href="{% url 'admin_reviews' %}" class="btn btn-ghost">⭐ Manage Reviews</a>
+                <a href="{% url 'admin_messages' %}" class="btn btn-ghost">💬 View Messages</a>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END OVERVIEW -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- ORDERS SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'orders' %}
+
+        <div class="section-header">
+            <h2>🛍️ All Orders</h2>
+            <div class="search-bar">
+                <form method="get" action="">
+                    {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="Search name, phone, city…" class="search-input">
+                    <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    {% if search_query %}<a href="{% url 'admin_orders' %}" class="btn btn-ghost btn-sm">✕ Clear</a>{% endif %}
+                </form>
+            </div>
+        </div>
+
+        <div class="filter-pills">
+            <a href="{% url 'admin_orders' %}{% if search_query %}?q={{ search_query }}{% endif %}" class="filter-pill {% if not status_filter %}active{% endif %}">All</a>
+            {% for val, label in status_choices %}
+            <a href="?status={{ val }}{% if search_query %}&q={{ search_query }}{% endif %}" class="filter-pill {% if status_filter == val %}active{% endif %}">{{ label }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Total: {{ orders.count }} Orders &nbsp;|&nbsp; Revenue: Rs. {{ total_revenue|floatformat:0 }}</h3>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Contact</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Payment</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td><strong>#HG-{{ order.id }}</strong></td>
+                            <td>
+                                <strong>{{ order.full_name }}</strong><br>
+                                <span style="font-size:11.5px;color:var(--muted);">{{ order.city }}{% if order.postal_code %}, {{ order.postal_code }}{% endif %}</span>
+                            </td>
+                            <td>
+                                <div style="font-size:12.5px;">{{ order.phone }}</div>
+                                <div style="font-size:11.5px;color:var(--muted);">{{ order.email }}</div>
+                            </td>
+                            <td class="order-items-cell">
+                                {% for item in order.items.all %}
+                                <div>{{ item.quantity }}× {{ item.product_name }}</div>
+                                {% empty %}<span>—</span>{% endfor %}
+                            </td>
+                            <td><strong style="color:var(--primary);">Rs. {{ order.total_amount|floatformat:0 }}</strong></td>
+                            <td><span class="badge badge-gray">{{ order.get_payment_method_display }}</span></td>
+                            <td style="font-size:12px;color:var(--muted);">{{ order.created_at|date:"d M Y" }}<br>{{ order.created_at|date:"h:i A" }}</td>
+                            <td>
+                                <form class="status-form" method="post" action="{% url 'admin_order_update_status' order.id %}" onsubmit="updateStatus(event, this, {{ order.id }})">
+                                    {% csrf_token %}
+                                    <select name="status" class="status-select" onchange="this.form.querySelector('button').click()">
+                                        {% for val, label in status_choices %}
+                                        <option value="{{ val }}" {% if order.status == val %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" style="display:none;"></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form class="delete-form" method="post" action="{% url 'admin_order_delete' order.id %}" onsubmit="return confirm('Delete Order #HG-{{ order.id }}?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="9"><div class="empty-state"><div class="icon">🛍️</div><p>No orders found</p></div></td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END ORDERS -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PRODUCTS SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'products' %}
+
+        <div class="section-header">
+            <h2>📦 Products</h2>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <form method="get" style="display:flex;gap:8px;">
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="Search products…" class="search-input">
+                    <button type="submit" class="btn btn-ghost btn-sm">Search</button>
+                    {% if search_query %}<a href="{% url 'admin_products' %}" class="btn btn-ghost btn-sm">✕</a>{% endif %}
+                </form>
+                <a href="{% url 'admin_product_add' %}" class="btn btn-primary">➕ Add Product</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Old Price</th>
+                            <th>Discount</th>
+                            <th>Badge</th>
+                            <th>Featured</th>
+                            <th>Available</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                                {% else %}
+                                <div class="product-img-placeholder">HB</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <strong>{{ product.name }}</strong>
+                                {% if product.subtitle %}<br><span style="font-size:11.5px;color:var(--muted);">{{ product.subtitle }}</span>{% endif %}
+                            </td>
+                            <td>{{ product.size }}</td>
+                            <td><strong style="color:var(--primary);">Rs. {{ product.price|floatformat:0 }}</strong></td>
+                            <td>{% if product.old_price %}Rs. {{ product.old_price|floatformat:0 }}{% else %}—{% endif %}</td>
+                            <td>{% if product.discount %}{{ product.discount }}%{% else %}—{% endif %}</td>
+                            <td>{% if product.badge %}<span class="badge badge-green">{{ product.badge }}</span>{% else %}—{% endif %}</td>
+                            <td>{% if product.is_featured %}<span class="badge badge-green">✓</span>{% else %}<span class="badge badge-gray">—</span>{% endif %}</td>
+                            <td>{% if product.is_available %}<span class="badge badge-approved">Active</span>{% else %}<span class="badge badge-cancelled">Hidden</span>{% endif %}</td>
+                            <td>
+                                <div style="display:flex;gap:5px;">
+                                    <a href="{% url 'admin_product_edit' product.pk %}" class="btn btn-warning btn-xs">✏️ Edit</a>
+                                    <form class="delete-form" method="post" action="{% url 'admin_product_delete' product.pk %}" onsubmit="return confirm('Delete {{ product.name }}?')">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="10"><div class="empty-state"><div class="icon">📦</div><p>No products yet</p></div></td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END PRODUCTS -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PRODUCT FORM (ADD / EDIT) -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'product_form' %}
+
+        <div style="margin-bottom:16px;">
+            <a href="{% url 'admin_products' %}" class="btn btn-ghost btn-sm">← Back to Products</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h3>{{ form_title }}</h3></div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data"
+                    action="{% if form_action == 'edit' %}{% url 'admin_product_edit' product.pk %}{% else %}{% url 'admin_product_add' %}{% endif %}">
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Product Name *</label>
+                            <input type="text" name="name" class="form-control" required value="{{ product.name|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Size</label>
+                            <input type="text" name="size" class="form-control" value="{{ product.size|default:'50ml' }}" placeholder="e.g. 50ml">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="form-control" value="{{ product.subtitle|default:'' }}" placeholder="e.g. Trial & Travel Edition">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Badge</label>
+                            <input type="text" name="badge" class="form-control" value="{{ product.badge|default:'' }}" placeholder="e.g. Best Seller">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Price (Rs.) *</label>
+                            <input type="number" name="price" class="form-control" required step="0.01" value="{{ product.price|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Old Price (Rs.)</label>
+                            <input type="number" name="old_price" class="form-control" step="0.01" value="{{ product.old_price|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Discount (%)</label>
+                            <input type="number" name="discount" class="form-control" value="{{ product.discount|default:'0' }}" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Product Image</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                            {% if product.image %}<div class="form-hint">Current: {{ product.image.name }} — Upload new to replace</div>{% endif %}
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" rows="4" required>{{ product.description|default:'' }}</textarea>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Delivery Text</label>
+                            <input type="text" name="delivery_text" class="form-control" value="{{ product.delivery_text|default:'Free delivery on orders above Rs. 2,500' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-row">
+                                <input type="checkbox" name="is_featured" {% if product.is_featured %}checked{% endif %}>
+                                <span class="form-label">Featured Product</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-row">
+                                <input type="checkbox" name="is_available" {% if product.is_available or not product %}checked{% endif %}>
+                                <span class="form-label">Available (visible in store)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form_action == 'edit' %}💾 Save Changes{% else %}➕ Add Product{% endif %}
+                        </button>
+                        <a href="{% url 'admin_products' %}" class="btn btn-ghost">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END PRODUCT FORM -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- REVIEWS SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'reviews' %}
+
+        <div class="section-header">
+            <h2>⭐ Customer Reviews</h2>
+            <form method="get" style="display:flex;gap:8px;">
+                <input type="text" name="q" value="{{ search_query }}" placeholder="Search reviews…" class="search-input">
+                <button type="submit" class="btn btn-ghost btn-sm">Search</button>
+                {% if search_query %}<a href="{% url 'admin_reviews' %}" class="btn btn-ghost btn-sm">✕</a>{% endif %}
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>City</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for review in reviews %}
+                        <tr class="review-row">
+                            <td>
+                                <strong>{{ review.name }}</strong><br>
+                                <span style="font-size:11.5px;color:var(--muted);">{{ review.verified_badge }}</span>
+                            </td>
+                            <td>
+                                <div class="stars">{% for i in review.stars_list %}★{% endfor %}{% for i in review.empty_stars_list %}☆{% endfor %}</div>
+                                <span style="font-size:12px;color:var(--muted);">{{ review.rating }}/5</span>
+                            </td>
+                            <td style="max-width:280px;font-size:13px;">{{ review.comment|truncatechars:100 }}</td>
+                            <td>{{ review.city|default:"—" }}</td>
+                            <td style="font-size:12px;color:var(--muted);">{{ review.created_at|date:"d M Y" }}</td>
+                            <td>
+                                <button class="toggle-btn {% if review.is_approved %}on{% else %}off{% endif %}"
+                                    onclick="toggleReview({{ review.pk }}, this)">
+                                    {% if review.is_approved %}✓ Approved{% else %}✕ Hidden{% endif %}
+                                </button>
+                            </td>
+                            <td>
+                                <form class="delete-form" method="post" action="{% url 'admin_review_delete' review.pk %}" onsubmit="return confirm('Delete this review?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-xs">🗑 Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="7"><div class="empty-state"><div class="icon">⭐</div><p>No reviews yet</p></div></td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END REVIEWS -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- MESSAGES SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'messages' %}
+
+        <div class="section-header">
+            <h2>💬 Contact Messages</h2>
+            <form method="get" style="display:flex;gap:8px;">
+                <input type="text" name="q" value="{{ search_query }}" placeholder="Search messages…" class="search-input">
+                <button type="submit" class="btn btn-ghost btn-sm">Search</button>
+                {% if search_query %}<a href="{% url 'admin_messages' %}" class="btn btn-ghost btn-sm">✕</a>{% endif %}
+            </form>
+        </div>
+
+        {% for msg in contact_msgs %}
+        <div class="msg-card">
+            <div class="msg-header">
+                <div>
+                    <div class="msg-name">{{ msg.name }}</div>
+                    <div class="msg-meta">
+                        <span>✉️ {{ msg.email }}</span>
+                        {% if msg.phone %} · <span>📞 <a href="tel:{{ msg.phone }}" style="color:inherit;text-decoration:underline;">{{ msg.phone }}</a></span>{% endif %}
+                        · <span>🕒 {{ msg.created_at|date:"d M Y h:i A" }}</span>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <a href="mailto:{{ msg.email }}" class="btn btn-primary btn-xs">✉️ Reply</a>
+                    <form class="delete-form" method="post" action="{% url 'admin_message_delete' msg.pk %}" onsubmit="return confirm('Delete this message?')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+                    </form>
+                </div>
+            </div>
+            {% if msg.subject %}<div class="msg-subject">📌 {{ msg.subject }}</div>{% endif %}
+            <div class="msg-body">{{ msg.message }}</div>
+        </div>
+        {% empty %}
+        <div class="card"><div class="card-body"><div class="empty-state"><div class="icon">💬</div><p>No contact messages yet</p></div></div></div>
+        {% endfor %}
+
+        {% endif %}
+        <!-- END MESSAGES -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- BENEFITS SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'benefits' %}
+
+        <div class="section-header">
+            <h2>✨ Benefits / Why Choose Us</h2>
+            <a href="{% url 'admin_benefit_add' %}" class="btn btn-primary">➕ Add Benefit</a>
+        </div>
+
+        <div class="benefits-grid">
+            {% for benefit in benefits %}
+            <div class="benefit-card">
+                <div class="b-icon">
+                    {% if benefit.icon == 'droplet' %}💧
+                    {% elif benefit.icon == 'roots' %}🌱
+                    {% elif benefit.icon == 'nourishment' %}🍃
+                    {% elif benefit.icon == 'star' %}⭐
+                    {% elif benefit.icon == 'leaf' %}🌿
+                    {% elif benefit.icon == 'sparkle' %}✨
+                    {% else %}💚{% endif %}
+                </div>
+                <div class="b-content">
+                    <h4>{{ benefit.title }}</h4>
+                    <p>{{ benefit.description }}</p>
+                    <div style="margin-top:6px;font-size:11.5px;color:var(--muted);">Icon: <code>{{ benefit.icon }}</code></div>
+                </div>
+                <div class="b-actions">
+                    <a href="{% url 'admin_benefit_edit' benefit.pk %}" class="btn btn-warning btn-xs">✏️</a>
+                    <form class="delete-form" method="post" action="{% url 'admin_benefit_delete' benefit.pk %}" onsubmit="return confirm('Delete {{ benefit.title }}?')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <div class="card" style="grid-column:1/-1;"><div class="card-body"><div class="empty-state"><div class="icon">✨</div><p>No benefits yet. Add one!</p></div></div></div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+        <!-- END BENEFITS -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- BENEFIT FORM (ADD / EDIT) -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'benefit_form' %}
+
+        <div style="margin-bottom:16px;">
+            <a href="{% url 'admin_benefits' %}" class="btn btn-ghost btn-sm">← Back to Benefits</a>
+        </div>
+
+        <div class="card" style="max-width:540px;">
+            <div class="card-header"><h3>{{ form_title }}</h3></div>
+            <div class="card-body">
+                <form method="post"
+                    action="{% if form_action == 'edit' %}{% url 'admin_benefit_edit' benefit.pk %}{% else %}{% url 'admin_benefit_add' %}{% endif %}">
+                    {% csrf_token %}
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Title *</label>
+                        <input type="text" name="title" class="form-control" required value="{{ benefit.title|default:'' }}">
+                    </div>
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Description *</label>
+                        <textarea name="description" class="form-control" rows="3" required>{{ benefit.description|default:'' }}</textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Icon Key</label>
+                        <input type="text" name="icon" class="form-control" value="{{ benefit.icon|default:'droplet' }}" placeholder="droplet, roots, nourishment, star, leaf, sparkle">
+                        <div class="form-hint">Options: droplet, roots, nourishment, star, leaf, sparkle (or any text)</div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form_action == 'edit' %}💾 Save Changes{% else %}➕ Add Benefit{% endif %}
+                        </button>
+                        <a href="{% url 'admin_benefits' %}" class="btn btn-ghost">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END BENEFIT FORM -->
+
+    </div><!-- /page-content -->
+</div><!-- /main-wrap -->
+
+<script>
+    // ── CSRF Helper ──
+    function getCookie(name) {
+        let v = null;
+        document.cookie.split(';').forEach(c => {
+            c = c.trim();
+            if (c.startsWith(name + '=')) v = decodeURIComponent(c.slice(name.length + 1));
+        });
+        return v;
+    }
+
+    // ── Inline Order Status Update ──
+    function updateStatus(event, form, orderId) {
+        event.preventDefault();
+        const fd = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            body: fd
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                // Flash success
+                const row = form.closest('tr');
+                row.style.background = '#d1fae5';
+                setTimeout(() => row.style.background = '', 800);
+            }
+        })
+        .catch(() => { form.submit(); });
+    }
+
+    // ── Toggle Review Approval ──
+    function toggleReview(pk, btn) {
+        fetch(`/admin-panel/reviews/${pk}/toggle/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                if (data.is_approved) {
+                    btn.textContent = '✓ Approved';
+                    btn.className = 'toggle-btn on';
+                } else {
+                    btn.textContent = '✕ Hidden';
+                    btn.className = 'toggle-btn off';
+                }
+            }
+        });
+    }
+
+    // ── Mobile sidebar close on outside click ──
+    document.addEventListener('click', function(e) {
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.querySelector('.menu-toggle');
+        if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggle) {
+            sidebar.classList.remove('open');
+        }
+    });
+</script>
+
+</body>
+</html>

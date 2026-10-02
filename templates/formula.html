@@ -1,0 +1,819 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Botanical Formula - HairGlow | 100% Cold-Pressed Organic Science</title>
+    <meta name="description" content="Discover the science, cold-pressed extraction, and powerful Ayurvedic botanicals behind HairGlow's hair growth formula. Rosemary, Amla, Bhringraj, and Fenugreek.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Outfit', sans-serif;
+        }
+        .body-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+        .glass-dark {
+            background: rgba(16, 41, 29, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(21, 128, 61, 0.12);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-[#f8faf6] text-gray-900 antialiased selection:bg-green-600 selection:text-white">
+
+    <!-- ===================== TOP ANNOUNCEMENT BAR ====================== -->
+    <div class="bg-[#10291d] text-[#d9a441] text-xs font-semibold py-2 px-4 text-center tracking-wider uppercase border-b border-[#1b3d2c]">
+        🌿 100% Organic &bull; Cold-Pressed Extraction &bull; Free Delivery Across Pakistan on Orders Above Rs. 2,500
+    </div>
+
+    <!-- ===================== NAVBAR ====================== -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm transition-all">
+        <nav class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="h-20 flex items-center justify-between">
+
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 flex items-center gap-1 group">
+                    <span class="text-gray-900 group-hover:text-green-700 transition">Hair</span><span class="text-green-600">Glow</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="{% url 'home' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Home
+                    </a>
+
+                    <a href="{% url 'shop' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Shop
+                    </a>
+
+                    <a href="/about/" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        About Us
+                    </a>
+
+                    <a href="/#shop" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Collections
+                    </a>
+
+                    <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Contact
+                    </a>
+                </div>
+
+                <!-- Right Side CTA -->
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'shop' %}" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700" title="Shop">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+                        </svg>
+                    </a>
+
+                    <!-- User / Account Icon -->
+                    <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        {% if user.is_authenticated %}
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                        {% endif %}
+                    </button>
+
+                    <!-- Order Now Button -->
+                    <a href="{% url 'shop' %}" class="hidden sm:inline-flex bg-gradient-to-r from-green-700 to-green-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:from-green-800 hover:to-green-700 transition shadow-md">
+                        Shop Now
+                    </a>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-gray-200 px-6 py-5 space-y-4">
+            <a href="{% url 'home' %}" class="block text-base font-medium text-gray-800 hover:text-green-600">Home</a>
+            <a href="{% url 'shop' %}" class="block text-base font-medium text-gray-800 hover:text-green-600">Shop</a>
+            <a href="/about/" class="block text-base font-medium text-gray-800 hover:text-green-600">About Us</a>
+            <a href="/#shop" class="block text-base font-medium text-gray-800 hover:text-green-600">Collections</a>
+            <a href="{% url 'contact' %}" class="block text-base font-medium text-gray-800 hover:text-green-600">Contact</a>
+            <div class="pt-3">
+                <a href="{% url 'shop' %}" class="block text-center bg-green-700 text-white py-3 rounded-xl font-semibold">Shop Collections</a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ========================================================================= -->
+    <!-- HERO SECTION: THE BOTANICAL SCIENCE -->
+    <!-- ========================================================================= -->
+    <section class="relative bg-gradient-to-b from-[#0a1b13] via-[#10291d] to-[#0c2017] text-white py-20 sm:py-28 overflow-hidden">
+        
+        <!-- Ambient Glowing Orbs -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-green-500/20 rounded-full blur-3xl pointer-events-none pulse-glow"></div>
+        <div class="absolute top-1/2 -right-32 w-96 h-96 bg-[#d9a441]/15 rounded-full blur-3xl pointer-events-none pulse-glow" style="animation-delay: 3s;"></div>
+
+        <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- Left Content -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-green-900/60 border border-green-500/40 text-green-300 text-xs sm:text-sm font-bold uppercase tracking-[3px] px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
+                        <span>🌿</span> Cold-Pressed &bull; 100% Bio-Active
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15]">
+                        The Botanical Science Behind <span class="bg-gradient-to-r from-green-400 via-[#86efac] to-[#d9a441] bg-clip-text text-transparent">Stronger, Fuller Hair</span>
+                    </h1>
+
+                    <p class="mt-6 text-gray-300 text-base sm:text-lg body-text leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Every single drop of HairGlow is an artisanal synergy of cold-pressed Ayurvedic herbs and nutrient-dense bio-lipids. Micro-filtered for deep follicular absorption with zero heaviness.
+                    </p>
+
+                    <!-- Quick Highlights Badges -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center backdrop-blur-sm hover:border-green-500/50 transition">
+                            <p class="text-2xl sm:text-3xl font-extrabold text-green-400">100%</p>
+                            <p class="text-xs text-gray-400 mt-1 font-medium">Pure Botanicals</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center backdrop-blur-sm hover:border-green-500/50 transition">
+                            <p class="text-2xl sm:text-3xl font-extrabold text-[#d9a441]">0%</p>
+                            <p class="text-xs text-gray-400 mt-1 font-medium">Mineral Oil &amp; Silicones</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center backdrop-blur-sm hover:border-green-500/50 transition">
+                            <p class="text-2xl sm:text-3xl font-extrabold text-green-400">&lt;35°C</p>
+                            <p class="text-xs text-gray-400 mt-1 font-medium">Cold-Pressed</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-center backdrop-blur-sm hover:border-green-500/50 transition">
+                            <p class="text-2xl sm:text-3xl font-extrabold text-[#d9a441]">94%</p>
+                            <p class="text-xs text-gray-400 mt-1 font-medium">Fall Reduction</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                        <a href="#ingredients" class="px-8 py-4 rounded-full bg-gradient-to-r from-green-600 to-green-500 text-white font-bold text-base hover:from-green-500 hover:to-green-400 shadow-lg shadow-green-900/40 hover:shadow-xl hover:scale-[1.02] transition-all">
+                            Explore Ingredients ↓
+                        </a>
+                        <a href="#shop-formula" class="px-8 py-4 rounded-full bg-white/10 border border-white/20 text-white font-semibold text-base hover:bg-white/20 hover:border-white/40 transition-all">
+                            Order Formula Bottle →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Visual Card -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        
+                        <!-- Glow behind card -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-green-600/30 to-[#d9a441]/30 rounded-3xl blur-2xl transform rotate-3"></div>
+
+                        <div class="relative glass-dark rounded-3xl p-8 border border-white/15 shadow-2xl text-center">
+                            
+                            <!-- Bottle Image or Illustration -->
+                            <div class="relative mx-auto w-48 h-64 sm:w-56 sm:h-72 flex items-center justify-center">
+                                <img src="{% static 'images/hair oil.png' %}" 
+                                     alt="HairBloom Botanical Formula" 
+                                     class="max-h-full max-w-full object-contain filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)] animate-float"
+                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1608248597359-0a67139178ef?auto=format&fit=crop&w=600&q=80';">
+                            </div>
+
+                            <!-- Floating badge -->
+                            <div class="mt-6 bg-[#163826] border border-green-500/30 rounded-2xl p-4 text-left">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-10 h-10 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center text-lg shrink-0">⚗️</span>
+                                    <div>
+                                        <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Formulation Standard</p>
+                                        <p class="text-sm font-bold text-white">Ayurvedic Trichology Certified</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 2: WHY THIS FORMULA IS DIFFERENT (VS ORDINARY OILS) -->
+    <!-- ========================================================================= -->
+    <section class="py-20 sm:py-24 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <p class="text-green-700 uppercase tracking-[4px] text-xs sm:text-sm font-bold mb-3">
+                    Precision Formulation
+                </p>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
+                    Why HairGlow Formula Outperforms Ordinary Oils
+                </h2>
+                <p class="mt-4 text-gray-600 text-sm sm:text-base body-text leading-relaxed">
+                    Most commercial hair oils are diluted with cheap mineral oil (liquid paraffin) and synthetic perfumes that clog scalp pores. HairGlow is engineered purely with concentrated, cold-pressed plant extracts.
+                </p>
+            </div>
+
+            <!-- Comparison Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                
+                <!-- Commercial Oil Card -->
+                <div class="bg-red-50/40 rounded-3xl p-8 border border-red-200/70 relative">
+                    <div class="inline-flex items-center gap-2 bg-red-100 text-red-700 text-xs font-bold uppercase px-3.5 py-1.5 rounded-full mb-6">
+                        ✕ Typical Market Oils
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Commercial Chemical Oils</h3>
+                    <ul class="space-y-4 text-sm text-gray-600 body-text">
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold text-base mt-0.5">✕</span>
+                            <span><strong>70-80% Liquid Paraffin &amp; Mineral Oil:</strong> Creates a heavy greasy film that suffocates scalp pores.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold text-base mt-0.5">✕</span>
+                            <span><strong>High-Heat Chemical Extraction:</strong> Strips down natural vitamins, bio-enzymes, and antioxidants.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold text-base mt-0.5">✕</span>
+                            <span><strong>Artificial Fragrances &amp; Silicones:</strong> Masks chemical smell but creates product buildup and itching.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold text-base mt-0.5">✕</span>
+                            <span><strong>Temporary Surface Illusion:</strong> Coats hair artificially without penetrating or nourishing the hair bulb.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- HairGlow Formula Card -->
+                <div class="bg-[#f2f8f3] rounded-3xl p-8 border-2 border-green-600 shadow-xl relative ring-4 ring-green-600/10">
+                    <div class="inline-flex items-center gap-2 bg-green-600 text-white text-xs font-bold uppercase px-3.5 py-1.5 rounded-full mb-6 shadow-sm">
+                        ✓ HairGlow Clean Standard
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">HairGlow Bio-Active Formula</h3>
+                    <ul class="space-y-4 text-sm text-gray-700 body-text">
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-600 font-bold text-base mt-0.5">✓</span>
+                            <span><strong>100% Cold-Pressed Plant Elixir:</strong> Zero mineral oil. Fast cellular absorption with weightless satin finish.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-600 font-bold text-base mt-0.5">✓</span>
+                            <span><strong>Low-Heat Slow Extraction (&lt;35°C):</strong> 100% active polyphenols, carnosic acids, and Vitamin C preserved.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-600 font-bold text-base mt-0.5">✓</span>
+                            <span><strong>Zero Silicones, Zero Parabens:</strong> Pure botanical aroma derived straight from fresh Rosemary, Amla, and herbs.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-600 font-bold text-base mt-0.5">✓</span>
+                            <span><strong>Deep Follicular Penetration:</strong> Feeds dermal papilla cells directly to awaken anagen growth phase.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 3: DEEP DIVE: THE 6 ACTIVE INGREDIENTS -->
+    <!-- ========================================================================= -->
+    <section id="ingredients" class="py-20 sm:py-28 bg-[#f8faf6]">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block bg-green-100 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-3">
+                    🧪 The Active Ingredients Breakdown
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
+                    Pure Earth Alchemy. Clinically Proven Botanicals.
+                </h2>
+                <p class="mt-4 text-gray-600 text-sm sm:text-base body-text leading-relaxed">
+                    Each ingredient in the HairGlow formula was specifically selected for its individual biochemical potency and how it synergizes with the scalp biome.
+                </p>
+            </div>
+
+            <!-- 6 Ingredients Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                
+                <!-- Ingredient 1: Rosemary -->
+                <div class="group bg-white rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                            🌿
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2.5 py-1 rounded-full">Follicle Stimulant</span>
+                            <span class="text-xs text-gray-400 italic font-mono">Rosmarinus Officinalis</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-3">Rosemary Extract</h3>
+                        <p class="text-sm text-gray-600 body-text leading-relaxed">
+                            Rich in <strong>Carnosic Acid &amp; Rosmarinic Acid</strong>. Renowned in trichology for naturally blocking DHT, stimulating micro-blood circulation to the scalp, and accelerating new hair density.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+                        <span>🎯 Primary Benefit:</span>
+                        <span class="text-green-700">Activates Dormant Roots</span>
+                    </div>
+                </div>
+
+                <!-- Ingredient 2: Amla -->
+                <div class="group bg-white rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
+                            🍈
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full">Keratin Fortifier</span>
+                            <span class="text-xs text-gray-400 italic font-mono">Phyllanthus Emblica</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-3">Indian Amla Elixir</h3>
+                        <p class="text-sm text-gray-600 body-text leading-relaxed">
+                            One of the world’s richest natural sources of <strong>Bio-Vitamin C and Tannins</strong>. Fortifies hair shaft protein, combats oxidative damage, and delays premature pigment loss.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+                        <span>🎯 Primary Benefit:</span>
+                        <span class="text-amber-700">Shaft Strength &amp; Anti-Gray</span>
+                    </div>
+                </div>
+
+                <!-- Ingredient 3: Fenugreek -->
+                <div class="group bg-white rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-lime-50 text-lime-700 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-lime-600 group-hover:text-white transition-all duration-300">
+                            🌾
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-lime-800 bg-lime-50 px-2.5 py-1 rounded-full">Moisture &amp; Cuticle Repair</span>
+                            <span class="text-xs text-gray-400 italic font-mono">Trigonella Foenum</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-3">Fenugreek (Methi)</h3>
+                        <p class="text-sm text-gray-600 body-text leading-relaxed">
+                            Packed with <strong>Natural Lecithin, Nicotinic Acid, and Potassium</strong>. Deeply lubricates dry hair cuticles, seals split ends, and treats itchy scalp flakes naturally.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+                        <span>🎯 Primary Benefit:</span>
+                        <span class="text-lime-700">Silky Smoothness &amp; Anti-Dandruff</span>
+                    </div>
+                </div>
+
+                <!-- Ingredient 4: Bhringraj -->
+                <div class="group bg-white rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-teal-600 group-hover:text-white transition-all duration-300">
+                            🍃
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full">King of Hair Growth</span>
+                            <span class="text-xs text-gray-400 italic font-mono">Eclipta Prostrata</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-3">Bhringraj (Keshraj)</h3>
+                        <p class="text-sm text-gray-600 body-text leading-relaxed">
+                            The cornerstone of Ayurvedic hair care. Contains potent <strong>Wedelolactone &amp; Phytosterols</strong> that revitalizes sluggish roots and transitions resting hair into the active growth cycle.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+                        <span>🎯 Primary Benefit:</span>
+                        <span class="text-teal-700">Root Anchoring &amp; Density</span>
+                    </div>
+                </div>
+
+                <!-- Ingredient 5: Castor & Almond Carrier Base -->
+                <div class="group bg-white rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
+                            🌰
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full">Omega-Rich Base</span>
+                            <span class="text-xs text-gray-400 italic font-mono">Ricinus &amp; Prunus Dulcis</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-3">Cold-Pressed Castor &amp; Almond</h3>
+                        <p class="text-sm text-gray-600 body-text leading-relaxed">
+                            Loaded with <strong>Ricinoleic Acid, Omega-9, and Natural Vitamin E</strong>. Delivers vital lipids deep into the scalp membrane without leaving heavy greasy residue.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+                        <span>🎯 Primary Benefit:</span>
+                        <span class="text-amber-700">Deep Lipid Hydration</span>
+                    </div>
+                </div>
+
+                <!-- Ingredient 6: Black Seed (Kalonji) -->
+                <div class="group bg-white rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                            🌱
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-800 bg-purple-50 px-2.5 py-1 rounded-full">Scalp Biome Defense</span>
+                            <span class="text-xs text-gray-400 italic font-mono">Nigella Sativa</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-3">Black Seed (Kalonji)</h3>
+                        <p class="text-sm text-gray-600 body-text leading-relaxed">
+                            Infused with <strong>Thymoquinone</strong>, a powerful natural anti-inflammatory and antibacterial agent that purifies the scalp surface, clears fungal microbes, and supports follicles.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-semibold">
+                        <span>🎯 Primary Benefit:</span>
+                        <span class="text-purple-700">Scalp Purifying &amp; Anti-Fungal</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 4: THE 4-STAGE COLD-PRESSED EXTRACTION PROCESS -->
+    <!-- ========================================================================= -->
+    <section class="py-20 sm:py-24 bg-[#10291d] text-white relative overflow-hidden">
+        
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block bg-green-800/80 text-green-300 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-3 border border-green-600/30">
+                    ⚙️ Cold-Pressed Extraction Method
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+                    How We Preserve 100% Bio-Active Potency
+                </h2>
+                <p class="mt-4 text-gray-300 text-sm sm:text-base body-text leading-relaxed">
+                    Most standard manufacturers heat oils past 120°C, destroying active enzymes. Our artisanal low-temperature extraction ensures maximum nutrient density.
+                </p>
+            </div>
+
+            <!-- Steps Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Step 1 -->
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7 relative hover:border-green-400/60 transition-all duration-300">
+                    <span class="text-4xl font-extrabold text-[#d9a441]/80 mb-4 block">01</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Wild Organic Harvest</h3>
+                    <p class="text-sm text-gray-300 body-text leading-relaxed">
+                        Herbs and seeds are hand-harvested from pesticide-free organic farms at peak seasonal potency.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7 relative hover:border-green-400/60 transition-all duration-300">
+                    <span class="text-4xl font-extrabold text-green-400/80 mb-4 block">02</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Cold-Pressing (&lt;35°C)</h3>
+                    <p class="text-sm text-gray-300 body-text leading-relaxed">
+                        Slow mechanical hydraulic extraction with zero external heat preserves sensitive polyphenols.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7 relative hover:border-green-400/60 transition-all duration-300">
+                    <span class="text-4xl font-extrabold text-[#d9a441]/80 mb-4 block">03</span>
+                    <h3 class="text-xl font-bold text-white mb-2">Triple Micro-Filtration</h3>
+                    <p class="text-sm text-gray-300 body-text leading-relaxed">
+                        Refined through 3-stage ultra-fine micro mesh to remove coarse debris while keeping rich bio-lipids intact.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-7 relative hover:border-green-400/60 transition-all duration-300">
+                    <span class="text-4xl font-extrabold text-green-400/80 mb-4 block">04</span>
+                    <h3 class="text-xl font-bold text-white mb-2">UV-Shield Bottling</h3>
+                    <p class="text-sm text-gray-300 body-text leading-relaxed">
+                        Packaged in protective bottles that shield delicate active phytochemicals from photo-oxidation.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 5: 30-DAY SCALP CYCLE TRANSFORMATION -->
+    <!-- ========================================================================= -->
+    <section class="py-20 sm:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block bg-green-100 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-3">
+                    📅 Results Timeline
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
+                    What To Expect: The 30-Day Growth Journey
+                </h2>
+                <p class="mt-4 text-gray-600 text-sm sm:text-base body-text leading-relaxed">
+                    Consistent application yields cumulative results as the formula restores your natural scalp ecosystem.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                
+                <!-- Phase 1 -->
+                <div class="bg-[#f7f9f3] rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 transition-all">
+                    <div class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mb-4">
+                        Phase 1 &bull; Days 1 - 10
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Scalp Detox &amp; Balance</h3>
+                    <p class="text-sm text-gray-600 body-text leading-relaxed">
+                        Calms scalp inflammation and dryness. Unclogs sebum plugs around hair follicles. Hair feels instantly softer and less tangled after first wash.
+                    </p>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="bg-[#f7f9f3] rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 transition-all">
+                    <div class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mb-4">
+                        Phase 2 &bull; Days 11 - 25
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Root Fortification</h3>
+                    <p class="text-sm text-gray-600 body-text leading-relaxed">
+                        Significant reduction in shower hair fall. Follicular anchoring strengthens; hair shafts become noticeably more resilient to breakage.
+                    </p>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="bg-[#f7f9f3] rounded-3xl p-8 border border-gray-200/80 hover:border-green-400 transition-all">
+                    <div class="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mb-4">
+                        Phase 3 &bull; Days 25 - 45+
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Visible Baby Hair Density</h3>
+                    <p class="text-sm text-gray-600 body-text leading-relaxed">
+                        Fine baby hairs begin emerging along hairline and thinning spots. Full strand volume, glossy natural shine, and long-term scalp health.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 6: HOW TO USE / APPLICATION GUIDE -->
+    <!-- ========================================================================= -->
+    <section class="py-20 sm:py-24 bg-[#f4f8f4] border-t border-gray-200/60">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="inline-block bg-green-100 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-3">
+                    💆 Application Ritual
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                    How To Apply For Maximum Bio-Absorption
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-center">
+                
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-[#ddf2df] text-green-700 font-bold text-xl mx-auto flex items-center justify-center mb-4">
+                        1
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-lg mb-2">Apply Directly</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 body-text">
+                        Section dry hair and apply 5-10 drops or 1-2 pumps directly across your scalp and roots.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-[#ddf2df] text-green-700 font-bold text-xl mx-auto flex items-center justify-center mb-4">
+                        2
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-lg mb-2">Scalp Massage (3-5 min)</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 body-text">
+                        Gently massage in circular motions with your fingertips to stimulate blood flow and deep penetration.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-[#ddf2df] text-green-700 font-bold text-xl mx-auto flex items-center justify-center mb-4">
+                        3
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-lg mb-2">Rest &amp; Wash</h4>
+                    <p class="text-xs sm:text-sm text-gray-600 body-text">
+                        Leave on for minimum 2 hours or overnight for deep nourishment, then wash with mild shampoo. Repeat 2-3x weekly.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 7: CHOOSE YOUR FORMULA BOTTLE & SHOP -->
+    <!-- ========================================================================= -->
+    <section id="shop-formula" class="py-20 sm:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block bg-green-100 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-3">
+                    🛍️ Bottle Editions
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
+                    Order The Original Botanical Formula
+                </h2>
+                <p class="mt-4 text-gray-600 text-sm sm:text-base body-text leading-relaxed">
+                    Select your bottle size below. 100% money-back satisfaction guarantee and fast delivery across Pakistan.
+                </p>
+            </div>
+
+            <!-- Dynamic Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
+                {% for p in products %}
+                <div class="bg-white rounded-3xl {% if p.is_featured %}border-2 border-green-600 shadow-2xl ring-4 ring-green-600/10 md:-translate-y-2{% else %}border border-gray-200 shadow-sm hover:shadow-xl hover:border-green-300{% endif %} transition-all duration-300 p-6 flex flex-col justify-between relative group">
+                    
+                    {% if p.is_featured %}
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-700 to-green-600 text-white text-[11px] font-extrabold uppercase px-4 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
+                        <span>🔥</span> Most Popular Pack
+                    </div>
+                    {% endif %}
+
+                    <div>
+                        <!-- Header Badges -->
+                        <div class="flex items-center justify-between gap-2 mb-4 {% if p.is_featured %}mt-2{% endif %}">
+                            <span class="{% if p.is_featured %}bg-green-100 text-green-800{% else %}bg-green-50 text-green-700{% endif %} text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                {{ p.badge|default:"Botanical Pack" }}
+                            </span>
+                            <span class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">
+                                {{ p.size|default:"Bottle" }}
+                            </span>
+                        </div>
+
+                        <!-- Image Box -->
+                        <div class="relative bg-gradient-to-br {% if p.is_featured %}from-[#eaf6e7] to-[#d8edd3]{% else %}from-[#f2f7ef] to-[#e7f1e2]{% endif %} rounded-2xl h-48 flex items-center justify-center overflow-hidden mb-5">
+                            {% if p.discount %}
+                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg z-10 shadow-sm">
+                                -{{ p.discount }}% OFF
+                            </span>
+                            {% endif %}
+                            
+                            {% if p.image %}
+                            <img src="{{ p.image.url }}" alt="{{ p.name }}" class="max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            {% else %}
+                            <img src="{% static 'images/hair oil.png' %}" alt="{{ p.name }}" class="max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1608248597359-0a67139178ef?auto=format&fit=crop&w=600&q=80';">
+                            {% endif %}
+                        </div>
+
+                        <!-- Info -->
+                        <h3 class="text-xl font-bold text-gray-900">{{ p.name }}</h3>
+                        <p class="text-xs text-green-700 font-semibold mt-0.5">{{ p.subtitle|default:"100% Pure Organic Formulation" }}</p>
+                        <p class="text-sm text-gray-500 body-text mt-2 line-clamp-2">{{ p.description }}</p>
+                    </div>
+
+                    <!-- Price & CTA -->
+                    <div class="mt-6 pt-5 border-t border-gray-100">
+                        <div class="flex items-baseline justify-between mb-4">
+                            <div>
+                                <span class="text-2xl font-extrabold text-gray-900">Rs. {{ p.price|floatformat:0 }}</span>
+                                {% if p.old_price %}
+                                <span class="text-sm text-gray-400 line-through ml-2">Rs. {{ p.old_price|floatformat:0 }}</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">In Stock</span>
+                        </div>
+
+                        <a href="{% url 'checkout' %}" class="w-full text-center block py-3.5 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 text-white shadow-md hover:shadow-lg transition-all duration-200">
+                            Buy Now &bull; Free Delivery
+                        </a>
+                    </div>
+
+                </div>
+                {% empty %}
+                <div class="col-span-3 text-center py-10">
+                    <a href="{% url 'shop' %}" class="inline-flex bg-green-700 text-white px-8 py-3.5 rounded-full font-bold">View Shop</a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================================= -->
+    <footer class="bg-[#10291d] text-white">
+        <div class="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
+            <div class="grid grid-cols-1 gap-10 md:grid-cols-4">
+                
+                <!-- Brand -->
+                <div class="md:col-span-2">
+                    <a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-1">
+                        <span>Hair</span><span class="text-[#d9a441]">Glow</span>
+                    </a>
+                    <p class="mt-4 max-w-md text-sm text-gray-300 leading-relaxed body-text">
+                        100% cold-pressed organic botanical hair growth oil formulated with Ayurvedic precision for stronger, thicker, and lustrous hair.
+                    </p>
+                    <div class="mt-6 flex items-center gap-4 text-xs text-green-300">
+                        <span class="flex items-center gap-1.5"><span>✓</span> 100% Organic</span>
+                        <span class="flex items-center gap-1.5"><span>✓</span> Cruelty Free</span>
+                        <span class="flex items-center gap-1.5"><span>✓</span> ISO Standard</span>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold">Quick Links</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="{% url 'home' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Home</a>
+                        <a href="{% url 'shop' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Shop Collections</a>
+                        <a href="{% url 'formula' %}" class="block text-sm text-[#d9a441] font-semibold transition hover:translate-x-1">Our Formula</a>
+                        <a href="/about/" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">About Us</a>
+                        <a href="{% url 'contact' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Contact Us</a>
+                    </div>
+                </div>
+
+                <!-- Legal & Policies -->
+                <div>
+                    <h3 class="text-lg font-semibold">Legal &amp; Policies</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="{% url 'refund_policy' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">↩</span>
+                            Refund &amp; Exchange
+                        </a>
+                        <a href="{% url 'privacy_policy' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">🔒</span>
+                            Privacy Policy
+                        </a>
+                        <a href="{% url 'terms_conditions' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">📄</span>
+                            Terms &amp; Conditions
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="border-t border-white/10">
+            <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:px-8 md:flex-row md:text-left lg:px-12">
+                <p class="text-sm text-gray-400">&copy; 2026 <span class="font-semibold text-white">HairGlow</span>. All rights reserved.</p>
+                <div class="flex items-center gap-5 text-xs text-gray-500">
+                    <a href="{% url 'privacy_policy' %}" class="hover:text-[#d9a441] transition">Privacy Policy</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'terms_conditions' %}" class="hover:text-[#d9a441] transition">Terms &amp; Conditions</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'refund_policy' %}" class="hover:text-[#d9a441] transition">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+            });
+        }
+    </script>
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

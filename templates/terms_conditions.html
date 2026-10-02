@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | HairGlow</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f7f9f4] text-gray-900 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight text-gray-900 flex items-center gap-2">
+                <span class="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">H</span>
+                <span>Hair<span class="text-green-600">Glow</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="{% url 'home' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Home</a>
+                <a href="{% url 'shop' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Shop</a>
+                <a href="{% url 'about' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">About Us</a>
+                <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                    {% if user.is_authenticated %}
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                    {% endif %}
+                </button>
+                <a href="{% url 'shop' %}" class="hidden sm:inline-flex bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-md shadow-green-600/20 transition">Shop Now</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-br from-[#eef4e9] via-[#f7f9f4] to-[#f0faf2] py-14 sm:py-18 border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-5 text-center">
+            <span class="px-3.5 py-1 bg-green-100 text-green-800 text-xs font-extrabold rounded-full uppercase tracking-wider mb-4 inline-block">Terms & Agreement</span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">Terms & Conditions</h1>
+            <p class="text-sm sm:text-base text-gray-600 mt-3 max-w-2xl mx-auto">Please review our terms of service governing your purchase and use of HairGlow products.</p>
+            <p class="text-xs text-gray-400 mt-2">Effective Date: January 2026</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-5 py-12">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-100 space-y-8 text-gray-700 leading-relaxed text-sm sm:text-base">
+            
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">1</span>
+                    Introduction & Acceptance
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    By accessing or placing an order on HairGlow, you agree to be bound by these Terms & Conditions. If you do not agree with any part of these terms, please do not use our services.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">2</span>
+                    Product Information & Pricing
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    All prices are listed in Pakistani Rupees (PKR) and are inclusive of applicable taxes unless stated otherwise. We reserve the right to revise prices, discounts, or promotional bundles at any time without prior notice.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">3</span>
+                    Order Confirmation & Payments
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Orders can be placed online using Cash on Delivery (COD), Easypaisa, JazzCash, or Direct Bank Transfer. An order confirmation notification will be sent to your registered phone or email upon order placement.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">4</span>
+                    Shipping & Delivery Timelines
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Standard delivery timelines across Pakistan are <strong>2 to 4 business days</strong>. Delivery timelines may vary during nationwide public holidays, extreme weather conditions, or courier logistical delays.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">5</span>
+                    Intellectual Property
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    All graphics, product formulations, brand logos, product photography, and text content on HairGlow website are protected by copyright and intellectual property laws of Pakistan.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6 bg-green-50/50 p-6 rounded-2xl">
+                <h3 class="text-base font-bold text-gray-900 mb-1">Questions About Our Terms?</h3>
+                <p class="text-xs text-gray-600">Our customer support team is available 24/7 to clarify any questions.</p>
+                <a href="{% url 'contact' %}" class="inline-block mt-3 text-xs font-bold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-xl transition">Contact Support</a>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-auto border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-5 py-8 text-center text-xs text-gray-400 space-y-4">
+            <div class="flex flex-wrap justify-center gap-6 text-xs text-gray-400 font-medium">
+                <a href="{% url 'privacy_policy' %}" class="hover:text-white transition">Privacy Policy</a>
+                <span>•</span>
+                <a href="{% url 'terms_conditions' %}" class="text-green-400 font-bold">Terms & Conditions</a>
+                <span>•</span>
+                <a href="{% url 'refund_policy' %}" class="hover:text-white transition">Refund & Exchange Policy</a>
+            </div>
+            <p>© 2026 <strong class="text-white">HairGlow</strong>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

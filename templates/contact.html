@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - HairGlow</title>
+    <meta name="description" content="Get in touch with HairGlow. Send us a message, call us or email us.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: Outfit, sans-serif; }
+        .heading-font { font-family: Outfit, sans-serif; }
+        .input-field { width: 100%; padding: 14px 18px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; font-size: 0.875rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+        .input-field:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.12); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp 0.55s ease both; }
+        .fade-up-2 { animation: fadeUp 0.55s 0.12s ease both; }
+        .fade-up-3 { animation: fadeUp 0.55s 0.24s ease both; }
+    </style>
+</head>
+<body class="bg-[#f7f9f4] text-gray-900">
+
+    <!-- NAVBAR -->
+    <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="h-20 flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold tracking-tight">Hair<span class="text-green-600">Glow</span></a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="/#home" class="text-sm font-medium hover:text-green-600 transition">Home</a>
+                    <a href="{% url 'shop' %}" class="text-sm font-medium hover:text-green-600 transition">Shop</a>
+                    <a href="{% url 'about' %}" class="text-sm font-medium hover:text-green-600 transition">About Us</a>
+                    <a href="/#shop" class="text-sm font-medium hover:text-green-600 transition">Collections</a>
+                    <a href="{% url 'contact' %}" class="text-sm font-semibold text-green-700 border-b-2 border-green-600 pb-0.5">Contact</a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'shop' %}" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition" title="Shop">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+                        </svg>
+                    </a>
+                    <!-- User / Account Icon -->
+                    <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        {% if user.is_authenticated %}
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                        {% endif %}
+                    </button>
+                    <a href="{% url 'shop' %}" class="hidden sm:inline-flex bg-green-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-green-700 transition">Shop Now</a>
+                    <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden pb-5">
+                <div class="flex flex-col gap-4 pt-3">
+                    <a href="/#home" class="text-sm font-medium hover:text-green-600">Home</a>
+                    <a href="{% url 'shop' %}" class="text-sm font-medium hover:text-green-600">Shop</a>
+                    <a href="{% url 'about' %}" class="text-sm font-medium hover:text-green-600">About Us</a>
+                    <a href="/#shop" class="text-sm font-medium hover:text-green-600">Collections</a>
+                    <a href="{% url 'contact' %}" class="text-sm font-semibold text-green-700">Contact</a>
+                    <a href="{% url 'shop' %}" class="bg-green-600 text-white text-center px-5 py-3 rounded-full font-semibold">Shop Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO BANNER -->
+    <div class="bg-gradient-to-br from-[#eef4e9] via-[#f7f9f4] to-[#f0faf2] py-16 sm:py-20 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 text-center fade-up">
+            <p class="inline-block text-green-700 uppercase tracking-[4px] text-xs sm:text-sm font-bold mb-4 bg-green-50 border border-green-200 rounded-full px-4 py-1.5">We'd Love to Hear From You</p>
+            <h1 class="heading-font text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight">Contact <span class="text-green-700">Us</span></h1>
+            <p class="mt-5 max-w-xl mx-auto text-gray-500 text-sm sm:text-base leading-7">Have questions about your order, our products, or anything else? Our friendly team is here to help you out.</p>
+            <div class="mt-6 flex items-center justify-center gap-2 text-sm text-gray-400">
+                <a href="/" class="hover:text-green-700 transition">Home</a>
+                <span>&rsaquo;</span>
+                <span class="text-green-700 font-medium">Contact</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT SECTION -->
+    <section class="py-20 sm:py-24">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+            {% if messages %}
+            <div class="max-w-3xl mx-auto mb-10 fade-up">
+                {% for message in messages %}
+                <div class="p-5 rounded-2xl bg-green-50 border border-green-200 text-green-800 font-semibold text-sm text-center flex items-center justify-center gap-2 shadow-sm">
+                    <span>&#10003;</span> {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+                <!-- Info Cards -->
+                <div class="lg:col-span-5 space-y-5 fade-up-2">
+
+                    <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm flex items-start gap-5 hover:shadow-md hover:border-green-200 transition duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center shrink-0 text-2xl group-hover:bg-green-600 group-hover:text-white transition duration-300">&#128222;</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg">Call / WhatsApp</h3>
+                            <p class="text-xs text-gray-500 mt-1 mb-2">Available Mon - Sat, 9am - 8pm</p>
+                            <a href="https://wa.me/923001234567" target="_blank" class="text-sm font-bold text-green-700 hover:underline">+92 300 1234567</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm flex items-start gap-5 hover:shadow-md hover:border-green-200 transition duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center shrink-0 text-2xl group-hover:bg-green-600 group-hover:text-white transition duration-300">&#9993;</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg">Email Us</h3>
+                            <p class="text-xs text-gray-500 mt-1 mb-2">We reply within 24 hours</p>
+                            <a href="mailto:support@hairglow.com" class="text-sm font-bold text-green-700 hover:underline break-all">support@hairglow.com</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm flex items-start gap-5 hover:shadow-md hover:border-green-200 transition duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center shrink-0 text-2xl group-hover:bg-green-600 group-hover:text-white transition duration-300">&#128205;</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg">Location</h3>
+                            <p class="text-xs text-gray-500 mt-1 mb-2">Official Headquarters</p>
+                            <p class="text-sm font-medium text-gray-700">Rawalpindi, Punjab, Pakistan</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm flex items-start gap-5 hover:shadow-md hover:border-green-200 transition duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center shrink-0 text-2xl group-hover:bg-green-600 group-hover:text-white transition duration-300">&#128336;</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900 text-lg">Working Hours</h3>
+                            <p class="text-xs text-gray-500 mt-1 mb-1">Monday - Saturday</p>
+                            <p class="text-sm font-bold text-green-700">9:00 AM - 8:00 PM</p>
+                            <p class="text-xs text-gray-400 mt-1">Sunday: Closed</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-7 fade-up-3">
+                    <div class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm">
+                        <h2 class="heading-font text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Send Us A Message</h2>
+                        <p class="text-sm text-gray-500 mb-8">Fill in the form below and we will get back to you as soon as possible.</p>
+                        <form method="POST" action="/contact/" class="space-y-5" id="contactForm">
+                            {% csrf_token %}
+                            <input type="hidden" name="form_type" value="contact">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Your Name *</label>
+                                    <input type="text" name="name" required placeholder="Muhammad Ali" class="input-field">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" name="phone" placeholder="+92 300 1234567" class="input-field">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Email Address *</label>
+                                    <input type="email" name="email" required placeholder="ali@example.com" class="input-field">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Subject</label>
+                                    <input type="text" name="subject" placeholder="Order Query / Feedback" class="input-field">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">Your Message *</label>
+                                <textarea name="message" rows="5" required placeholder="Write your message here..." class="input-field resize-none"></textarea>
+                            </div>
+                            <button type="submit" id="submitBtn" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-4 px-6 rounded-2xl transition duration-300 shadow-lg shadow-green-700/20 flex items-center justify-center gap-2 text-base">
+                                <span>Send Message</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#10291d] text-white">
+        <div class="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-12">
+            <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="lg:pr-8">
+                    <a href="/" class="inline-block"><h2 class="text-3xl font-bold tracking-wide">Hair<span class="text-[#d9a441]">Bloom</span></h2></a>
+                    <p class="mt-5 max-w-sm text-sm leading-7 text-gray-300">Natural care for healthier, stronger and beautiful-looking hair.</p>
+                    <div class="mt-7 flex items-center gap-3">
+                        <!-- Facebook -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Facebook">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Instagram">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="TikTok">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .56.04.82.12V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-3.04-1.52z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Quick Links</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="/#home" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Home</a>
+                        <a href="/#shop" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Shop</a>
+                        <a href="{% url 'about' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">About Us</a>
+                        <a href="{% url 'contact' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Contact Us</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Get In Touch</h3>
+                    <div class="mt-6 space-y-5">
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">&#9742;</div>
+                            <div><p class="text-xs text-gray-400">Call Us</p><a href="tel:+923001234567" class="text-sm text-gray-200 transition hover:text-[#d9a441]">+92 300 1234567</a></div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">&#9993;</div>
+                            <div><p class="text-xs text-gray-400">Email Us</p><a href="mailto:support@hairglow.com" class="break-all text-sm text-gray-200 transition hover:text-[#d9a441]">support@hairglow.com</a></div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">&#128205;</div>
+                            <div><p class="text-xs text-gray-400">Location</p><p class="text-sm text-gray-200">Rawalpindi, Pakistan</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10">
+            <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:px-8 md:flex-row md:text-left lg:px-12">
+                <p class="text-sm text-gray-400">&copy; 2026 <span class="font-semibold text-white">HairGlow</span>. All rights reserved.</p>
+                <div class="flex flex-wrap items-center justify-center gap-5 text-xs text-gray-400">
+                    <a href="{% url 'privacy_policy' %}" class="hover:text-green-400 transition">Privacy Policy</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'terms_conditions' %}" class="hover:text-green-400 transition">Terms &amp; Conditions</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'refund_policy' %}" class="hover:text-green-400 transition">Refund &amp; Exchange Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        menuBtn.addEventListener("click", () => { mobileMenu.classList.toggle("hidden"); });
+        const contactForm = document.getElementById("contactForm");
+        const submitBtn = document.getElementById("submitBtn");
+        if (contactForm) {
+            contactForm.addEventListener("submit", () => {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = "Sending...";
+            });
+        }
+    </script>
+
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

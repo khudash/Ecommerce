@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | HairGlow</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f7f9f4] text-gray-900 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight text-gray-900 flex items-center gap-2">
+                <span class="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">H</span>
+                <span>Hair<span class="text-green-600">Glow</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="{% url 'home' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Home</a>
+                <a href="{% url 'shop' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Shop</a>
+                <a href="{% url 'about' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">About Us</a>
+                <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                    {% if user.is_authenticated %}
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                    {% endif %}
+                </button>
+                <a href="{% url 'shop' %}" class="hidden sm:inline-flex bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-md shadow-green-600/20 transition">Shop Now</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="bg-gradient-to-br from-[#eef4e9] via-[#f7f9f4] to-[#f0faf2] py-14 sm:py-18 border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-5 text-center">
+            <span class="px-3.5 py-1 bg-green-100 text-green-800 text-xs font-extrabold rounded-full uppercase tracking-wider mb-4 inline-block">Legal & Trust</span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">Privacy Policy</h1>
+            <p class="text-sm sm:text-base text-gray-600 mt-3 max-w-2xl mx-auto">At HairGlow, we prioritize your privacy and data security. Learn how we collect, protect, and handle your information.</p>
+            <p class="text-xs text-gray-400 mt-2">Last Updated: January 2026</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-5 py-12">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-gray-100 space-y-8 text-gray-700 leading-relaxed text-sm sm:text-base">
+            
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">1</span>
+                    Information We Collect
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    When you order products from HairGlow or create an account, we collect information required to complete your transaction and provide superior customer service:
+                </p>
+                <ul class="list-disc list-inside mt-3 space-y-1.5 text-gray-600 text-sm pl-2">
+                    <li><strong>Personal Details:</strong> Full Name, Email Address, and Phone Number.</li>
+                    <li><strong>Shipping Information:</strong> Street Address, City, Postal Code, and Delivery Instructions.</li>
+                    <li><strong>Payment Information:</strong> Payment method preference (Cash on Delivery, Easypaisa, JazzCash, or Bank Transfer).</li>
+                </ul>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">2</span>
+                    How We Use Your Information
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Your personal information is strictly used for legitimate business purposes:
+                </p>
+                <ul class="list-disc list-inside mt-3 space-y-1.5 text-gray-600 text-sm pl-2">
+                    <li>Processing, confirming, and dispatching your hair growth oil orders across Pakistan.</li>
+                    <li>Sending SMS or WhatsApp updates regarding parcel tracking and order confirmation.</li>
+                    <li>Providing prompt customer support and addressing product inquiries or refunds.</li>
+                    <li>Improving website functionality and user experience.</li>
+                </ul>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">3</span>
+                    Data Security & Protection
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    We implement industry-standard 256-bit SSL encryption to protect data transmitted to and from our website. Your confidential credentials and passwords are hashed using secure cryptographic algorithms. We do NOT store credit card PINs or bank login details on our servers.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">4</span>
+                    Third-Party Sharing
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    HairGlow respects your privacy. We <strong>never sell, rent, or trade</strong> your personal data to third-party marketers. We only share essential details (Name, Address, Phone) with trusted courier logistics partners (e.g. TCS, Leopard, CallCourier) solely for parcel delivery purposes.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-sm font-bold">5</span>
+                    Your Rights & Control
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    You have full control over your data. You may log into your User Dashboard at any time to review your profile, order history, or request full account deletion by contacting our support team at <a href="mailto:support@hairglow.com" class="text-green-700 font-bold underline">support@hairglow.com</a>.
+                </p>
+            </section>
+
+            <section class="border-t border-gray-100 pt-6 bg-green-50/50 p-6 rounded-2xl">
+                <h3 class="text-base font-bold text-gray-900 mb-1">Have Questions About Our Privacy Policy?</h3>
+                <p class="text-xs text-gray-600">If you have any concerns regarding data privacy, feel free to contact our customer care team.</p>
+                <a href="{% url 'contact' %}" class="inline-block mt-3 text-xs font-bold text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-xl transition">Contact Privacy Team</a>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-auto border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-5 py-8 text-center text-xs text-gray-400 space-y-4">
+            <div class="flex flex-wrap justify-center gap-6 text-xs text-gray-400 font-medium">
+                <a href="{% url 'privacy_policy' %}" class="text-green-400 font-bold">Privacy Policy</a>
+                <span>•</span>
+                <a href="{% url 'terms_conditions' %}" class="hover:text-white transition">Terms & Conditions</a>
+                <span>•</span>
+                <a href="{% url 'refund_policy' %}" class="hover:text-white transition">Refund & Exchange Policy</a>
+            </div>
+            <p>© 2026 <strong class="text-white">HairGlow</strong>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

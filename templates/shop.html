@@ -1,0 +1,665 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop All Products & Sizes - HairGlow | Pure Botanical Care</title>
+    <meta name="description" content="Shop HairGlow 100% cold-pressed organic hair growth oils. Available in 50ml, 80ml, and 120ml with nationwide free delivery and money-back guarantee.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Outfit', sans-serif;
+        }
+        .body-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#f8faf6] text-gray-900 antialiased selection:bg-green-600 selection:text-white">
+
+    <!-- ===================== TOP ANNOUNCEMENT BAR ====================== -->
+    <div class="bg-[#10291d] text-[#d9a441] text-xs font-semibold py-2 px-4 text-center tracking-wider uppercase border-b border-[#1b3d2c]">
+        🌿 100% Organic & Cold-Pressed &bull; Free Delivery Across Pakistan on Orders Above Rs. 2,500
+    </div>
+
+    <!-- ===================== NAVBAR ====================== -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm transition-all">
+        <nav class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="h-20 flex items-center justify-between">
+
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 flex items-center gap-1 group">
+                    <span class="text-gray-900 group-hover:text-green-700 transition">Hair</span><span class="text-green-600">Glow</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="{% url 'home' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Home
+                    </a>
+
+                    <a href="{% url 'shop' %}" class="text-sm font-bold text-green-700 border-b-2 border-green-600 pb-0.5">
+                        Shop
+                    </a>
+
+                    <a href="{% url 'about' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        About Us
+                    </a>
+
+                    <a href="/#shop" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Collections
+                    </a>
+
+                    <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Contact
+                    </a>
+                </div>
+
+                <!-- Right Side CTA -->
+                <div class="flex items-center gap-3">
+                    <button id="cartBtn" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700" title="View Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+                        </svg>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-green-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                            0
+                        </span>
+                    </button>
+
+                    <!-- User / Account Icon -->
+                    <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        {% if user.is_authenticated %}
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                        {% endif %}
+                    </button>
+
+                    <a href="#productsList" class="hidden sm:inline-flex bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-md shadow-green-600/20 hover:shadow-lg transition">
+                        Order Now
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-700 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Drawer Menu -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 pb-5">
+                <div class="flex flex-col gap-3 pt-4">
+                    <a href="{% url 'home' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Home</a>
+                    <a href="{% url 'shop' %}" class="text-sm font-bold text-green-700 py-1">Shop</a>
+                    <a href="{% url 'about' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">About Us</a>
+                    <a href="/#shop" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Collections</a>
+                    <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Contact</a>
+                    <a href="#productsList" class="bg-green-600 text-white text-center px-5 py-3 rounded-full font-semibold shadow-md mt-2">Order Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===================== PAGE HERO BANNER ====================== -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#eaf4e6] via-[#f4f9f1] to-[#f8faf6] pt-14 pb-16 sm:pt-20 sm:pb-24 border-b border-green-100/60">
+        <!-- Glow accents -->
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-green-200/40 rounded-full blur-3xl pointer-events-none -z-0"></div>
+        <div class="absolute -bottom-10 left-10 w-80 h-80 bg-amber-200/30 rounded-full blur-3xl pointer-events-none -z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10 text-center">
+            <!-- Breadcrumbs -->
+            <div class="flex items-center justify-center gap-2 text-xs sm:text-sm font-medium text-gray-500 mb-5">
+                <a href="{% url 'home' %}" class="hover:text-green-700 transition">Home</a>
+                <span class="text-gray-300">/</span>
+                <span class="text-green-700 font-semibold">Shop</span>
+            </div>
+
+            <div class="inline-flex items-center gap-2 bg-green-100/90 border border-green-200 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full mb-5 uppercase tracking-wider">
+                <span>✨</span> All Products & Bottle Collections
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                Shop Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-700 via-green-600 to-[#10291d]">100% Organic Formulas</span>
+            </h1>
+
+            <p class="body-text mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Experience clinically proven, cold-pressed botanical hair care engineered to stop hair fall, nourish scalp follicles, and accelerate natural hair density.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===================== PRODUCTS COLLECTION SECTION ====================== -->
+    <section id="productsList" class="py-16 sm:py-20">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-gray-200">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Available Bottle Sizes</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Showing all 3 therapeutic size variants with instant delivery</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs sm:text-sm text-green-800 font-semibold bg-green-50 px-4 py-2 rounded-2xl border border-green-200 w-fit">
+                    <span>⚡</span> Same-Day Dispatch Available
+                </div>
+            </div>
+
+            <!-- DYNAMIC 3 CARDS GRID -->
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+                {% for p in products %}
+                <div class="bg-white rounded-3xl {% if p.is_featured %}border-2 border-green-600 shadow-xl ring-4 ring-green-600/10 md:-translate-y-2{% else %}border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-green-300{% endif %} transition-all duration-300 p-4 flex flex-col justify-between relative group">
+                    
+                    {% if p.is_featured %}
+                    <!-- Most Popular Ribbon -->
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-700 to-green-600 text-white text-[11px] font-extrabold uppercase px-4 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
+                        <span>🔥</span> Most Popular
+                    </div>
+                    {% endif %}
+
+                    <div>
+                        <!-- Top Tag & Size Badge -->
+                        <div class="flex items-center justify-between gap-2 mb-3 {% if p.is_featured %}mt-2{% endif %}">
+                            <span class="{% if p.is_featured %}bg-green-100 text-green-800{% else %}bg-green-50 text-green-700{% endif %} text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                {{ p.badge|default:"Pack" }}
+                            </span>
+                            <span class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">
+                                {{ p.size|default:"Bottle" }}
+                            </span>
+                        </div>
+
+                        <!-- Compact Image Box -->
+                        <div class="relative bg-gradient-to-br {% if p.is_featured %}from-[#eaf6e7] to-[#d8edd3]{% else %}from-[#f2f7ef] to-[#e7f1e2]{% endif %} rounded-2xl h-36 sm:h-40 flex items-center justify-center overflow-hidden mb-4">
+                            {% if p.discount %}
+                            <span class="absolute top-3 left-3 {% if p.is_featured %}bg-red-600{% else %}bg-green-600{% endif %} text-white text-[11px] font-extrabold px-2.5 py-1 rounded-lg z-10 shadow-sm">
+                                {{ p.discount }}% OFF
+                            </span>
+                            {% endif %}
+                            
+                            {% if p.image %}
+                            <img 
+                                src="{{ p.image.url }}" 
+                                alt="{{ p.name }} {{ p.size }}"
+                                class="h-32 sm:h-36 object-contain group-hover:scale-105 transition-transform duration-500"
+                            >
+                            {% endif %}
+
+                            <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-sm border border-gray-100">
+                                💧 {{ p.size }}
+                            </span>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-amber-500 text-sm">★★★★★</div>
+                            <span class="text-xs text-gray-500 font-medium">4.9 (128+ Reviews)</span>
+                        </div>
+
+                        <!-- Product Name & Subtitle -->
+                        <h3 class="heading-font text-xl font-bold text-gray-900 leading-snug">
+                            {{ p.name }}
+                        </h3>
+                        {% if p.subtitle %}
+                        <p class="text-xs text-green-700 font-semibold mt-0.5">{{ p.subtitle }}</p>
+                        {% endif %}
+
+                        <!-- Price Block -->
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-baseline gap-3">
+                            <span class="text-2xl sm:text-3xl font-extrabold {% if p.is_featured %}text-green-700{% else %}text-gray-900{% endif %}">
+                                Rs. {{ p.price|floatformat:0 }}
+                            </span>
+                            {% if p.old_price %}
+                            <span class="text-sm text-gray-400 line-through">
+                                Rs. {{ p.old_price|floatformat:0 }}
+                            </span>
+                            {% endif %}
+                            {% if p.savings > 0 %}
+                            <span class="text-[11px] font-bold {% if p.is_featured %}text-red-600 bg-red-50{% else %}text-green-700 bg-green-50{% endif %} px-2 py-0.5 rounded">
+                                Save Rs. {{ p.savings|floatformat:0 }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Feature Bullets -->
+                        <div class="space-y-1 mt-3 text-xs text-gray-600">
+                            <div class="flex items-center gap-2">
+                                <span class="text-green-600 font-bold">✓</span>
+                                <span>100% Pure Cold-Pressed Botanicals</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-green-600 font-bold">✓</span>
+                                <span>Root Strengthening & Anti-Fall</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-green-600 font-bold">✓</span>
+                                <span>{{ p.delivery_text|default:"Free Fast Delivery" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Actions (Quantity & Buttons) -->
+                    <div class="mt-4 pt-3 border-t border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-semibold text-gray-700">Quantity:</span>
+                            <div class="flex items-center border border-gray-200 rounded-full overflow-hidden bg-gray-50">
+                                <button type="button" onclick="changeVariantQty('qty-shop-{{ p.id }}', -1)" class="w-8 h-8 flex items-center justify-center text-sm font-bold hover:bg-green-100 hover:text-green-800 transition">−</button>
+                                <span id="qty-shop-{{ p.id }}" class="w-8 text-center text-xs font-bold text-gray-900">1</span>
+                                <button type="button" onclick="changeVariantQty('qty-shop-{{ p.id }}', 1)" class="w-8 h-8 flex items-center justify-center text-sm font-bold hover:bg-green-100 hover:text-green-800 transition">+</button>
+                            </div>
+                            <span class="text-[11px] text-green-700 font-semibold">● In Stock</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button 
+                                type="button" 
+                                onclick="addVariantToCart('{{ p.name }} - {{ p.size }}', {{ p.price|floatformat:0 }}, 'qty-shop-{{ p.id }}', false)"
+                                class="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl py-2.5 px-3 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.086.835L5.25 6.75m0 0h13.5l1.5 7.5H6.75m-1.5-7.5L3.75 3m3 15.75a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm11.25 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                </svg>
+                                Add to Cart
+                            </button>
+                            <button 
+                                type="button" 
+                                onclick="addVariantToCart('{{ p.name }} - {{ p.size }}', {{ p.price|floatformat:0 }}, 'qty-shop-{{ p.id }}', true)"
+                                class="w-full bg-green-700 hover:bg-green-800 text-white rounded-xl py-2.5 px-3 text-xs font-bold transition flex items-center justify-center gap-1 shadow-sm">
+                                ⚡ Order Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Trust Badges Strip -->
+            <div class="mt-12 bg-white rounded-3xl border border-gray-100 p-6 shadow-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl mb-2">🚚</span>
+                    <h4 class="font-bold text-gray-900 text-sm">Free Express Delivery</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">On orders above Rs. 2,500</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl mb-2">💵</span>
+                    <h4 class="font-bold text-gray-900 text-sm">Cash on Delivery (COD)</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Pay at your doorstep safely</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl mb-2">🛡️</span>
+                    <h4 class="font-bold text-gray-900 text-sm">30-Day Guarantee</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">100% Satisfaction or refund</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl mb-2">🌿</span>
+                    <h4 class="font-bold text-gray-900 text-sm">100% Organic Purity</h4>
+                    <p class="text-xs text-gray-500 mt-0.5">Zero harsh chemicals & toxins</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================== HOW TO USE SECTION ====================== -->
+    <section class="py-16 bg-[#f1f6ef] border-t border-green-100">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-green-700 font-bold uppercase tracking-wider text-xs bg-green-100 px-4 py-1.5 rounded-full">
+                    Simple Routine
+                </span>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-3">How to Use HairGlow For Best Results</h3>
+                <p class="text-xs sm:text-sm text-gray-600 mt-2">Follow these 3 easy steps for visible results within 3-4 weeks.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-green-100 text-green-700 font-extrabold text-lg flex items-center justify-center mx-auto mb-4">1</div>
+                    <h4 class="font-bold text-gray-900 text-base mb-1">Apply to Scalp</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Dispense 4-6 drops directly onto hair partition and thinning areas.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-green-100 text-green-700 font-extrabold text-lg flex items-center justify-center mx-auto mb-4">2</div>
+                    <h4 class="font-bold text-gray-900 text-base mb-1">Gentle Massage</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Massage gently in circular motion for 3-5 minutes to boost blood flow.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-green-100 text-green-700 font-extrabold text-lg flex items-center justify-center mx-auto mb-4">3</div>
+                    <h4 class="font-bold text-gray-900 text-base mb-1">Leave & Wash</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Leave on for at least 2 hours or overnight, then wash with mild shampoo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ====================== -->
+    <footer class="bg-[#10291d] text-white border-t border-white/10">
+        <div class="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-12">
+            <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+
+                <!-- Brand Info -->
+                <div class="lg:pr-4 sm:col-span-2 lg:col-span-1">
+                    <a href="{% url 'home' %}" class="inline-block">
+                        <h2 class="text-3xl font-bold tracking-wide">Hair<span class="text-[#d9a441]">Glow</span></h2>
+                    </a>
+                    <p class="mt-5 max-w-sm text-sm leading-7 text-gray-300">
+                        Natural cold-pressed hair care for healthier, stronger, and revitalized hair roots.
+                    </p>
+                    <div class="mt-7 flex items-center gap-3">
+                        <!-- Facebook -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Facebook">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Instagram">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="TikTok">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .56.04.82.12V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-3.04-1.52z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold">Quick Links</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="{% url 'home' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Home</a>
+                        <a href="{% url 'shop' %}" class="block text-sm text-[#d9a441] font-semibold transition hover:translate-x-1">Shop</a>
+                        <a href="{% url 'about' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">About Us</a>
+                        <a href="{% url 'contact' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Contact Us</a>
+                    </div>
+                </div>
+
+                <!-- Legal & Policies -->
+                <div>
+                    <h3 class="text-lg font-semibold">Legal &amp; Policies</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="{% url 'refund_policy' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">↩</span>
+                            Refund &amp; Exchange
+                        </a>
+                        <a href="{% url 'privacy_policy' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">🔒</span>
+                            Privacy Policy
+                        </a>
+                        <a href="{% url 'terms_conditions' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">📄</span>
+                            Terms &amp; Conditions
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Get In Touch -->
+                <div>
+                    <h3 class="text-lg font-semibold">Get In Touch</h3>
+                    <div class="mt-6 space-y-5">
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">☎</div>
+                            <div>
+                                <p class="text-xs text-gray-400">Call / WhatsApp</p>
+                                <a href="tel:+923001234567" class="text-sm text-gray-200 transition hover:text-[#d9a441]">+92 300 1234567</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">✉</div>
+                            <div>
+                                <p class="text-xs text-gray-400">Email Us</p>
+                                <a href="mailto:support@hairglow.com" class="break-all text-sm text-gray-200 transition hover:text-[#d9a441]">support@hairglow.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">📍</div>
+                            <div>
+                                <p class="text-xs text-gray-400">Location</p>
+                                <p class="text-sm text-gray-200">Rawalpindi, Pakistan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="border-t border-white/10">
+            <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:px-8 md:flex-row md:text-left lg:px-12">
+                <p class="text-sm text-gray-400">&copy; 2026 <span class="font-semibold text-white">HairGlow</span>. All rights reserved.</p>
+                <div class="flex items-center gap-5 text-xs text-gray-500">
+                    <a href="{% url 'privacy_policy' %}" class="hover:text-[#d9a441] transition">Privacy Policy</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'terms_conditions' %}" class="hover:text-[#d9a441] transition">Terms &amp; Conditions</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'refund_policy' %}" class="hover:text-[#d9a441] transition">Refund &amp; Exchange Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= CART TOAST ================= -->
+    <div id="cartToast" class="fixed bottom-5 right-5 z-[100] translate-y-24 opacity-0 transition-all duration-500">
+        <div class="bg-gray-900 text-white rounded-2xl shadow-2xl px-5 py-4 flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center font-bold">✓</div>
+            <div>
+                <p class="font-semibold text-sm">Added to cart!</p>
+                <p id="toastText" class="text-xs text-gray-400 mt-1">1 item added</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CART DRAWER MODAL ================= -->
+    <div id="cartModal" class="fixed inset-0 z-[200] hidden transition-opacity duration-300">
+        <div id="cartBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+                <!-- Header -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-[#f7f9f3]">
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-green-700">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+                        </svg>
+                        Your Shopping Cart
+                    </h2>
+                    <button id="closeCartBtn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 font-bold">✕</button>
+                </div>
+
+                <!-- Items List -->
+                <div id="cartItemsList" class="p-6 overflow-y-auto flex-1 space-y-4"></div>
+
+                <!-- Footer -->
+                <div class="p-6 border-t border-gray-100 bg-[#f7f9f3] space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500 text-sm font-medium">Subtotal</span>
+                        <span id="cartSubtotal" class="text-2xl font-extrabold text-green-700">Rs. 0</span>
+                    </div>
+                    <button id="cartCheckoutBtn" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-4 rounded-full text-center block shadow-lg shadow-green-700/20 transition">Proceed to Checkout →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SHOP PAGE SCRIPTS ================= -->
+    <script>
+    (function() {
+
+        // ── MOBILE MENU ──────────────────────────────────────
+        var menuBtn = document.getElementById("menuBtn");
+        var mobileMenu = document.getElementById("mobileMenu");
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener("click", function() {
+                mobileMenu.classList.toggle("hidden");
+            });
+        }
+
+        // ── CART STORAGE HELPERS ─────────────────────────────
+        function getCart() {
+            try { return JSON.parse(localStorage.getItem("hairGlowCart")) || []; }
+            catch(e) { return []; }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem("hairGlowCart", JSON.stringify(cart));
+            updateCartBadge();
+            renderCartDrawer();
+        }
+
+        function updateCartBadge() {
+            var badge = document.getElementById("cartCount");
+            if (!badge) return;
+            var cart = getCart();
+            var total = cart.reduce(function(s, i) { return s + (i.quantity || 1); }, 0);
+            badge.textContent = total;
+        }
+
+        // ── CART DRAWER RENDER ───────────────────────────────
+        function renderCartDrawer() {
+            var list = document.getElementById("cartItemsList");
+            var sub  = document.getElementById("cartSubtotal");
+            if (!list || !sub) return;
+
+            var cart = getCart();
+            if (cart.length === 0) {
+                list.innerHTML = '<div class="text-center py-12 text-gray-400"><p class="text-5xl mb-3">🛒</p><p class="font-semibold text-gray-600">Cart khali hai</p><p class="text-xs mt-1">Koi product add karein</p></div>';
+                sub.textContent = "Rs. 0";
+                return;
+            }
+
+            var total = 0;
+            list.innerHTML = cart.map(function(item, idx) {
+                var itemTotal = (item.price || 0) * (item.quantity || 1);
+                total += itemTotal;
+                return '<div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">'
+                     +   '<div class="flex-1 min-w-0 mr-3">'
+                     +     '<h4 class="font-semibold text-gray-900 text-sm leading-snug">' + item.name + '</h4>'
+                     +     '<p class="text-xs text-green-700 font-bold mt-1">Rs. ' + itemTotal + '</p>'
+                     +   '</div>'
+                     +   '<div class="flex items-center gap-2">'
+                     +     '<div class="flex items-center border border-gray-200 bg-white rounded-full overflow-hidden">'
+                     +       '<button onclick="shopChangeCartQty(' + idx + ',-1)" class="w-7 h-7 flex items-center justify-center text-sm hover:bg-gray-100 transition font-bold">−</button>'
+                     +       '<span class="w-7 text-center text-xs font-bold">' + (item.quantity || 1) + '</span>'
+                     +       '<button onclick="shopChangeCartQty(' + idx + ',1)" class="w-7 h-7 flex items-center justify-center text-sm hover:bg-gray-100 transition font-bold">+</button>'
+                     +     '</div>'
+                     +     '<button onclick="shopRemoveFromCart(' + idx + ')" class="text-red-500 hover:text-red-700 text-xs font-bold px-1">✕</button>'
+                     +   '</div>'
+                     + '</div>';
+            }).join('');
+
+            sub.textContent = "Rs. " + total;
+        }
+
+        window.shopChangeCartQty = function(idx, delta) {
+            var cart = getCart();
+            if (!cart[idx]) return;
+            cart[idx].quantity = (cart[idx].quantity || 1) + delta;
+            if (cart[idx].quantity <= 0) cart.splice(idx, 1);
+            saveCart(cart);
+        };
+
+        window.shopRemoveFromCart = function(idx) {
+            var cart = getCart();
+            cart.splice(idx, 1);
+            saveCart(cart);
+        };
+
+        // ── CART DRAWER OPEN / CLOSE ─────────────────────────
+        function openCartDrawer() {
+            var modal = document.getElementById("cartModal");
+            if (modal) { renderCartDrawer(); modal.classList.remove("hidden"); }
+        }
+        function closeCartDrawer() {
+            var modal = document.getElementById("cartModal");
+            if (modal) modal.classList.add("hidden");
+        }
+
+        var cartBtn     = document.getElementById("cartBtn");
+        var closeBtn    = document.getElementById("closeCartBtn");
+        var backdrop    = document.getElementById("cartBackdrop");
+        var checkoutBtn = document.getElementById("cartCheckoutBtn");
+
+        if (cartBtn)     cartBtn.addEventListener("click", openCartDrawer);
+        if (closeBtn)    closeBtn.addEventListener("click", closeCartDrawer);
+        if (backdrop)    backdrop.addEventListener("click", closeCartDrawer);
+        if (checkoutBtn) checkoutBtn.addEventListener("click", function() {
+            if (getCart().length === 0) { alert("Cart khali hai! Pehle koi product add karein."); return; }
+            window.location.href = "/checkout/";
+        });
+
+        // ── TOAST NOTIFICATION ───────────────────────────────
+        function showToast(msg) {
+            var toast     = document.getElementById("cartToast");
+            var toastText = document.getElementById("toastText");
+            if (!toast || !toastText) return;
+            toastText.textContent = msg;
+            toast.classList.remove("translate-y-24", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+            setTimeout(function() {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-24", "opacity-0");
+            }, 2800);
+        }
+
+        // ── QUANTITY +/- PER PRODUCT CARD ────────────────────
+        window.changeVariantQty = function(spanId, delta) {
+            var el = document.getElementById(spanId);
+            if (!el) return;
+            var qty = parseInt(el.textContent) || 1;
+            qty += delta;
+            if (qty < 1)  qty = 1;
+            if (qty > 10) qty = 10;
+            el.textContent = qty;
+        };
+
+        // ── ADD TO CART / BUY NOW ────────────────────────────
+        window.addVariantToCart = function(productName, price, spanId, isBuyNow) {
+            var el  = document.getElementById(spanId);
+            var qty = el ? (parseInt(el.textContent) || 1) : 1;
+            var cart = getCart();
+
+            var existIdx = -1;
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].name === productName) { existIdx = i; break; }
+            }
+
+            if (existIdx > -1) {
+                cart[existIdx].quantity = (cart[existIdx].quantity || 1) + qty;
+            } else {
+                cart.push({ name: productName, price: parseFloat(price), quantity: qty });
+            }
+
+            saveCart(cart);
+
+            if (isBuyNow) {
+                // Buy Now → seedha checkout
+                window.location.href = "/checkout/";
+            } else {
+                // Add to Cart → toast show karo
+                showToast(qty + "x " + productName + " cart mein add ho gaya! ✓");
+            }
+        };
+
+        // ── INIT ─────────────────────────────────────────────
+        updateCartBadge();
+        renderCartDrawer();
+
+    })();
+    </script>
+
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+</body>
+</html>

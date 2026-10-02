@@ -1,0 +1,712 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - HairGlow | Pure Botanical Hair Care</title>
+    <meta name="description" content="Learn about HairGlow's mission, story, and 100% natural, cold-pressed botanical hair care formulas engineered for stronger, fuller hair.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Outfit', sans-serif;
+        }
+        .body-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+        @keyframes pulseSoft {
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+        .pulse-soft {
+            animation: pulseSoft 3s ease-in-out infinite;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-[#f8faf6] text-gray-900 antialiased selection:bg-green-600 selection:text-white">
+
+    <!-- ===================== TOP ANNOUNCEMENT BAR ====================== -->
+    <div class="bg-[#10291d] text-[#d9a441] text-xs font-semibold py-2 px-4 text-center tracking-wider uppercase border-b border-[#1b3d2c]">
+        🌿 100% Organic & Cold-Pressed &bull; Free Delivery Across Pakistan on Orders Above Rs. 2,500
+    </div>
+
+    <!-- ===================== NAVBAR ====================== -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm transition-all">
+        <nav class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <div class="h-20 flex items-center justify-between">
+
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 flex items-center gap-1 group">
+                    <span class="text-gray-900 group-hover:text-green-700 transition">Hair</span><span class="text-green-600">Glow</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="/#home" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Home
+                    </a>
+
+                    <a href="{% url 'shop' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Shop
+                    </a>
+
+                    <a href="{% url 'about' %}" class="text-sm font-bold text-green-700 border-b-2 border-green-600 pb-0.5">
+                        About Us
+                    </a>
+
+                    <a href="/#shop" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Collections
+                    </a>
+
+                    <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 transition">
+                        Contact
+                    </a>
+                </div>
+
+                <!-- Right Side CTA -->
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'shop' %}" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700" title="Shop">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+                        </svg>
+                    </a>
+
+                    <!-- User / Account Icon -->
+                    <button id="userLoginBtn" onclick="openLoginModal()" type="button" class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer" title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        {% if user.is_authenticated %}
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                        {% endif %}
+                    </button>
+
+                    <a href="{% url 'shop' %}" class="hidden sm:inline-flex bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-md shadow-green-600/20 hover:shadow-lg transition">
+                        Shop Now
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-700 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Drawer Menu -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 pb-5">
+                <div class="flex flex-col gap-3 pt-4">
+                    <a href="/#home" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Home</a>
+                    <a href="{% url 'shop' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Shop</a>
+                    <a href="{% url 'about' %}" class="text-sm font-bold text-green-700 py-1">About Us</a>
+                    <a href="/#shop" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Collections</a>
+                    <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-700 hover:text-green-600 py-1">Contact</a>
+                    <a href="{% url 'shop' %}" class="bg-green-600 text-white text-center px-5 py-3 rounded-full font-semibold shadow-md mt-2">Shop Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===================== HERO SECTION ====================== -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#eaf4e6] via-[#f4f9f1] to-[#f8faf6] pt-16 pb-20 sm:pt-24 sm:pb-28 border-b border-green-100/60">
+        <!-- Decorative Glows -->
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-green-200/40 rounded-full blur-3xl pointer-events-none -z-0"></div>
+        <div class="absolute -bottom-10 left-10 w-80 h-80 bg-amber-200/30 rounded-full blur-3xl pointer-events-none -z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
+            <!-- Breadcrumbs -->
+            <div class="flex items-center justify-center gap-2 text-xs sm:text-sm font-medium text-gray-500 mb-6">
+                <a href="{% url 'home' %}" class="hover:text-green-700 transition">Home</a>
+                <span class="text-gray-300">/</span>
+                <span class="text-green-700 font-semibold">About Us</span>
+            </div>
+
+            <!-- Main Heading -->
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 bg-green-100/90 border border-green-200 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full mb-6 uppercase tracking-wider">
+                    <span>🌱</span> Pure Botanicals &bull; Science Backed
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.15]">
+                    Crafting Nature’s Purest Formula For <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-700 via-green-600 to-[#10291d]">Thicker, Stronger Hair</span>
+                </h1>
+
+                <p class="body-text mt-6 text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                    At <strong>HairGlow</strong>, we believe that real hair transformation begins when ancient herbal remedies merge seamlessly with modern cold-extraction science. No harsh fillers, zero toxins — just pure botanical nourishment.
+                </p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center hover:shadow-md hover:border-green-200 transition">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-green-700">50,000+</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Bottles Delivered</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center hover:shadow-md hover:border-green-200 transition">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-[#d9a441]">98.4%</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Customer Satisfaction</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center hover:shadow-md hover:border-green-200 transition">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-green-700">100%</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Cold-Pressed Organic</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-center hover:shadow-md hover:border-green-200 transition">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-gray-900">0%</p>
+                    <p class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Chemicals & Mineral Oil</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== OUR STORY SECTION ====================== -->
+    <section class="py-20 sm:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                
+                <!-- Story Visual Column -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Main Card with Organic Theme -->
+                        <div class="relative bg-gradient-to-tr from-[#10291d] to-[#1e4834] rounded-3xl p-8 sm:p-10 text-white shadow-2xl overflow-hidden">
+                            <!-- Background Leaf Accent -->
+                            <div class="absolute -right-10 -bottom-10 opacity-10 text-white text-[160px] font-serif select-none pointer-events-none">🌿</div>
+                            
+                            <span class="inline-block bg-[#d9a441]/20 border border-[#d9a441]/40 text-[#d9a441] text-xs font-bold uppercase px-3.5 py-1 rounded-full mb-6">
+                                Our Heritage
+                            </span>
+                            
+                            <h3 class="text-2xl sm:text-3xl font-bold leading-snug">
+                                Born From a Quest for Real Scalp Vitality
+                            </h3>
+                            
+                            <p class="body-text mt-4 text-sm sm:text-base text-gray-300 leading-relaxed">
+                                Frustrated by commercial products loaded with silicones, artificial fragrance, and cheap mineral oils that temporarily mask hair damage rather than repairing roots, we embarked on creating the purest hair nutrition possible.
+                            </p>
+
+                            <div class="mt-8 pt-6 border-t border-white/15 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Rooted in</p>
+                                    <p class="text-sm font-bold text-white mt-0.5">Rawalpindi, Pakistan</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Quality Standard</p>
+                                    <p class="text-sm font-bold text-[#d9a441] mt-0.5">ISO & Dermatologist Tested</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-6 -right-4 sm:-right-6 bg-white p-4 sm:p-5 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-3.5 max-w-[260px] animate-float">
+                            <div class="w-12 h-12 rounded-xl bg-green-100 text-green-700 flex items-center justify-center text-2xl shrink-0">
+                                🍃
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-gray-900 leading-snug">Zero Harsh Chemicals</p>
+                                <p class="text-[11px] text-gray-500 mt-0.5">100% Gentle on all hair types</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Text Column -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 text-green-700 font-bold uppercase tracking-wider text-xs sm:text-sm bg-green-50 px-3.5 py-1.5 rounded-full">
+                        ✨ Who We Are
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
+                        We Don't Make False Promises. <br class="hidden sm:inline">
+                        <span class="text-green-700">We Formulate Real Solutions.</span>
+                    </h2>
+
+                    <p class="body-text text-gray-600 text-base sm:text-lg leading-relaxed">
+                        Hair fall, thinning edges, dry scalps, and dull hair aren't solved by quick chemical fixes. They require deep follicular nutrition, balanced moisture, and bio-available vitamins that penetrate right to the dermal papilla.
+                    </p>
+
+                    <p class="body-text text-gray-600 text-sm sm:text-base leading-relaxed">
+                        Every single drop of <strong>HairGlow</strong> is cold-pressed at low temperatures to ensure the vital phytonutrients, Omega fatty acids, and antioxidants in Argan, Rosemary, Castor, Amla, and Bhringraj stay biologically active and powerful.
+                    </p>
+
+                    <!-- Key Bullet Points -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#f8faf6] border border-green-100/80">
+                            <span class="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">Follicle Re-Activation</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Awakens dormant hair roots naturally.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#f8faf6] border border-green-100/80">
+                            <span class="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">Deep Root Strengthening</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Reduces shedding and split end breakage.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#f8faf6] border border-green-100/80">
+                            <span class="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">Scalp Microbiome Balance</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Eliminates dryness, flaking, and itchiness.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#f8faf6] border border-green-100/80">
+                            <span class="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">Mirror-Like Shine</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Seals hair cuticles without greasy residue.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== MISSION & VISION CARDS ====================== -->
+    <section class="py-20 bg-[#f1f6ef] border-y border-green-100/80">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-green-700 font-bold uppercase tracking-wider text-xs sm:text-sm bg-green-100 px-4 py-1.5 rounded-full">
+                    Our Guiding Philosophy
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-4">
+                    Driven By Purpose, Guided By Integrity
+                </h2>
+                <p class="body-text text-gray-600 text-sm sm:text-base mt-3">
+                    We hold ourselves to the highest ethical and environmental benchmarks in cosmetic formulation.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Mission Card -->
+                <div class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-16 h-16 rounded-2xl bg-green-100 text-green-700 flex items-center justify-center text-3xl mb-6 group-hover:bg-green-600 group-hover:text-white transition duration-300">
+                        🎯
+                    </div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-green-700">Core Purpose</span>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-4">Our Mission</h3>
+                    <p class="body-text text-gray-600 leading-relaxed text-sm sm:text-base">
+                        To empower people of all ages with honest, chemical-free, nutrient-rich hair care solutions that deliver visible, lasting hair growth and confidence without harmful synthetic ingredients or exaggerated gimmicks.
+                    </p>
+                </div>
+
+                <!-- Vision Card -->
+                <div class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-16 h-16 rounded-2xl bg-[#d9a441]/20 text-[#d9a441] flex items-center justify-center text-3xl mb-6 group-hover:bg-[#d9a441] group-hover:text-[#10291d] transition duration-300">
+                        🌟
+                    </div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-[#d9a441]">Future Outlook</span>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-2 mb-4">Our Vision</h3>
+                    <p class="body-text text-gray-600 leading-relaxed text-sm sm:text-base">
+                        To become Pakistan’s and the region’s benchmark for holistic botanical wellness, revolutionizing personal self-care by proving that natural formulations out-perform harsh synthetic alternatives every single day.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== THE 4 PILLARS OF PURITY ====================== -->
+    <section class="py-20 sm:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-green-700 font-bold uppercase tracking-wider text-xs sm:text-sm bg-green-50 px-4 py-1.5 rounded-full">
+                    The HairGlow Standard
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mt-4">
+                    The 4 Pillars of Hair Purity
+                </h2>
+                <p class="body-text text-gray-600 text-base mt-3">
+                    Every batch of our hair growth oil adheres to strict quality controls and scientific purity.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Pillar 1 -->
+                <div class="p-8 rounded-3xl bg-[#f8faf6] border border-green-100 hover:border-green-300 hover:shadow-lg transition duration-300">
+                    <div class="text-3xl mb-4">🌿</div>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">100% Cold-Pressed</h3>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Extracted without extreme heat or chemical solvents, keeping all natural antioxidants and enzymes 100% active.
+                    </p>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="p-8 rounded-3xl bg-[#f8faf6] border border-green-100 hover:border-green-300 hover:shadow-lg transition duration-300">
+                    <div class="text-3xl mb-4">🔬</div>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">Trichologist Tested</h3>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Scientifically balanced molecular weight for instant follicle penetration without clogging scalp pores.
+                    </p>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="p-8 rounded-3xl bg-[#f8faf6] border border-green-100 hover:border-green-300 hover:shadow-lg transition duration-300">
+                    <div class="text-3xl mb-4">🚫</div>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">0% Harsh Toxins</h3>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Completely free from parabens, silicones, sulfates, mineral oil, artificial dyes, and phthalates.
+                    </p>
+                </div>
+
+                <!-- Pillar 4 -->
+                <div class="p-8 rounded-3xl bg-[#f8faf6] border border-green-100 hover:border-green-300 hover:shadow-lg transition duration-300">
+                    <div class="text-3xl mb-4">🐰</div>
+                    <h3 class="font-bold text-gray-900 text-lg mb-2">Ethical & Cruelty-Free</h3>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Never tested on animals. Sustainably sourced from ethical organic farms with eco-friendly recyclable packaging.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== BOTANICAL INGREDIENTS SHOWCASE ====================== -->
+    <section class="py-20 bg-gradient-to-b from-[#f8faf6] to-[#eef5eb]">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-green-700 font-bold uppercase tracking-wider text-xs sm:text-sm bg-green-100 px-4 py-1.5 rounded-full">
+                    Active Ingredients
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-4">
+                    The Miracle Botanical Elixir
+                </h2>
+                <p class="body-text text-gray-600 text-sm sm:text-base mt-3">
+                    A carefully calibrated synergistic blend of nature’s most potent hair herbs and essential oils.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Ingredient 1 -->
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center text-xl font-bold">
+                            🌱
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Pure Rosemary Extract</h4>
+                            <p class="text-xs text-green-700 font-semibold">Follicle Stimulator</p>
+                        </div>
+                    </div>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Boosts micro-circulation in the scalp, awakening inactive hair follicles and accelerating hair renewal speed.
+                    </p>
+                </div>
+
+                <!-- Ingredient 2 -->
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                            💧
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Moroccan Argan Oil</h4>
+                            <p class="text-xs text-amber-600 font-semibold">Liquid Gold</p>
+                        </div>
+                    </div>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Packed with Vitamin E and fatty acids that repair brittle strands, seal moisture, and eliminate frizz and split ends.
+                    </p>
+                </div>
+
+                <!-- Ingredient 3 -->
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center text-xl font-bold">
+                            🌰
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Cold-Pressed Castor Oil</h4>
+                            <p class="text-xs text-green-700 font-semibold">Density Booster</p>
+                        </div>
+                    </div>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Rich in Ricinoleic acid, which deeply nourishes roots, enhances hair shaft thickness, and reduces breakage.
+                    </p>
+                </div>
+
+                <!-- Ingredient 4 -->
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center text-xl font-bold">
+                            🍃
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Organic Amla & Bhringraj</h4>
+                            <p class="text-xs text-green-700 font-semibold">Ayurvedic King of Herbs</p>
+                        </div>
+                    </div>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Ancient super-herbs that reinforce hair elasticity, prevent premature greying, and dramatically curb hair shedding.
+                    </p>
+                </div>
+
+                <!-- Ingredient 5 -->
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                            ✨
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Golden Jojoba & Almond</h4>
+                            <p class="text-xs text-amber-600 font-semibold">Scalp Balancing</p>
+                        </div>
+                    </div>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Mimics the natural scalp oils, clearing clogged sebum and providing lightweight, non-greasy softness and gloss.
+                    </p>
+                </div>
+
+                <!-- Ingredient 6 -->
+                <div class="bg-white p-7 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center text-xl font-bold">
+                            🖤
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-base">Black Seed (Kalonji) Oil</h4>
+                            <p class="text-xs text-green-700 font-semibold">Nutrient Powerhouse</p>
+                        </div>
+                    </div>
+                    <p class="body-text text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        Contains thymoquinone to soothe scalp inflammation, combat dandruff, and reinforce healthy follicles.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== OUR PRODUCTION PROCESS ====================== -->
+    <section class="py-20 sm:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-green-700 font-bold uppercase tracking-wider text-xs sm:text-sm bg-green-50 px-4 py-1.5 rounded-full">
+                    From Farm to Bottle
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-4">
+                    Our 4-Step Quality Process
+                </h2>
+                <p class="body-text text-gray-600 text-sm sm:text-base mt-3">
+                    How we guarantee maximum therapeutic potency in every single bottle.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+                
+                <!-- Step 1 -->
+                <div class="text-center relative">
+                    <div class="w-16 h-16 rounded-full bg-green-600 text-white font-extrabold text-xl flex items-center justify-center mx-auto shadow-lg shadow-green-600/30 mb-6">
+                        01
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-base mb-2">Ethical Harvesting</h4>
+                    <p class="body-text text-xs sm:text-sm text-gray-500 leading-relaxed">
+                        Herbs and seeds are selectively harvested from certified organic farms at peak nutrient maturity.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center relative">
+                    <div class="w-16 h-16 rounded-full bg-green-700 text-white font-extrabold text-xl flex items-center justify-center mx-auto shadow-lg shadow-green-700/30 mb-6">
+                        02
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-base mb-2">Cold-Press Extraction</h4>
+                    <p class="body-text text-xs sm:text-sm text-gray-500 leading-relaxed">
+                        Slow mechanical pressing at low temperatures retains 100% of biological vitamins and antioxidants.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center relative">
+                    <div class="w-16 h-16 rounded-full bg-green-800 text-white font-extrabold text-xl flex items-center justify-center mx-auto shadow-lg shadow-green-800/30 mb-6">
+                        03
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-base mb-2">Rigorous Lab Testing</h4>
+                    <p class="body-text text-xs sm:text-sm text-gray-500 leading-relaxed">
+                        Every single batch is checked for heavy metals, microbial safety, and active compound concentration.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="text-center relative">
+                    <div class="w-16 h-16 rounded-full bg-[#10291d] text-[#d9a441] font-extrabold text-xl flex items-center justify-center mx-auto shadow-lg mb-6">
+                        04
+                    </div>
+                    <h4 class="font-bold text-gray-900 text-base mb-2">UV-Protected Bottling</h4>
+                    <p class="body-text text-xs sm:text-sm text-gray-500 leading-relaxed">
+                        Filled in specialized amber bottles to shield the precious botanicals from light degradation.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CALL TO ACTION (CTA) ====================== -->
+    <section class="py-20 sm:py-24 bg-gradient-to-tr from-[#10291d] via-[#163a28] to-[#10291d] text-white relative overflow-hidden">
+        <!-- Accent circles -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-green-500/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-[#d9a441]/15 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-5 sm:px-8 text-center relative z-10">
+            <span class="inline-block bg-[#d9a441]/20 border border-[#d9a441]/30 text-[#d9a441] text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+                Start Your Journey
+            </span>
+
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                Ready For Fuller, Healthier & Stronger Hair?
+            </h2>
+
+            <p class="body-text mt-5 text-gray-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                Join over 50,000+ satisfied men and women who have transformed their hair density with HairGlow. 100% Money-Back Guarantee if not completely satisfied!
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/#shop" class="w-full sm:w-auto bg-[#d9a441] hover:bg-[#e7b955] text-[#10291d] font-bold px-8 py-4 rounded-full text-base shadow-lg shadow-[#d9a441]/20 hover:shadow-xl transition duration-300">
+                    Order HairGlow Now →
+                </a>
+
+                <a href="{% url 'contact' %}" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-full text-base transition duration-300">
+                    Have Questions? Talk to Us
+                </a>
+            </div>
+
+            <!-- Trust features -->
+            <div class="mt-12 pt-8 border-t border-white/15 grid grid-cols-2 sm:grid-cols-3 gap-6 text-center text-xs sm:text-sm text-gray-300">
+                <div class="flex items-center justify-center gap-2">
+                    <span class="text-[#d9a441]">✓</span> Free Delivery in Pakistan
+                </div>
+                <div class="flex items-center justify-center gap-2">
+                    <span class="text-[#d9a441]">✓</span> Cash on Delivery Available
+                </div>
+                <div class="flex items-center justify-center gap-2 col-span-2 sm:col-span-1">
+                    <span class="text-[#d9a441]">✓</span> 100% Satisfaction Guarantee
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ====================== -->
+    <footer class="bg-[#10291d] text-white">
+        <div class="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-12">
+            <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+                
+                <!-- Brand Info -->
+                <div class="lg:pr-8">
+                    <a href="{% url 'home' %}" class="inline-block">
+                        <h2 class="text-3xl font-bold tracking-wide">Hair<span class="text-[#d9a441]">Glow</span></h2>
+                    </a>
+                    <p class="body-text mt-5 max-w-sm text-sm leading-7 text-gray-300">
+                        Natural cold-pressed hair care for healthier, stronger, and revitalized hair roots.
+                    </p>
+                    <div class="mt-7 flex items-center gap-3">
+                        <!-- Facebook -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Facebook">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Instagram">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="TikTok">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .56.04.82.12V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-3.04-1.52z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold">Quick Links</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="/#home" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Home</a>
+                        <a href="{% url 'shop' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Shop</a>
+                        <a href="{% url 'about' %}" class="block text-sm text-[#d9a441] font-semibold transition hover:translate-x-1">About Us</a>
+                        <a href="{% url 'contact' %}" class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">Contact Us</a>
+                    </div>
+                </div>
+
+                <!-- Legal & Policies -->
+                <div>
+                    <h3 class="text-lg font-semibold">Legal &amp; Policies</h3>
+                    <div class="mt-6 space-y-4">
+                        <a href="{% url 'refund_policy' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">↩</span>
+                            Refund &amp; Exchange
+                        </a>
+                        <a href="{% url 'privacy_policy' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">🔒</span>
+                            Privacy Policy
+                        </a>
+                        <a href="{% url 'terms_conditions' %}" class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                            <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">📄</span>
+                            Terms &amp; Conditions
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="border-t border-white/10">
+            <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:px-8 md:flex-row md:text-left lg:px-12">
+                <p class="text-sm text-gray-400">&copy; 2026 <span class="font-semibold text-white">HairGlow</span>. All rights reserved.</p>
+                <div class="flex items-center gap-5 text-xs text-gray-500">
+                    <a href="{% url 'privacy_policy' %}" class="hover:text-[#d9a441] transition">Privacy Policy</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'terms_conditions' %}" class="hover:text-[#d9a441] transition">Terms &amp; Conditions</a>
+                    <span class="text-white/20">|</span>
+                    <a href="{% url 'refund_policy' %}" class="hover:text-[#d9a441] transition">Refund &amp; Exchange Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+            });
+        }
+    </script>
+    {% include 'login_modal.html' %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | HairGlow</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f7f9f4] text-gray-900 min-h-screen flex flex-col">
+
+    <!-- Navbar Header -->
+    <header class="w-full bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight text-gray-900 flex items-center gap-2">
+                <span class="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">H</span>
+                <span>Hair<span class="text-green-600">Glow</span></span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="{% url 'home' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Home</a>
+                <a href="{% url 'shop' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Shop</a>
+                <a href="{% url 'about' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">About Us</a>
+                <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-600 hover:text-green-600 transition">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-green-50 border border-green-200/80 px-3.5 py-1.5 rounded-full">
+                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-green-800">{{ user.first_name|default:user.username }}</span>
+                </div>
+                <a href="{% url 'logout' %}" class="bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 p-2 rounded-full transition" title="Sign Out">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-5 sm:px-8 lg:px-10 py-8">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="bg-gradient-to-r from-green-900 via-green-800 to-emerald-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden mb-8">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-green-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-black border border-white/20 text-green-300 shadow-inner">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 bg-green-500/30 text-green-300 text-[10px] font-bold rounded-full border border-green-400/30 uppercase tracking-widest">Verified Customer</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mt-1">Welcome, {{ user.first_name|default:user.username }}! 👋</h1>
+                        <p class="text-xs sm:text-sm text-green-100/80 mt-1">Track your orders, view account metrics, and explore new hair products.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'shop' %}" class="bg-white hover:bg-green-50 text-green-900 font-bold px-5 py-3 rounded-2xl text-xs sm:text-sm transition shadow-lg flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        Shop Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8">
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center font-bold text-xl">
+                    📦
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Orders</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-0.5">{{ total_orders }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xl">
+                    💳
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Spent</p>
+                    <p class="text-2xl font-extrabold text-green-700 mt-0.5">Rs. {{ total_spent|floatformat:0 }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xl">
+                    🚚
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Orders</p>
+                    <p class="text-2xl font-extrabold text-gray-900 mt-0.5">{{ active_orders }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xl">
+                    ⭐
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Member Tier</p>
+                    <p class="text-lg font-extrabold text-amber-700 mt-0.5">VIP Member</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Column: Order History -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                <span>📋</span> My Orders History
+                            </h2>
+                            <p class="text-xs text-gray-400 mt-0.5">Recent purchases and delivery status updates</p>
+                        </div>
+                        <span class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">{{ total_orders }} Orders</span>
+                    </div>
+
+                    {% if orders %}
+                    <div class="space-y-4">
+                        {% for order in orders %}
+                        <div class="border border-gray-100 hover:border-green-200 rounded-2xl p-5 bg-white transition hover:shadow-md">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3 mb-3">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-extrabold text-sm text-gray-900">Order #HG-{{ order.id }}</span>
+                                        {% if order.status == 'delivered' %}
+                                        <span class="bg-green-100 text-green-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">Delivered</span>
+                                        {% elif order.status == 'shipped' %}
+                                        <span class="bg-purple-100 text-purple-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">Shipped</span>
+                                        {% elif order.status == 'confirmed' %}
+                                        <span class="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">Confirmed</span>
+                                        {% else %}
+                                        <span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">Pending</span>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-xs text-gray-400 mt-0.5">{{ order.created_at|date:"F d, Y • h:i A" }}</p>
+                                </div>
+                                <div class="text-left sm:text-right">
+                                    <span class="text-xs text-gray-400 block">Total Amount</span>
+                                    <span class="text-base font-extrabold text-green-700">Rs. {{ order.total_amount }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Items -->
+                            <div class="space-y-2 mb-3">
+                                {% for item in order.items.all %}
+                                <div class="flex items-center justify-between text-xs bg-gray-50 p-2.5 rounded-xl">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-5 h-5 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold text-[10px]">{{ item.quantity }}x</span>
+                                        <span class="font-semibold text-gray-800">{{ item.product_name }}</span>
+                                    </div>
+                                    <span class="font-bold text-gray-700">Rs. {{ item.price }}</span>
+                                </div>
+                                {% empty %}
+                                <div class="text-xs text-gray-500 italic">Hair Growth Oil</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Footer Details -->
+                            <div class="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-50">
+                                <span>Payment: <strong class="text-gray-700 uppercase">{{ order.get_payment_method_display }}</strong></span>
+                                <span>City: <strong class="text-gray-700">{{ order.city }}</strong></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <!-- Empty Orders State -->
+                    <div class="text-center py-12 px-4 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+                        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-3">
+                            🛍️
+                        </div>
+                        <h3 class="text-base font-bold text-gray-800">No Orders Yet!</h3>
+                        <p class="text-xs text-gray-400 mt-1 max-w-xs mx-auto">You haven't placed any orders yet. Explore our premium hair growth collection!</p>
+                        <a href="{% url 'shop' %}" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition shadow-md shadow-green-600/20 mt-4">
+                            Explore Shop
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Column: Profile & Quick Links -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <!-- Profile Info Card -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <h3 class="text-base font-bold text-gray-900 mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                        <span>👤</span> Account Profile
+                    </h3>
+                    
+                    <div class="space-y-3.5 text-xs">
+                        <div>
+                            <span class="text-gray-400 block font-medium uppercase tracking-wider text-[10px]">Full Name</span>
+                            <span class="font-bold text-gray-900 text-sm block mt-0.5">{{ user.first_name }} {{ user.last_name|default:user.username }}</span>
+                        </div>
+
+                        <div>
+                            <span class="text-gray-400 block font-medium uppercase tracking-wider text-[10px]">Email Address</span>
+                            <span class="font-semibold text-gray-800 block mt-0.5">{{ user.email|default:user.username }}</span>
+                        </div>
+
+                        {% if latest_order %}
+                        <div>
+                            <span class="text-gray-400 block font-medium uppercase tracking-wider text-[10px]">Phone Number</span>
+                            <span class="font-semibold text-gray-800 block mt-0.5">{{ latest_order.phone }}</span>
+                        </div>
+
+                        <div>
+                            <span class="text-gray-400 block font-medium uppercase tracking-wider text-[10px]">Shipping Address</span>
+                            <span class="font-medium text-gray-700 block mt-0.5 leading-relaxed">{{ latest_order.address }}, {{ latest_order.city }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Customer Support Card -->
+                <div class="bg-gradient-to-br from-[#eef4e9] to-[#f0faf2] rounded-3xl p-6 border border-green-100 shadow-sm">
+                    <h3 class="text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <span>💬</span> Need Assistance?
+                    </h3>
+                    <p class="text-xs text-gray-600 leading-relaxed mb-4">Our dedicated hair care specialists are available 24/7 to help you with your orders and questions.</p>
+                    
+                    <a href="{% url 'contact' %}" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-2xl text-xs transition text-center block shadow-sm">
+                        Contact Support
+                    </a>
+                </div>
+
+                <!-- Recommended Products -->
+                {% if products %}
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <h3 class="text-base font-bold text-gray-900 mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                        <span>✨</span> Recommended For You
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        {% for product in products %}
+                        <div class="flex items-center gap-3 p-2.5 rounded-2xl bg-gray-50 border border-gray-100">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-12 h-12 object-cover rounded-xl border border-gray-200">
+                            {% else %}
+                            <div class="w-12 h-12 bg-green-100 text-green-700 font-bold text-xs rounded-xl flex items-center justify-center">HG</div>
+                            {% endif %}
+                            <div class="flex-grow min-w-0">
+                                <h4 class="font-bold text-gray-900 text-xs truncate">{{ product.name }}</h4>
+                                <span class="text-xs text-green-700 font-bold block">Rs. {{ product.price|floatformat:0 }}</span>
+                            </div>
+                            <a href="{% url 'shop' %}" class="bg-green-600 hover:bg-green-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl transition">
+                                View
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-16 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-6 text-center text-xs text-gray-400">
+            © 2026 <strong class="text-white">HairGlow</strong>. All rights reserved. Professional Customer Portal.
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,2473 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hair Growth Oil</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white text-gray-900">
+
+    <!-- ===================== NAVBAR ====================== -->
+
+    <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+            <div class="h-20 flex items-center justify-between">
+
+                <!-- Logo -->
+                <a href="#" class="text-2xl sm:text-3xl font-bold tracking-tight">
+                    Hair<span class="text-green-600">Glow</span>
+                </a>
+
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+
+                    <a href="#home"
+                       class="text-sm font-medium hover:text-green-600 transition">
+                        Home
+                    </a>
+
+                    <a href="{% url 'shop' %}"
+                       class="text-sm font-medium hover:text-green-600 transition">
+                        Shop
+                    </a>
+
+                    <a href="/about/"
+                       class="text-sm font-medium hover:text-green-600 transition">
+                        About Us
+                    </a>
+
+                    <a href="#shop"
+                       class="text-sm font-medium hover:text-green-600 transition">
+                        Collections
+                    </a>
+
+                    <a href="/contact/"
+                       class="text-sm font-medium hover:text-green-600 transition">
+                        Contact
+                    </a>
+
+                </div>
+
+
+                <!-- Right Side -->
+                <div class="flex items-center gap-3">
+
+                    <!-- Cart -->
+                    <button
+                        id="cartBtn"
+                        class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition">
+
+                        <!-- Cart Icon -->
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="w-6 h-6">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+
+                        </svg>
+
+                        <!-- Cart Number -->
+                        <span
+                            id="cartCount"
+                            class="absolute -top-1 -right-1 bg-green-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">
+                            0
+                        </span>
+
+                    </button>
+
+
+                    <!-- User / Account Icon -->
+                    <button
+                        id="userLoginBtn"
+                        onclick="openLoginModal()"
+                        type="button"
+                        class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition text-gray-700 cursor-pointer"
+                        title="{% if user.is_authenticated %}{{ user.username }}{% else %}Login / Register{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        {% if user.is_authenticated %}
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                        {% endif %}
+                    </button>
+
+
+                    <!-- Shop Now -->
+                    <a href="#shop"
+                       class="hidden sm:inline-flex bg-green-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-green-700 transition">
+                        Shop Now
+                    </a>
+
+
+                    <!-- Mobile Menu Button -->
+                    <button
+                        id="menuBtn"
+                        class="md:hidden w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="w-6 h-6">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Mobile Menu -->
+            <div
+                id="mobileMenu"
+                class="hidden md:hidden pb-5">
+
+                <div class="flex flex-col gap-4 pt-3">
+
+                    <a href="#home"
+                       class="mobile-link text-sm font-medium hover:text-green-600">
+                        Home
+                    </a>
+
+                    <a href="{% url 'shop' %}"
+                       class="mobile-link text-sm font-medium hover:text-green-600">
+                        Shop
+                    </a>
+
+                    <a href="/about/"
+                       class="mobile-link text-sm font-medium hover:text-green-600">
+                        About Us
+                    </a>
+
+                    <a href="#shop"
+                       class="mobile-link text-sm font-medium hover:text-green-600">
+                        Collections
+                    </a>
+
+                    <a href="/contact/"
+                       class="mobile-link text-sm font-medium hover:text-green-600">
+                        Contact
+                    </a>
+
+                    <a href="#shop"
+                       class="bg-green-600 text-white text-center px-5 py-3 rounded-full font-semibold">
+                        Shop Now
+                    </a>
+
+                </div>
+
+            </div>
+
+        </nav>
+    </header>
+
+    <!-- ================================== HERO SECTION ============================================ -->
+
+<section id="home" class="relative overflow-hidden bg-[#f7f9f4]">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+        <div class="min-h-[calc(100vh-80px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16 py-16 lg:py-20">
+
+
+            <!-- ================= LEFT CONTENT ================= -->
+
+            <div class="text-center lg:text-left">
+
+                <!-- Small Heading -->
+                <div class="inline-flex items-center gap-2 bg-white border border-green-100 rounded-full px-4 py-2 mb-6 shadow-sm">
+
+                    <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+
+                    <span class="text-xs sm:text-sm font-semibold text-green-700 tracking-wide">
+                        100% Natural Hair Care
+                    </span>
+
+                </div>
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight">
+                 <span class="text-gray-900">
+                    {{ hero.heading }}
+                   </span>
+
+                  <span class="block text-green-600">
+                      {{ hero.heading_green }}
+                  </span>
+            </h1>
+
+
+                    <p class="mt-6 max-w-xl mx-auto lg:mx-0 text-base sm:text-lg text-gray-600 leading-8">
+                       {{ hero.sub_heading }}
+                      </p>
+
+                <!-- Buttons -->
+                <div class="mt-8 flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
+
+                    <!-- Shop Button -->
+                    <a
+    href="{{ hero.button_link }}"
+    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-7 py-3.5 rounded-full font-semibold transition duration-300 shadow-lg shadow-green-600/20">
+
+    {{ hero.button_text }}
+
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        class="w-5 h-5">
+
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+
+    </svg>
+
+</a>
+
+                </div>
+
+
+                <!-- Trust Points -->
+                <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-lg mx-auto lg:mx-0">
+
+                    <!-- Point 1 -->
+                    <div class="flex items-center justify-center lg:justify-start gap-2">
+
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 text-green-600">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m4.5 12.75 6 6 9-13.5" />
+
+                            </svg>
+
+                        </div>
+
+                        <span class="text-sm font-medium text-gray-700">
+                            Natural
+                        </span>
+
+                    </div>
+
+
+                    <!-- Point 2 -->
+                    <div class="flex items-center justify-center lg:justify-start gap-2">
+
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 text-green-600">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m4.5 12.75 6 6 9-13.5" />
+
+                            </svg>
+
+                        </div>
+
+                        <span class="text-sm font-medium text-gray-700">
+                            Chemical Free
+                        </span>
+
+                    </div>
+
+
+                    <!-- Point 3 -->
+                    <div class="flex items-center justify-center lg:justify-start gap-2">
+
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 text-green-600">
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m4.5 12.75 6 6 9-13.5" />
+
+                            </svg>
+
+                        </div>
+
+                        <span class="text-sm font-medium text-gray-700">
+                            Cruelty Free
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RIGHT PRODUCT ================= -->
+
+            <div class="relative flex justify-center items-center">
+
+                <!-- Background Circle -->
+                <div class="absolute w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] lg:w-[500px] lg:h-[500px] bg-green-100 rounded-full opacity-70">
+                </div>
+
+
+                <!-- Decorative Circle -->
+                <div class="absolute w-[230px] h-[230px] sm:w-[320px] sm:h-[320px] lg:w-[430px] lg:h-[430px] border border-green-200 rounded-full">
+                </div>
+
+            <!-- Product Image -->
+            <div class="relative z-10">
+
+                {% if hero and hero.image %}
+                     <img 
+                        src="{{ hero.image.url }}" 
+                        alt="Hair Growth Oil" 
+                        class="w-64 sm:w-80 lg:w-[420px] xl:w-[470px] h-auto object-contain drop-shadow-2xl hover:scale-105 transition duration-500">
+                {% endif %}
+
+            </div>
+                <!-- Floating Card -->
+
+                <div class="absolute z-20 bottom-4 left-2 sm:left-8 lg:left-0 bg-white rounded-2xl shadow-xl px-4 py-3 sm:px-5 sm:py-4 flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="w-5 h-5 text-green-600">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 3v18m9-9H3" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-gray-500">
+                            Natural Care
+                        </p>
+
+                        <p class="text-sm font-bold text-gray-900">
+                            For Healthy Hair
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Rating Card -->
+                <div class="absolute z-20 top-5 right-0 sm:right-5 lg:right-0 bg-white rounded-2xl shadow-xl px-4 py-3">
+
+                    <div class="flex items-center gap-1 text-yellow-500">
+
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+                        <span>★</span>
+
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Loved by customers
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================== WHY CHOOSE US SECTION ================================================= -->
+
+<section class="bg-white py-20 sm:py-24">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        <!-- Section Heading -->
+        <div class="text-center max-w-2xl mx-auto">
+
+            <p class="text-green-700 uppercase tracking-[4px] text-xs sm:text-sm font-semibold mb-4">
+                Why Choose Us
+            </p>
+
+            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                Give Your Hair The
+                <span class="text-green-700">Care It Deserves</span>
+            </h2>
+
+            <p class="mt-5 text-gray-500 text-sm sm:text-base leading-7">
+                Our premium hair growth oil is carefully made to nourish
+                your scalp, strengthen your roots and keep your hair looking
+                healthy and beautiful.
+            </p>
+
+        </div>
+
+<!--========= Benefits Cards (Dynamic from Database) ==========-->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7 mt-12 sm:mt-14">
+
+    {% for benefit in benefits %}
+    <div class="group bg-[#f4f8f4] rounded-2xl p-7 sm:p-8 text-center
+                border border-transparent hover:border-green-300/60
+                hover:-translate-y-1.5 hover:shadow-lg
+                transition-all duration-300">
+
+        <!-- Circular Icon Container -->
+        <div class="mx-auto w-20 h-20 rounded-full bg-[#ddf2df]
+                    flex items-center justify-center mb-6
+                    group-hover:scale-105 transition-transform duration-300">
+
+            {% if benefit.icon == "natural" or benefit.icon == "leaf" or benefit.icon == "leaves" %}
+            <!-- 100% Natural Icon (Twin Leaves) -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="#15803d"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="w-9 h-9 text-green-700">
+                <path d="M7 17C13 17 19 11 19 4C12 4 6 10 7 17Z" />
+                <path d="M7 17L14 10" />
+                <path d="M7 17C4 16 3 13 4 10C7 10 9 12 8.5 15" />
+                <path d="M4 10L6.5 13" />
+            </svg>
+
+            {% elif benefit.icon == "roots" or benefit.icon == "root" or benefit.icon == "hair" %}
+            <!-- Stronger Roots Icon (Hair Follicle) -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="#15803d"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="w-9 h-9 text-green-700">
+                <path d="M4 17h5a3 3 0 0 0 6 0h5" />
+                <circle cx="12" cy="16.5" r="2.2" />
+                <path d="M12 14.3C12 9 13.8 5.5 15.5 3.5" />
+            </svg>
+
+            {% elif benefit.icon == "nourishment" or benefit.icon == "droplet" or benefit.icon == "oil" or benefit.icon == "drop" %}
+            <!-- Deep Nourishment Icon (Oil/Water Drop) -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="#15803d"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="w-9 h-9 text-green-700">
+                <path d="M12 3.5C12 3.5 6 10 6 15a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z" />
+            </svg>
+
+            {% elif benefit.icon == "shine" or benefit.icon == "star" or benefit.icon == "sparkle" or benefit.icon == "sparkles" %}
+            <!-- Healthy Shine Icon (Sparkles) -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="#15803d"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="w-9 h-9 text-green-700">
+                <path d="M17 3c0 3.2 2.2 5.5 5.5 5.5-3.3 0-5.5 2.3-5.5 5.5 0-3.2-2.2-5.5-5.5-5.5 3.3 0 5.5-2.3 5.5-5.5Z" />
+                <path d="M8 5.5c0 1.2.8 2 2 2-1.2 0-2 .8-2 2 0-1.2-.8-2-2-2 1.2 0 2-.8 2-2Z" />
+                <path d="M9 14.5c0 1.5 1 2.5 2.5 2.5-1.5 0-2.5 1-2.5 2.5 0-1.5-1-2.5-2.5-2.5 1.5 0 2.5-1 2.5-2.5Z" />
+            </svg>
+
+            {% else %}
+            <!-- Default / Fallback Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="#15803d"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="w-9 h-9 text-green-700">
+                <path d="M12 3.5C12 3.5 6 10 6 15a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z" />
+            </svg>
+            {% endif %}
+
+        </div>
+
+        <!-- Title -->
+        <h3 class="heading-font text-lg sm:text-xl font-bold text-gray-900 mb-2.5">
+            {{ benefit.title }}
+        </h3>
+
+        <!-- Description -->
+        <p class="text-sm text-gray-600 leading-relaxed">
+            {{ benefit.description }}
+        </p>
+
+    </div>
+    {% empty %}
+    <!-- Fallback if database has no items yet -->
+    <div class="group bg-[#f4f8f4] rounded-2xl p-7 sm:p-8 text-center border border-transparent hover:border-green-300/60 transition-all duration-300">
+        <div class="mx-auto w-20 h-20 rounded-full bg-[#ddf2df] flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-green-700"><path d="M7 17C13 17 19 11 19 4C12 4 6 10 7 17Z" /><path d="M7 17L14 10" /><path d="M7 17C4 16 3 13 4 10C7 10 9 12 8.5 15" /><path d="M4 10L6.5 13" /></svg>
+        </div>
+        <h3 class="heading-font text-lg sm:text-xl font-bold text-gray-900 mb-2.5">100% Natural</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">Made with pure, natural ingredients for safe and healthy hair growth.</p>
+    </div>
+    <div class="group bg-[#f4f8f4] rounded-2xl p-7 sm:p-8 text-center border border-transparent hover:border-green-300/60 transition-all duration-300">
+        <div class="mx-auto w-20 h-20 rounded-full bg-[#ddf2df] flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-green-700"><path d="M4 17h5a3 3 0 0 0 6 0h5" /><circle cx="12" cy="16.5" r="2.2" /><path d="M12 14.3C12 9 13.8 5.5 15.5 3.5" /></svg>
+        </div>
+        <h3 class="heading-font text-lg sm:text-xl font-bold text-gray-900 mb-2.5">Stronger Roots</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">Nourishes your scalp and strengthens hair from the root.</p>
+    </div>
+    <div class="group bg-[#f4f8f4] rounded-2xl p-7 sm:p-8 text-center border border-transparent hover:border-green-300/60 transition-all duration-300">
+        <div class="mx-auto w-20 h-20 rounded-full bg-[#ddf2df] flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-green-700"><path d="M12 3.5C12 3.5 6 10 6 15a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z" /></svg>
+        </div>
+        <h3 class="heading-font text-lg sm:text-xl font-bold text-gray-900 mb-2.5">Deep Nourishment</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">Provides essential nutrients to keep your hair soft, smooth and healthy.</p>
+    </div>
+    <div class="group bg-[#f4f8f4] rounded-2xl p-7 sm:p-8 text-center border border-transparent hover:border-green-300/60 transition-all duration-300">
+        <div class="mx-auto w-20 h-20 rounded-full bg-[#ddf2df] flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-green-700"><path d="M17 3c0 3.2 2.2 5.5 5.5 5.5-3.3 0-5.5 2.3-5.5 5.5 0-3.2-2.2-5.5-5.5-5.5 3.3 0 5.5-2.3 5.5-5.5Z" /><path d="M8 5.5c0 1.2.8 2 2 2-1.2 0-2 .8-2 2 0-1.2-.8-2-2-2 1.2 0 2-.8 2-2Z" /><path d="M9 14.5c0 1.5 1 2.5 2.5 2.5-1.5 0-2.5 1-2.5 2.5 0-1.5-1-2.5-2.5-2.5 1.5 0 2.5-1 2.5-2.5Z" /></svg>
+        </div>
+        <h3 class="heading-font text-lg sm:text-xl font-bold text-gray-900 mb-2.5">Healthy Shine</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">Restores natural shine and makes your hair look more vibrant.</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+        <!-- Bottom Discover Our Formula CTA -->
+        <div class="mt-8 sm:mt-10 mb-2 sm:mb-4 text-center" style="transform: translateY(6px);">
+
+            <a href="{% url 'formula' %}"
+               class="inline-flex items-center gap-3 px-8 py-4 rounded-full
+                      bg-gradient-to-r from-[#10291d] via-[#15803d] to-[#166534]
+                      text-white font-bold text-sm sm:text-base
+                      shadow-lg shadow-green-900/20 hover:shadow-2xl hover:shadow-green-800/30
+                      hover:scale-105 hover:gap-4 transition-all duration-300 group">
+
+                <span>Discover Our Formula</span>
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2.2"
+                     stroke="currentColor"
+                     class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ============================== BOTTLE SIZES & COLLECTIONS SECTION ====================================== -->
+<section id="shop" class="bg-[#f7f9f3] py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        <!-- Section Heading -->
+        <div class="text-center max-w-3xl mx-auto">
+            <span class="inline-block bg-green-100 text-green-800 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-3">
+                🌿 Choose Your Bottle Size
+            </span>
+            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
+                Nourish Your Hair, <span class="text-green-700">Naturally</span>
+            </h2>
+            <p class="mt-3 text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+                Select the perfect size for your hair care journey. 100% cold-pressed organic formula with special bundle savings.
+            </p>
+        </div>
+
+        <!-- 3 SIZES CARDS GRID (DYNAMIC FROM BACKEND) -->
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {% for p in products %}
+            <div class="bg-white rounded-3xl {% if p.is_featured %}border-2 border-green-600 shadow-xl ring-4 ring-green-600/10 md:-translate-y-2{% else %}border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-green-300{% endif %} transition-all duration-300 p-4 flex flex-col justify-between relative group">
+                
+                {% if p.is_featured %}
+                <!-- Most Popular Ribbon -->
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-700 to-green-600 text-white text-[11px] font-extrabold uppercase px-4 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
+                    <span>🔥</span> Most Popular
+                </div>
+                {% endif %}
+
+                <div>
+                    <!-- Top Tag & Size Badge -->
+                    <div class="flex items-center justify-between gap-2 mb-3 {% if p.is_featured %}mt-2{% endif %}">
+                        <span class="{% if p.is_featured %}bg-green-100 text-green-800{% else %}bg-green-50 text-green-700{% endif %} text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            {{ p.badge|default:"Pack" }}
+                        </span>
+                        <span class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">
+                            {{ p.size|default:"Bottle" }}
+                        </span>
+                    </div>
+
+                    <!-- Compact Image Box -->
+                    <div class="relative bg-gradient-to-br {% if p.is_featured %}from-[#eaf6e7] to-[#d8edd3]{% else %}from-[#f2f7ef] to-[#e7f1e2]{% endif %} rounded-2xl h-36 sm:h-40 flex items-center justify-center overflow-hidden mb-4">
+                        {% if p.discount %}
+                        <span class="absolute top-3 left-3 {% if p.is_featured %}bg-red-600{% else %}bg-green-600{% endif %} text-white text-[11px] font-extrabold px-2.5 py-1 rounded-lg z-10 shadow-sm">
+                            {{ p.discount }}% OFF
+                        </span>
+                        {% endif %}
+                        
+                        {% if p.image %}
+                        <img 
+                            src="{{ p.image.url }}" 
+                            alt="{{ p.name }} {{ p.size }}"
+                            class="h-32 sm:h-36 object-contain group-hover:scale-105 transition-transform duration-500"
+                        >
+                        {% endif %}
+
+                        <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-800 text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-sm border border-gray-100">
+                            💧 {{ p.size }}
+                        </span>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="text-amber-500 text-sm">★★★★★</div>
+                        <span class="text-xs text-gray-500 font-medium">4.9 (128+ Reviews)</span>
+                    </div>
+
+                    <!-- Product Name & Subtitle -->
+                    <h3 class="heading-font text-xl font-bold text-gray-900 leading-snug">
+                        {{ p.name }}
+                    </h3>
+                    {% if p.subtitle %}
+                    <p class="text-xs text-green-700 font-semibold mt-0.5">{{ p.subtitle }}</p>
+                    {% endif %}
+
+                    <!-- Price Block -->
+                    <div class="mt-4 pt-3 border-t border-gray-100 flex items-baseline gap-3">
+                        <span class="text-2xl sm:text-3xl font-extrabold {% if p.is_featured %}text-green-700{% else %}text-gray-900{% endif %}">
+                            Rs. {{ p.price|floatformat:0 }}
+                        </span>
+                        {% if p.old_price %}
+                        <span class="text-sm text-gray-400 line-through">
+                            Rs. {{ p.old_price|floatformat:0 }}
+                        </span>
+                        {% endif %}
+                        {% if p.savings > 0 %}
+                        <span class="text-[11px] font-bold {% if p.is_featured %}text-red-600 bg-red-50{% else %}text-green-700 bg-green-50{% endif %} px-2 py-0.5 rounded">
+                            Save Rs. {{ p.savings|floatformat:0 }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Feature Bullets -->
+                    <div class="space-y-1 mt-3 text-xs text-gray-600">
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-600 font-bold">✓</span>
+                            <span>100% Pure Cold-Pressed Botanicals</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-600 font-bold">✓</span>
+                            <span>Root Strengthening & Anti-Fall</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-600 font-bold">✓</span>
+                            <span>{{ p.delivery_text|default:"Free Fast Delivery" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions (Quantity & Buttons) -->
+                <div class="mt-4 pt-3 border-t border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-semibold text-gray-700">Quantity:</span>
+                        <div class="flex items-center border border-gray-200 rounded-full overflow-hidden bg-gray-50">
+                            <button type="button" onclick="changeVariantQty('qty-{{ p.id }}', -1)" class="w-8 h-8 flex items-center justify-center text-sm font-bold hover:bg-green-100 hover:text-green-800 transition">−</button>
+                            <span id="qty-{{ p.id }}" class="w-8 text-center text-xs font-bold text-gray-900">1</span>
+                            <button type="button" onclick="changeVariantQty('qty-{{ p.id }}', 1)" class="w-8 h-8 flex items-center justify-center text-sm font-bold hover:bg-green-100 hover:text-green-800 transition">+</button>
+                        </div>
+                        <span class="text-[11px] text-green-700 font-semibold">● In Stock</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button 
+                            type="button" 
+                            onclick="addVariantToCart('{{ p.name }} - {{ p.size }}', {{ p.price|floatformat:0 }}, 'qty-{{ p.id }}', false)"
+                            class="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl py-2.5 px-3 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.086.835L5.25 6.75m0 0h13.5l1.5 7.5H6.75m-1.5-7.5L3.75 3m3 15.75a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm11.25 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                            </svg>
+                            Add
+                        </button>
+                        <button 
+                            type="button" 
+                            onclick="addVariantToCart('{{ p.name }} - {{ p.size }}', {{ p.price|floatformat:0 }}, 'qty-{{ p.id }}', true)"
+                            class="w-full bg-green-700 hover:bg-green-800 text-white rounded-xl py-2.5 px-3 text-xs font-bold transition flex items-center justify-center gap-1 shadow-sm">
+                            Buy Now →
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Trust Badges Strip -->
+        <div class="mt-10 bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 shadow-sm flex flex-wrap items-center justify-around gap-4 text-xs sm:text-sm font-semibold text-gray-700 text-center">
+            <div class="flex items-center gap-2">
+                <span class="text-green-600 text-lg">🚚</span>
+                <span>Fast Nationwide Delivery</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-green-600 text-lg">💵</span>
+                <span>Cash on Delivery (COD) Available</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-green-600 text-lg">🛡️</span>
+                <span>100% Satisfaction Guarantee</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= CART TOAST ================= -->
+<div id="cartToast"
+     class="fixed bottom-5 right-5 z-[100]
+            translate-y-24 opacity-0
+            transition-all duration-500">
+
+    <div class="bg-gray-900 text-white rounded-2xl
+                shadow-2xl px-5 py-4
+                flex items-center gap-4">
+
+        <div class="w-10 h-10 rounded-full
+                    bg-green-700 flex items-center
+                    justify-center">
+
+            ✓
+
+        </div>
+
+        <div>
+
+            <p class="font-semibold text-sm">
+                Added to cart!
+            </p>
+
+            <p id="toastText"
+               class="text-xs text-gray-400 mt-1">
+
+                1 item added
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CART DRAWER MODAL ================= -->
+<div id="cartModal" class="fixed inset-0 z-[200] hidden transition-opacity duration-300">
+    <!-- Backdrop -->
+    <div id="cartBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+    <!-- Slide Panel -->
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 z-10">
+        <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-[#f7f9f3]">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-green-700">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835L5.91 7.5h12.18l1.272-3.665A1.125 1.125 0 0120.45 3h1.3M5.91 7.5l1.04 8.11a2.25 2.25 0 002.23 1.965h6.64a2.25 2.25 0 002.23-1.965l1.04-8.11M9 20.25h.008v.008H9v-.008zm6 0h.008v.008H15v-.008z" />
+                    </svg>
+                    Shopping Cart
+                </h2>
+                <button id="closeCartBtn" class="w-9 h-9 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center text-gray-500 font-bold transition shadow-sm">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Cart Items Container -->
+            <div id="cartItemsList" class="p-6 flex-1 overflow-y-auto space-y-4">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Footer & Checkout -->
+            <div class="p-6 border-t border-gray-100 bg-[#f7f9f3]">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-gray-600 font-semibold">Total Amount</span>
+                    <span id="cartSubtotal" class="text-2xl font-bold text-gray-900">Rs. 0</span>
+                </div>
+                <button id="cartCheckoutBtn" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3.5 px-6 rounded-full transition shadow-lg shadow-green-700/20">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ================================= HOW IT WORKS SECTION ===================================== -->
+
+<section class="bg-white py-20 sm:py-24">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        <!-- Heading -->
+        <div class="text-center max-w-2xl mx-auto">
+
+            <p class="text-green-700 uppercase tracking-[4px]
+                      text-xs sm:text-sm font-semibold mb-4">
+                Simple Hair Care
+            </p>
+
+            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl
+                       font-bold text-gray-900 leading-tight">
+                How To Use Our
+                <span class="text-green-700">Hair Oil</span>
+            </h2>
+
+            <p class="mt-5 text-gray-500 text-sm sm:text-base leading-7">
+                A simple routine that makes hair care easy.
+                Follow these three steps for the best experience.
+            </p>
+
+        </div>
+
+
+        <!-- Steps -->
+        <div class="relative mt-16">
+
+            <!-- Connecting Line Desktop -->
+            <div class="hidden lg:block absolute top-[55px]
+                        left-[16%] right-[16%]
+                        border-t-2 border-dashed border-green-200">
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10
+                        lg:gap-14 relative">
+
+
+                <!-- ================= STEP 1 ================= -->
+                <div class="group text-center">
+
+                    <!-- Number/Icon -->
+                    <div class="relative mx-auto w-28 h-28
+                                rounded-full bg-[#f0f5e9]
+                                flex items-center justify-center
+                                group-hover:bg-green-700
+                                transition-all duration-500">
+
+                        <div class="w-20 h-20 rounded-full bg-white
+                                    shadow-sm flex items-center
+                                    justify-center
+                                    group-hover:scale-90
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-9 h-9 text-green-700
+                                        group-hover:text-green-700">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 3c-1.5 2.2-5.5 5.5-5.5 9.5A5.5 5.5 0 0 0 12 18a5.5 5.5 0 0 0 5.5-5.5C17.5 8.5 13.5 5.2 12 3Z"/>
+
+                            </svg>
+
+                        </div>
+
+
+                        <!-- Step Number -->
+                        <span class="absolute -top-2 -right-1
+                                     w-8 h-8 rounded-full
+                                     bg-green-700 text-white
+                                     text-xs font-bold
+                                     flex items-center justify-center
+                                     border-4 border-white">
+
+                            01
+
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="heading-font text-2xl font-bold
+                               text-gray-900 mt-7">
+
+                        Apply
+
+                    </h3>
+
+
+                    <p class="text-sm text-gray-500 leading-7
+                              max-w-xs mx-auto mt-3">
+
+                        Apply a small amount of oil directly to your
+                        scalp and hair roots.
+
+                    </p>
+
+                </div>
+
+
+                <!-- ================= STEP 2 ================= -->
+                <div class="group text-center">
+
+                    <!-- Number/Icon -->
+                    <div class="relative mx-auto w-28 h-28
+                                rounded-full bg-[#f0f5e9]
+                                flex items-center justify-center
+                                group-hover:bg-green-700
+                                transition-all duration-500">
+
+                        <div class="w-20 h-20 rounded-full bg-white
+                                    shadow-sm flex items-center
+                                    justify-center
+                                    group-hover:scale-90
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-9 h-9 text-green-700">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M7 11.5c1.5-1 3-1.5 4.5-1.5 2.5 0 4.5 1 6 3m-12 1.5c1.2-.8 2.5-1.2 3.8-1.2 2.3 0 4.2.8 5.7 2.2M8 8.5c.8-.5 1.8-.8 2.8-.8 1.5 0 2.8.5 3.7 1.3M5 5l1.5 1.5M19 5l-1.5 1.5"/>
+
+                            </svg>
+
+                        </div>
+
+
+                        <!-- Step Number -->
+                        <span class="absolute -top-2 -right-1
+                                     w-8 h-8 rounded-full
+                                     bg-green-700 text-white
+                                     text-xs font-bold
+                                     flex items-center justify-center
+                                     border-4 border-white">
+
+                            02
+
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="heading-font text-2xl font-bold
+                               text-gray-900 mt-7">
+
+                        Massage
+
+                    </h3>
+
+
+                    <p class="text-sm text-gray-500 leading-7
+                              max-w-xs mx-auto mt-3">
+
+                        Gently massage your scalp with your fingertips
+                        for a few minutes.
+
+                    </p>
+
+                </div>
+
+
+                <!-- ================= STEP 3 ================= -->
+                <div class="group text-center">
+
+                    <!-- Number/Icon -->
+                    <div class="relative mx-auto w-28 h-28
+                                rounded-full bg-[#f0f5e9]
+                                flex items-center justify-center
+                                group-hover:bg-green-700
+                                transition-all duration-500">
+
+                        <div class="w-20 h-20 rounded-full bg-white
+                                    shadow-sm flex items-center
+                                    justify-center
+                                    group-hover:scale-90
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-9 h-9 text-green-700">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 3.5c2.5 3.2 6.5 7 6.5 11a6.5 6.5 0 1 1-13 0c0-4 4-7.8 6.5-11Z"/>
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M9.5 15.5c.4 1.3 1.3 2 2.5 2"/>
+
+                            </svg>
+
+                        </div>
+
+
+                        <!-- Step Number -->
+                        <span class="absolute -top-2 -right-1
+                                     w-8 h-8 rounded-full
+                                     bg-green-700 text-white
+                                     text-xs font-bold
+                                     flex items-center justify-center
+                                     border-4 border-white">
+
+                            03
+
+                        </span>
+
+                    </div>
+
+
+                    <h3 class="heading-font text-2xl font-bold
+                               text-gray-900 mt-7">
+
+                        Nourish
+
+                    </h3>
+
+
+                    <p class="text-sm text-gray-500 leading-7
+                              max-w-xs mx-auto mt-3">
+
+                        Leave the oil on for the recommended time,
+                        then wash and enjoy refreshed hair.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Bottom CTA -->
+        <div class="mt-16 text-center">
+
+            <a href="#shop"
+               class="inline-flex items-center gap-3
+                      bg-green-700 text-white
+                      px-7 py-3.5 rounded-full
+                      text-sm font-semibold
+                      hover:bg-green-800
+                      hover:gap-5
+                      transition-all duration-300">
+
+                Try It Today
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="w-5 h-5">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================= INGREDIENTS SECTION ============================================= -->
+<section class="bg-[#f7f9f3] py-20 sm:py-24 overflow-hidden">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        <!-- Heading -->
+        <div class="text-center max-w-2xl mx-auto">
+
+            <p class="text-green-700 uppercase tracking-[4px]
+                      text-xs sm:text-sm font-semibold mb-4">
+                {{ formula.sub_title|default:"Natural Formula" }}
+            </p>
+
+            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl
+                       font-bold text-gray-900 leading-tight">
+                {{ formula.title|default:"Powered By Nature" }}
+            </h2>
+
+            <p class="mt-5 text-gray-500 text-sm sm:text-base leading-7">
+                {{ formula.description|default:"Carefully selected natural ingredients come together to create a nourishing hair-care formula." }}
+            </p>
+
+        </div>
+
+
+        <!-- Ingredients Area -->
+        <div class="mt-16 grid grid-cols-1 lg:grid-cols-3
+                    gap-10 lg:gap-8 items-center">
+
+
+            <!-- LEFT INGREDIENTS -->
+            <div class="space-y-6">
+
+                <!-- Rosemary -->
+                <div class="ingredient-card group bg-white rounded-3xl
+                            p-6 border border-gray-100
+                            hover:border-green-200
+                            hover:-translate-y-1
+                            transition-all duration-500">
+
+                    <div class="flex items-start gap-5">
+
+                        <div class="w-14 h-14 shrink-0 rounded-2xl
+                                    bg-green-100 flex items-center
+                                    justify-center
+                                    group-hover:bg-green-700
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-7 h-7 text-green-700
+                                        group-hover:text-white">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 21V5m0 0c-2.5 0-5-1.5-6-4 3.5-.2 6 1.5 6 4Zm0 0c2.5 0 5-1.5 6-4-3.5-.2-6 1.5-6 4Z"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="heading-font text-xl font-bold
+                                       text-gray-900">
+                                Rosemary
+                            </h3>
+
+                            <p class="text-sm text-gray-500
+                                      leading-6 mt-2">
+                                Traditionally used to nourish the scalp
+                                and support healthy-looking hair.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Amla -->
+                <div class="ingredient-card group bg-white rounded-3xl
+                            p-6 border border-gray-100
+                            hover:border-green-200
+                            hover:-translate-y-1
+                            transition-all duration-500">
+
+                    <div class="flex items-start gap-5">
+
+                        <div class="w-14 h-14 shrink-0 rounded-2xl
+                                    bg-green-100 flex items-center
+                                    justify-center
+                                    group-hover:bg-green-700
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-7 h-7 text-green-700
+                                        group-hover:text-white">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 4c3.5 0 6 2.5 6 6 0 4.5-6 10-6 10S6 14.5 6 10c0-3.5 2.5-6 6-6Z"/>
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M9 10h.01M12 8h.01M15 10h.01"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="heading-font text-xl font-bold
+                                       text-gray-900">
+                                Amla
+                            </h3>
+
+                            <p class="text-sm text-gray-500
+                                      leading-6 mt-2">
+                                A classic botanical ingredient known
+                                for its nourishing hair-care properties.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CENTER PRODUCT -->
+            <div class="relative flex justify-center py-8 lg:py-0">
+
+                <!-- Decorative Circle -->
+                <div class="absolute w-64 h-64 sm:w-80 sm:h-80
+                            bg-green-100 rounded-full
+                            blur-[1px]">
+                </div>
+
+
+                <!-- Decorative Ring -->
+                <div class="absolute w-72 h-72 sm:w-96 sm:h-96
+                            border border-green-200
+                            rounded-full">
+                </div>
+
+
+                <div class="relative z-10 text-center">
+
+                    {% if formula and formula.center_image %}
+                    <img
+                        src="{{ formula.center_image.url }}"
+                        alt="{{ formula.title }}"
+                        class="w-[260px] sm:w-[330px] lg:w-[360px]
+                               max-h-[500px] 
+                               rounded-lg
+                               object-contain
+                               drop-shadow-2xl
+                               transition-transform duration-500
+                               hover:scale-105"
+                    >
+                    {% elif product and product.image %}
+                    <img
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                        class="w-[260px] sm:w-[330px] lg:w-[360px]
+                               max-h-[500px] 
+                               rounded-lg
+                               object-contain
+                               drop-shadow-2xl
+                               transition-transform duration-500
+                               hover:scale-105"
+                    >
+                    {% else %}
+                    <img
+                        src="{% static 'images/hair oil 3.png' %}"
+                        alt="Natural Hair Growth Oil"
+                        class="w-[260px] sm:w-[330px] lg:w-[360px]
+                               max-h-[500px] 
+                               rounded-lg
+                               object-contain
+                               drop-shadow-2xl
+                               transition-transform duration-500
+                               hover:scale-105"
+                    >
+                    {% endif %}
+
+                    <div class="mt-3">
+
+                        <span class="inline-block
+                                     bg-white shadow-sm
+                                     px-5 py-2 rounded-full
+                                     text-xs font-semibold
+                                     text-green-700">
+                            100% Natural Formula
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT INGREDIENTS -->
+            <div class="space-y-6">
+
+                <!-- Fenugreek -->
+                <div class="ingredient-card group bg-white rounded-3xl
+                            p-6 border border-gray-100
+                            hover:border-green-200
+                            hover:-translate-y-1
+                            transition-all duration-500">
+
+                    <div class="flex items-start gap-5">
+
+                        <div class="w-14 h-14 shrink-0 rounded-2xl
+                                    bg-green-100 flex items-center
+                                    justify-center
+                                    group-hover:bg-green-700
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-7 h-7 text-green-700
+                                        group-hover:text-white">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 4v16M5 8c2 0 3.5 1 5 2.5M19 8c-2 0-3.5 1-5 2.5M6 16c2 0 3.5-1 5-2.5M18 16c-2 0-3.5-1-5-2.5"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="heading-font text-xl font-bold
+                                       text-gray-900">
+                                Fenugreek
+                            </h3>
+
+                            <p class="text-sm text-gray-500
+                                      leading-6 mt-2">
+                                A traditional ingredient used to
+                                condition and nourish hair.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Bhringraj -->
+                <div class="ingredient-card group bg-white rounded-3xl
+                            p-6 border border-gray-100
+                            hover:border-green-200
+                            hover:-translate-y-1
+                            transition-all duration-500">
+
+                    <div class="flex items-start gap-5">
+
+                        <div class="w-14 h-14 shrink-0 rounded-2xl
+                                    bg-green-100 flex items-center
+                                    justify-center
+                                    group-hover:bg-green-700
+                                    transition-all duration-500">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke-width="1.6"
+                                 stroke="currentColor"
+                                 class="w-7 h-7 text-green-700
+                                        group-hover:text-white">
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 21c4.5-3.2 7-7 7-11a7 7 0 0 0-14 0c0 4 2.5 7.8 7 11Z"/>
+
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 7v7m-3-3 3 3 3-3"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="heading-font text-xl font-bold
+                                       text-gray-900">
+                                Bhringraj
+                            </h3>
+
+                            <p class="text-sm text-gray-500
+                                      leading-6 mt-2">
+                                A popular Ayurvedic botanical included
+                                in traditional hair-care routines.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Bottom Feature Row -->
+        <div class="mt-16 pt-8 border-t border-green-100
+                    grid grid-cols-1 sm:grid-cols-3
+                    gap-6 text-center">
+
+            <div>
+
+                <p class="text-2xl font-bold text-green-700">
+                    4+
+                </p>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Natural Botanicals
+                </p>
+
+            </div>
+
+
+            <div class="sm:border-x border-green-100">
+
+                <p class="text-2xl font-bold text-green-700">
+                    100%
+                </p>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Carefully Selected
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <p class="text-2xl font-bold text-green-700">
+                    0%
+                </p>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Harsh Feel
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =============================== CUSTOMER REVIEWS SECTION =================================== -->
+
+<section class="bg-white py-20 sm:py-24 overflow-hidden">
+
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        <!-- Section Heading (Dynamic from Database) -->
+        <div class="text-center max-w-2xl mx-auto">
+
+            <p class="text-green-700 uppercase tracking-[4px] text-xs sm:text-sm font-semibold mb-4">
+                {{ review_settings.badge_text|default:"Customer Love" }}
+            </p>
+
+            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                {{ review_settings.heading|default:"Loved By Hair" }}
+                <span class="text-green-700">{{ review_settings.heading_green|default:"Care Lovers" }}</span>
+            </h2>
+
+            <p class="mt-5 text-gray-500 text-sm sm:text-base leading-7">
+                {{ review_settings.sub_heading|default:"See what our customers have to say about their hair-care experience." }}
+            </p>
+
+        </div>
+
+
+        <!-- Rating Summary & Write Review Button (Dynamic) -->
+        <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7">
+
+            <div class="flex items-center gap-3">
+
+                <span class="text-4xl font-bold text-gray-900">
+                    {{ review_settings.rating_score|default:"4.9" }}
+                </span>
+
+                <div>
+
+                    <div class="flex text-yellow-500 text-lg">
+                        ★★★★★
+                    </div>
+
+                    <p class="text-xs text-gray-400 mt-1">
+                        {{ review_settings.total_reviews_text|default:"Based on 128 reviews" }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="hidden sm:block h-10 w-px bg-gray-200">
+            </div>
+
+
+            <div class="flex items-center gap-2">
+
+                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+
+                <span class="text-sm text-gray-500">
+                    {{ review_settings.verified_label|default:"Verified customer reviews" }}
+                </span>
+
+            </div>
+
+            <div class="hidden sm:block h-10 w-px bg-gray-200">
+            </div>
+
+            <!-- Write a Review Button -->
+            <button onclick="openReviewModal()" type="button" class="inline-flex items-center gap-2 text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-4 py-2 rounded-full transition-all duration-200 shadow-sm">
+                <span>✍️</span> Write a Review
+            </button>
+
+        </div>
+
+
+        <!-- ================= REVIEWS SLIDER (DYNAMIC FROM DATABASE) ================= -->
+        <div class="relative mt-14">
+
+            <!-- Previous Button -->
+            <button
+                id="reviewPrev"
+                aria-label="Previous reviews"
+                class="hidden sm:flex absolute z-20
+                       left-0 lg:-left-5
+                       top-1/2 -translate-y-1/2
+                       w-12 h-12 rounded-full
+                       bg-white border border-gray-200
+                       shadow-lg items-center justify-center
+                       text-gray-700
+                       hover:bg-green-700
+                       hover:text-white
+                       hover:border-green-700
+                       transition duration-300">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="w-5 h-5">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15.75 19.5 8.25 12l7.5-7.5"/>
+
+                </svg>
+
+            </button>
+
+
+            <!-- Review Wrapper -->
+            <div class="overflow-hidden">
+
+                <div id="reviewTrack"
+                     class="flex transition-transform duration-500 ease-in-out">
+
+                    {% for review in reviews %}
+                    <!-- Review Slide (Dynamic) -->
+                    <div class="review-slide min-w-full md:min-w-[50%] lg:min-w-[33.333333%] px-2.5">
+
+                        <div class="h-full bg-[#f7f9f3] rounded-3xl p-7 sm:p-8 border border-transparent hover:border-green-200 hover:shadow-md transition duration-300 flex flex-col justify-between">
+
+                            <div>
+                                <!-- Stars & Verified Status -->
+                                <div class="flex items-center justify-between">
+
+                                    <div class="flex text-yellow-500 text-sm tracking-wider">
+                                        {% for _ in review.stars_list %}★{% endfor %}{% for _ in review.empty_stars_list %}<span class="text-gray-300">★</span>{% endfor %}
+                                    </div>
+
+                                    <span class="text-xs text-green-700 font-semibold bg-green-100/70 px-2.5 py-0.5 rounded-full">
+                                        ✓ {{ review.verified_badge|default:"Verified" }}
+                                    </span>
+
+                                </div>
+
+                                <!-- Review Text -->
+                                <p class="text-gray-600 text-sm leading-7 mt-5 body-text">
+                                    “{{ review.comment }}”
+                                </p>
+                            </div>
+
+                            <!-- Customer Info -->
+                            <div class="flex items-center gap-4 mt-7 pt-4 border-t border-gray-200/60">
+
+                                {% if review.image %}
+                                <img src="{{ review.image.url }}" alt="{{ review.name }}" class="w-12 h-12 rounded-full object-cover border-2 border-green-600 shadow-sm">
+                                {% else %}
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-800 to-green-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                                    {{ review.initials }}
+                                </div>
+                                {% endif %}
+
+                                <div>
+
+                                    <h4 class="font-bold text-gray-900 text-sm sm:text-base">
+                                        {{ review.name }}
+                                    </h4>
+
+                                    <p class="text-xs text-gray-400 mt-0.5">
+                                        {{ review.verified_badge|default:"Verified Customer" }}{% if review.city %}, {{ review.city }}{% endif %}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {% empty %}
+                    <!-- Fallback default review if no database records exist -->
+                    <div class="review-slide min-w-full md:min-w-[50%] lg:min-w-[33.333333%] px-2.5">
+                        <div class="h-full bg-[#f7f9f3] rounded-3xl p-7 sm:p-8 border border-transparent hover:border-green-200 transition duration-300">
+                            <div class="flex items-center justify-between">
+                                <div class="flex text-yellow-500">★★★★★</div>
+                                <span class="text-xs text-gray-400">Verified</span>
+                            </div>
+                            <p class="text-gray-600 text-sm leading-7 mt-6">“I really love how lightweight this oil feels. It doesn't leave my hair feeling heavy and my scalp feels much more nourished.”</p>
+                            <div class="flex items-center gap-4 mt-7">
+                                <div class="w-12 h-12 rounded-full bg-green-700 text-white flex items-center justify-center font-semibold">SA</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Sarah Ahmed</h4>
+                                    <p class="text-xs text-gray-400 mt-1">Verified Customer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Next Button -->
+            <button
+                id="reviewNext"
+                aria-label="Next reviews"
+                class="hidden sm:flex absolute z-20
+                       right-0 lg:-right-5
+                       top-1/2 -translate-y-1/2
+                       w-12 h-12 rounded-full
+                       bg-white border border-gray-200
+                       shadow-lg items-center justify-center
+                       text-gray-700
+                       hover:bg-green-700
+                       hover:text-white
+                       hover:border-green-700
+                       transition duration-300">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="w-5 h-5">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+
+        <!-- Dots Container -->
+        <div id="reviewDots"
+             class="flex justify-center gap-2 mt-8">
+
+        </div>
+
+
+        <!-- Bottom CTA -->
+        <div class="text-center mt-10">
+
+            <a href="#shop"
+               class="inline-flex items-center gap-2
+                      text-green-700 font-semibold text-sm
+                      hover:gap-4 transition-all duration-300">
+
+                Shop Our Best Seller
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="w-5 h-5">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= WRITE REVIEW MODAL ================= -->
+<div id="reviewModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="reviewModalContainer" class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-gray-100 transform scale-95 transition-transform duration-300 relative">
+        <!-- Close Button -->
+        <button onclick="closeReviewModal()" type="button" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition">✕</button>
+
+        <div class="text-center mb-6">
+            <span class="w-12 h-12 rounded-2xl bg-green-100 text-green-700 flex items-center justify-center text-2xl mx-auto mb-3">⭐</span>
+            <h3 class="text-2xl font-bold text-gray-900">Write a Review</h3>
+            <p class="text-xs text-gray-500 mt-1">Share your experience with HairBloom</p>
+        </div>
+
+        <form action="{% url 'submit_review' %}" method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Your Name *</label>
+                <input type="text" name="name" required placeholder="e.g. Fatima Khan" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 text-sm outline-none transition">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Rating *</label>
+                    <select name="rating" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 text-sm outline-none bg-white transition font-medium">
+                        <option value="5">★★★★★ (5 Stars)</option>
+                        <option value="4">★★★★☆ (4 Stars)</option>
+                        <option value="3">★★★☆☆ (3 Stars)</option>
+                        <option value="2">★★☆☆☆ (2 Stars)</option>
+                        <option value="1">★☆☆☆☆ (1 Star)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">City (Optional)</label>
+                    <input type="text" name="city" placeholder="e.g. Lahore" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 text-sm outline-none transition">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Your Review *</label>
+                <textarea name="comment" required rows="3" placeholder="Tell us what you liked about this hair oil..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-600 focus:ring-2 focus:ring-green-600/20 text-sm outline-none transition resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 text-white font-bold text-sm shadow-lg shadow-green-900/20 transition-all">
+                Submit Review
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openReviewModal() {
+        const modal = document.getElementById("reviewModal");
+        const container = document.getElementById("reviewModalContainer");
+        if (modal) {
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            modal.classList.add("opacity-100");
+            if (container) {
+                container.classList.remove("scale-95");
+                container.classList.add("scale-100");
+            }
+        }
+    }
+    function closeReviewModal() {
+        const modal = document.getElementById("reviewModal");
+        const container = document.getElementById("reviewModalContainer");
+        if (modal) {
+            modal.classList.remove("opacity-100");
+            modal.classList.add("opacity-0", "pointer-events-none");
+            if (container) {
+                container.classList.remove("scale-100");
+                container.classList.add("scale-95");
+            }
+        }
+    }
+</script>
+
+<!-- ====================================== FAQ SECTION ========================================== -->
+
+<section id="faq" class="bg-[#f7f9f3] py-20 sm:py-24">
+
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10">
+
+        <!-- Heading -->
+        <div class="text-center max-w-2xl mx-auto">
+
+            <p class="text-green-700 uppercase tracking-[4px]
+                      text-xs sm:text-sm font-semibold mb-4">
+                FAQ
+            </p>
+
+            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl
+                       font-bold text-gray-900 leading-tight">
+
+                Frequently Asked
+                <span class="text-green-700">Questions</span>
+
+            </h2>
+
+            <p class="mt-5 text-gray-500 text-sm sm:text-base leading-7">
+                Everything you need to know about our hair growth oil,
+                usage, orders and delivery.
+            </p>
+
+        </div>
+
+
+        <!-- FAQ List -->
+        <div class="mt-14 space-y-4">
+
+
+            <!-- FAQ 1 -->
+            <div class="faq-item bg-white rounded-2xl
+                        border border-gray-100 overflow-hidden">
+
+                <button
+                    class="faq-question w-full flex items-center
+                           justify-between gap-5 text-left
+                           px-5 sm:px-7 py-5 sm:py-6
+                           hover:bg-green-50/50 transition duration-300">
+
+                    <span class="text-sm sm:text-base font-semibold
+                                 text-gray-900">
+                        How often should I use the hair oil?
+                    </span>
+
+                    <span class="faq-icon shrink-0 w-8 h-8
+                                 rounded-full bg-green-100
+                                 text-green-700
+                                 flex items-center justify-center
+                                 text-xl font-medium
+                                 transition-transform duration-300">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer max-h-0 overflow-hidden
+                            transition-all duration-500 ease-in-out">
+
+                    <div class="px-5 sm:px-7 pb-6">
+
+                        <p class="text-sm text-gray-500 leading-7">
+                            For general hair-care use, follow the
+                            directions provided with your product.
+                            A consistent routine is usually more important
+                            than using a large amount at once.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 2 -->
+            <div class="faq-item bg-white rounded-2xl
+                        border border-gray-100 overflow-hidden">
+
+                <button
+                    class="faq-question w-full flex items-center
+                           justify-between gap-5 text-left
+                           px-5 sm:px-7 py-5 sm:py-6
+                           hover:bg-green-50/50 transition duration-300">
+
+                    <span class="text-sm sm:text-base font-semibold
+                                 text-gray-900">
+                        How much oil should I apply?
+                    </span>
+
+                    <span class="faq-icon shrink-0 w-8 h-8
+                                 rounded-full bg-green-100
+                                 text-green-700
+                                 flex items-center justify-center
+                                 text-xl font-medium
+                                 transition-transform duration-300">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer max-h-0 overflow-hidden
+                            transition-all duration-500 ease-in-out">
+
+                    <div class="px-5 sm:px-7 pb-6">
+
+                        <p class="text-sm text-gray-500 leading-7">
+                            Start with a small amount and apply it evenly
+                            to the scalp and roots. The right amount can
+                            vary depending on your hair length and scalp.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 3 -->
+            <div class="faq-item bg-white rounded-2xl
+                        border border-gray-100 overflow-hidden">
+
+                <button
+                    class="faq-question w-full flex items-center
+                           justify-between gap-5 text-left
+                           px-5 sm:px-7 py-5 sm:py-6
+                           hover:bg-green-50/50 transition duration-300">
+
+                    <span class="text-sm sm:text-base font-semibold
+                                 text-gray-900">
+                        Can I use it as part of my weekly hair routine?
+                    </span>
+
+                    <span class="faq-icon shrink-0 w-8 h-8
+                                 rounded-full bg-green-100
+                                 text-green-700
+                                 flex items-center justify-center
+                                 text-xl font-medium
+                                 transition-transform duration-300">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer max-h-0 overflow-hidden
+                            transition-all duration-500 ease-in-out">
+
+                    <div class="px-5 sm:px-7 pb-6">
+
+                        <p class="text-sm text-gray-500 leading-7">
+                            Yes. You can incorporate the oil into your
+                            regular hair-care routine according to the
+                            product directions and your personal needs.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 4 -->
+            <div class="faq-item bg-white rounded-2xl
+                        border border-gray-100 overflow-hidden">
+
+                <button
+                    class="faq-question w-full flex items-center
+                           justify-between gap-5 text-left
+                           px-5 sm:px-7 py-5 sm:py-6
+                           hover:bg-green-50/50 transition duration-300">
+
+                    <span class="text-sm sm:text-base font-semibold
+                                 text-gray-900">
+                        How long does delivery take?
+                    </span>
+
+                    <span class="faq-icon shrink-0 w-8 h-8
+                                 rounded-full bg-green-100
+                                 text-green-700
+                                 flex items-center justify-center
+                                 text-xl font-medium
+                                 transition-transform duration-300">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer max-h-0 overflow-hidden
+                            transition-all duration-500 ease-in-out">
+
+                    <div class="px-5 sm:px-7 pb-6">
+
+                        <p class="text-sm text-gray-500 leading-7">
+                            Delivery time depends on your location and
+                            the shipping service. Your exact estimated
+                            delivery time can be shown during checkout.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 5 -->
+            <div class="faq-item bg-white rounded-2xl
+                        border border-gray-100 overflow-hidden">
+
+                <button
+                    class="faq-question w-full flex items-center
+                           justify-between gap-5 text-left
+                           px-5 sm:px-7 py-5 sm:py-6
+                           hover:bg-green-50/50 transition duration-300">
+
+                    <span class="text-sm sm:text-base font-semibold
+                                 text-gray-900">
+                        Is Cash on Delivery available?
+                    </span>
+
+                    <span class="faq-icon shrink-0 w-8 h-8
+                                 rounded-full bg-green-100
+                                 text-green-700
+                                 flex items-center justify-center
+                                 text-xl font-medium
+                                 transition-transform duration-300">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer max-h-0 overflow-hidden
+                            transition-all duration-500 ease-in-out">
+
+                    <div class="px-5 sm:px-7 pb-6">
+
+                        <p class="text-sm text-gray-500 leading-7">
+                            If Cash on Delivery is enabled for your store,
+                            customers will be able to select it during
+                            checkout. We will connect this option when
+                            we build the checkout system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAQ 6 -->
+            <div class="faq-item bg-white rounded-2xl
+                        border border-gray-100 overflow-hidden">
+
+                <button
+                    class="faq-question w-full flex items-center
+                           justify-between gap-5 text-left
+                           px-5 sm:px-7 py-5 sm:py-6
+                           hover:bg-green-50/50 transition duration-300">
+
+                    <span class="text-sm sm:text-base font-semibold
+                                 text-gray-900">
+                        How can I place an order?
+                    </span>
+
+                    <span class="faq-icon shrink-0 w-8 h-8
+                                 rounded-full bg-green-100
+                                 text-green-700
+                                 flex items-center justify-center
+                                 text-xl font-medium
+                                 transition-transform duration-300">
+                        +
+                    </span>
+
+                </button>
+
+
+                <div class="faq-answer max-h-0 overflow-hidden
+                            transition-all duration-500 ease-in-out">
+
+                    <div class="px-5 sm:px-7 pb-6">
+
+                        <p class="text-sm text-gray-500 leading-7">
+                            Select your desired quantity, click
+                            Add to Cart or Buy Now, then enter your
+                            delivery information on the checkout page.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Bottom Help Box -->
+        <div class="mt-12 bg-green-700 rounded-3xl
+                    px-6 py-8 sm:px-10 sm:py-9
+                    flex flex-col md:flex-row
+                    items-center justify-between
+                    gap-6 text-center md:text-left">
+
+            <div>
+
+                <h3 class="heading-font text-2xl sm:text-3xl
+                           font-bold text-white">
+
+                    Still have questions?
+
+                </h3>
+
+                <p class="text-green-100 text-sm mt-2">
+                    Our team is here to help you.
+                </p>
+
+            </div>
+
+
+            <a href="/contact/"
+               class="shrink-0 inline-flex items-center gap-2
+                      bg-white text-green-700
+                      px-7 py-3.5 rounded-full
+                      text-sm font-semibold
+                      hover:bg-green-50
+                      transition duration-300">
+
+                Contact Us
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="2"
+                     stroke="currentColor"
+                     class="w-5 h-5">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================ FOOTER ==================================================== -->
+<footer class="bg-[#10291d] text-white">
+
+    <!-- Main Footer -->
+    <div class="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
+
+        <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+
+            <!-- ================= BRAND ================= -->
+            <div class="lg:pr-8">
+
+                <a href="#" class="inline-block">
+                    <h2 class="text-3xl font-bold tracking-wide">
+                        Hair<span class="text-[#d9a441]">Glow</span>
+                    </h2>
+                </a>
+
+                <p class="mt-5 max-w-sm text-sm leading-7 text-gray-300">
+                    Natural care for healthier, stronger and beautiful-looking hair.
+                    Give your hair the nourishment it deserves with our premium
+                    hair growth oil.
+                </p>
+
+                <!-- Social Icons -->
+                <div class="mt-7 flex items-center gap-3">
+
+                    <!-- Facebook -->
+                    <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Facebook">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="Instagram">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition duration-300 hover:-translate-y-1 hover:bg-[#d9a441] hover:text-[#10291d]" title="TikTok">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .56.04.82.12V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-3.04-1.52z"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= QUICK LINKS ================= -->
+            <div>
+
+                <h3 class="text-lg font-semibold">
+                    Quick Links
+                </h3>
+
+                <div class="mt-6 space-y-4">
+
+                    <a href="{% url 'home' %}"
+                       class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">
+                        Home
+                    </a>
+
+                    <a href="{% url 'shop' %}"
+                       class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">
+                        Shop
+                    </a>
+
+                    <a href="{% url 'about' %}"
+                       class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">
+                        About Us
+                    </a>
+
+                    <a href="{% url 'contact' %}"
+                       class="block text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441]">
+                        Contact Us
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= LEGAL & POLICIES ================= -->
+            <div>
+
+                <h3 class="text-lg font-semibold">
+                    Legal &amp; Policies
+                </h3>
+
+                <div class="mt-6 space-y-4">
+
+                    <a href="{% url 'refund_policy' %}"
+                       class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                        <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">↩</span>
+                        Refund &amp; Exchange
+                    </a>
+
+                    <a href="{% url 'privacy_policy' %}"
+                       class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                        <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">🔒</span>
+                        Privacy Policy
+                    </a>
+
+                    <a href="{% url 'terms_conditions' %}"
+                       class="flex items-center gap-2 text-sm text-gray-300 transition hover:translate-x-1 hover:text-[#d9a441] group">
+                        <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] group-hover:bg-[#d9a441]/20 transition shrink-0">📄</span>
+                        Terms &amp; Conditions
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- ================= CONTACT ================= -->
+            <div>
+
+                <h3 class="text-lg font-semibold">
+                    Get In Touch
+                </h3>
+
+                <div class="mt-6 space-y-5">
+
+                    <!-- Phone -->
+                    <div class="flex items-start gap-3">
+
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">
+                            ☎
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-400">
+                                Call Us
+                            </p>
+
+                            <a href="tel:+923001234567"
+                               class="text-sm text-gray-200 transition hover:text-[#d9a441]">
+                                +92 300 1234567
+                            </a>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="flex items-start gap-3">
+
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">
+                            ✉
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-400">
+                                Email Us
+                            </p>
+
+                            <a href="mailto:support@hairglow.com"
+                               class="break-all text-sm text-gray-200 transition hover:text-[#d9a441]">
+                                support@hairglow.com
+                            </a>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Location -->
+                    <div class="flex items-start gap-3">
+
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#d9a441]">
+                            📍
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-400">
+                                Location
+                            </p>
+
+                            <p class="text-sm text-gray-200">
+                                Rawalpindi, Pakistan
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= COPYRIGHT ================= -->
+    <div class="border-t border-white/10">
+
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:px-8 md:flex-row md:text-left lg:px-12">
+
+            <p class="text-sm text-gray-400">
+                © 2026
+                <span class="font-semibold text-white">
+                    HairGlow
+                </span>
+                . All rights reserved.
+            </p>
+
+            <div class="flex flex-wrap items-center justify-center gap-5 text-xs text-gray-400">
+                <a href="{% url 'privacy_policy' %}" class="hover:text-green-400 transition">Privacy Policy</a>
+                <span class="text-white/20">|</span>
+                <a href="{% url 'terms_conditions' %}" class="hover:text-green-400 transition">Terms & Conditions</a>
+                <span class="text-white/20">|</span>
+                <a href="{% url 'refund_policy' %}" class="hover:text-green-400 transition">Refund & Exchange Policy</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+<!-- ================= END FOOTER ================= -->
+
+{% include 'login_modal.html' %}
+
+<script src="{% static 'js/scripts.js' %}"></script>
+
+</body>
+</html>

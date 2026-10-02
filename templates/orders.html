@@ -1,0 +1,205 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management | HairBloom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f4f1; min-height: 100vh; color: #111827; }
+        .navbar { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
+        .navbar-brand { font-size: 20px; font-weight: 800; color: #111827; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-brand .dot { width: 34px; height: 34px; background: #15803d; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; }
+        .navbar-brand span.green { color: #15803d; }
+        .nav-links { display: flex; align-items: center; gap: 22px; }
+        .nav-links a { font-size: 13px; font-weight: 600; color: #6b7280; text-decoration: none; transition: color .2s; }
+        .nav-links a:hover { color: #15803d; }
+        .badge-admin { background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; border: 1px solid #bbf7d0; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 28px 24px; }
+        .page-title h1 { font-size: 26px; font-weight: 800; color: #111827; margin-bottom: 4px; }
+        .page-title p { font-size: 13px; color: #6b7280; margin-bottom: 24px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: #fff; border-radius: 18px; padding: 20px 22px; border: 1px solid #e5e7eb; box-shadow: 0 1px 6px rgba(0,0,0,.04); display: flex; align-items: center; gap: 14px; }
+        .stat-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        .stat-icon.green { background: #dcfce7; }
+        .stat-icon.amber { background: #fef9c3; }
+        .stat-label { font-size: 11px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+        .stat-value { font-size: 22px; font-weight: 800; color: #111827; margin-top: 2px; }
+        .stat-value.green { color: #15803d; }
+        .stat-value.amber { color: #b45309; }
+        .filters-bar { background: #fff; border-radius: 18px; padding: 16px 20px; border: 1px solid #e5e7eb; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .search-wrap { flex: 1; min-width: 220px; }
+        .search-wrap input { width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 12px; font-size: 13px; font-family: inherit; outline: none; color: #111827; }
+        .search-wrap input:focus { border-color: #15803d; }
+        .filter-select { padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 12px; font-size: 13px; font-family: inherit; outline: none; background: #fff; color: #374151; cursor: pointer; }
+        .btn-search { background: #15803d; color: #fff; border: none; padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; }
+        .btn-clear { background: #f3f4f6; color: #374151; border: none; padding: 10px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; text-decoration: none; }
+        .results-line { font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+        .results-line strong { color: #111827; font-weight: 700; }
+        .table-card { background: #fff; border-radius: 20px; border: 1px solid #e5e7eb; box-shadow: 0 1px 8px rgba(0,0,0,.05); overflow: hidden; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { background: #f9fafb; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .07em; padding: 13px 16px; text-align: left; border-bottom: 1px solid #f3f4f6; white-space: nowrap; }
+        tbody tr { border-bottom: 1px solid #f3f4f6; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #f9fffe; }
+        td { padding: 14px 16px; font-size: 13px; color: #374151; vertical-align: top; }
+        .id-col { font-weight: 700; color: #15803d; font-size: 12px; }
+        .customer-name { font-weight: 700; color: #111827; }
+        .product-pill { display: inline-flex; align-items: center; gap: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; margin-bottom: 4px; }
+        .qty-badge { background: #15803d; color: #fff; border-radius: 6px; padding: 1px 6px; font-size: 10px; font-weight: 800; }
+        .amount-cell { font-weight: 800; color: #15803d; font-size: 14px; white-space: nowrap; }
+        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+        .dot-ind { width: 6px; height: 6px; border-radius: 50%; }
+        .status-pending { background: #fef9c3; color: #92400e; } .status-pending .dot-ind { background: #f59e0b; }
+        .status-confirmed { background: #dbeafe; color: #1e40af; } .status-confirmed .dot-ind { background: #3b82f6; }
+        .status-shipped { background: #f3e8ff; color: #6b21a8; } .status-shipped .dot-ind { background: #a855f7; }
+        .status-delivered { background: #dcfce7; color: #166534; } .status-delivered .dot-ind { background: #22c55e; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; } .status-cancelled .dot-ind { background: #ef4444; }
+        .date-cell { font-size: 12px; color: #6b7280; white-space: nowrap; }
+        .empty-state { text-align: center; padding: 60px 20px; }
+        .page-footer { text-align: center; font-size: 12px; color: #9ca3af; padding: 28px 0 16px; }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="{% url 'home' %}" class="navbar-brand">
+        <span class="dot">H</span>
+        Hair<span class="green">Bloom</span>
+    </a>
+    <div class="nav-links">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'shop' %}">Shop</a>
+        <span class="badge-admin">Admin Panel</span>
+        <a href="{% url 'logout' %}" style="color:#ef4444;">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-title">
+        <h1>Orders Management</h1>
+        <p>PostgreSQL se connected — real-time orders data</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon green">📦</div>
+            <div>
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value">{{ total_orders }}</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">💰</div>
+            <div>
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value green">Rs. {{ total_revenue|floatformat:0 }}</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon amber">⏳</div>
+            <div>
+                <div class="stat-label">Pending</div>
+                <div class="stat-value amber">{{ pending_count }}</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div>
+                <div class="stat-label">Delivered</div>
+                <div class="stat-value">{{ delivered_count }}</div>
+            </div>
+        </div>
+    </div>
+
+    <form method="GET" action="">
+        <div class="filters-bar">
+            <div class="search-wrap">
+                <input type="text" name="q" placeholder="Search by name, phone, email, city..." value="{{ search_query }}">
+            </div>
+            <select name="status" class="filter-select">
+                <option value="">All Status</option>
+                {% for val, label in status_choices %}
+                <option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-search">Filter</button>
+            {% if status_filter or search_query %}
+            <a href="{% url 'orders_list' %}" class="btn-clear">Clear</a>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="results-line">
+        <strong>{{ total_orders }}</strong> order{{ total_orders|pluralize }} found
+        {% if search_query %} for "<strong>{{ search_query }}</strong>"{% endif %}
+        {% if status_filter %} — Status: <strong>{{ status_filter|title }}</strong>{% endif %}
+    </div>
+
+    <div class="table-card">
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#Order</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td class="id-col">#HG-{{ order.id }}</td>
+                        <td class="customer-name">
+                            {{ order.full_name }}
+                            {% if order.email %}<div style="font-size:11px;color:#9ca3af;margin-top:2px;">{{ order.email }}</div>{% endif %}
+                        </td>
+                        <td>
+                            {% for item in order.items.all %}
+                            <span class="product-pill"><span class="qty-badge">{{ item.quantity }}x</span>{{ item.product_name }}</span>
+                            {% empty %}<span style="color:#9ca3af;font-style:italic;font-size:12px;">—</span>
+                            {% endfor %}
+                        </td>
+                        <td style="font-weight:700;text-align:center;">
+                            {% for item in order.items.all %}{{ item.quantity }}{% if not forloop.last %}+{% endif %}{% endfor %}
+                        </td>
+                        <td class="amount-cell">Rs. {{ order.total_amount|floatformat:0 }}</td>
+                        <td style="white-space:nowrap;">{{ order.phone }}</td>
+                        <td style="font-size:12px;color:#6b7280;max-width:180px;">{{ order.address }}</td>
+                        <td style="font-weight:600;">{{ order.city }}</td>
+                        <td>
+                            <span class="status-badge status-{{ order.status }}">
+                                <span class="dot-ind"></span>{{ order.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="date-cell">{{ order.created_at|date:"d M Y" }}<br><span style="color:#9ca3af;">{{ order.created_at|date:"h:i A" }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10">
+                            <div class="empty-state">
+                                <p style="font-size:32px;">📦</p>
+                                <h3 style="font-size:16px;color:#374151;margin-top:12px;">Koi Order Nahi Mila</h3>
+                                <p style="font-size:13px;color:#9ca3af;margin-top:6px;">{% if search_query or status_filter %}Filters clear karein.{% else %}Abhi tak koi order nahi.{% endif %}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="page-footer">HairBloom Orders — Live data from PostgreSQL</div>
+</body>
+</html>
