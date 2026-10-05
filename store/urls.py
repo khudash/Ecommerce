@@ -49,4 +49,18 @@ urlpatterns = [
     path('admin-panel/benefits/add/', views.admin_benefit_add, name='admin_benefit_add'),
     path('admin-panel/benefits/<int:pk>/edit/', views.admin_benefit_edit, name='admin_benefit_edit'),
     path('admin-panel/benefits/<int:pk>/delete/', views.admin_benefit_delete, name='admin_benefit_delete'),
-]
+
+    # Hero Section
+    path('admin-panel/hero/', views.admin_hero, name='admin_hero'),
+    path('admin-panel/hero/edit/', views.admin_hero_edit, name='admin_hero_edit'),
+
+    # Blog / Journal
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
+
+    # Admin Blog CRUD
+    path('admin-panel/blogs/', views.admin_blogs, name='admin_blogs'),
+    path('admin-panel/blogs/add/', views.admin_blog_add, name='admin_blog_add'),
+    path('admin-panel/blogs/<int:pk>/edit/', views.admin_blog_edit, name='admin_blog_edit'),
+    path('admin-panel/blogs/<int:pk>/delete/', views.admin_blog_delete, name='admin_blog_delete'),
+]
+

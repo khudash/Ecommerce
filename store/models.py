@@ -2,12 +2,48 @@ from django.db import models
 
 
 class Hero(models.Model):
-    heading = models.CharField(max_length=200)
-    heading_green = models.CharField(max_length=200)
-    sub_heading = models.TextField()
-    button_text = models.CharField(max_length=100)
-    button_link = models.CharField(max_length=200, default="#")
+    # ===== Main Content =====
+    heading = models.CharField(max_length=200, default="Revive Your Hair")
+    heading_green = models.CharField(max_length=200, default="Naturally")
+    sub_heading = models.TextField(default="Experience the power of nature with our premium hair growth oil — crafted to nourish, strengthen, and revive your hair from root to tip.")
+    button_text = models.CharField(max_length=100, default="Shop Now")
+    button_link = models.CharField(max_length=200, default="#shop")
     image = models.ImageField(upload_to="hero/")
+
+    # ===== Top Badge =====
+    badge_text = models.CharField(
+        max_length=100,
+        default="100% Natural Hair Care",
+        help_text="Small badge shown above the heading e.g. '100% Natural Hair Care'"
+    )
+
+    # ===== Trust Points (3 checkmarks) =====
+    trust_point_1 = models.CharField(max_length=100, default="Natural", help_text="First trust point text")
+    trust_point_2 = models.CharField(max_length=100, default="Chemical Free", help_text="Second trust point text")
+    trust_point_3 = models.CharField(max_length=100, default="Cruelty Free", help_text="Third trust point text")
+
+    # ===== Floating Card (bottom left) =====
+    floating_card_label = models.CharField(
+        max_length=100,
+        default="Natural Care",
+        help_text="Small label on floating card e.g. 'Natural Care'"
+    )
+    floating_card_value = models.CharField(
+        max_length=100,
+        default="For Healthy Hair",
+        help_text="Bold text on floating card e.g. 'For Healthy Hair'"
+    )
+
+    # ===== Rating Card (top right) =====
+    rating_card_text = models.CharField(
+        max_length=100,
+        default="Loved by customers",
+        help_text="Text shown below stars on rating card e.g. 'Loved by customers'"
+    )
+
+    class Meta:
+        verbose_name = "Hero Section"
+        verbose_name_plural = "Hero Section"
 
     def __str__(self):
         return self.heading
@@ -36,7 +72,45 @@ class FormulaSection(models.Model):
         return self.title
 
 
+# ==================== BLOG / JOURNAL ====================
+
+class BlogPost(models.Model):
+    CATEGORY_CHOICES = (
+        ('hair_care', 'Hair Care'),
+        ('tips', 'Tips & Tricks'),
+        ('ingredients', 'Ingredients'),
+        ('lifestyle', 'Lifestyle'),
+        ('guides', 'Guides'),
+    )
+
+    title = models.CharField(max_length=300, help_text="Blog post title")
+    slug = models.SlugField(max_length=300, unique=True, help_text="URL slug (auto-filled from title)")
+    excerpt = models.TextField(max_length=500, help_text="Short summary shown on card (2-3 lines)")
+    content = models.TextField(help_text="Full blog article content (HTML supported)")
+    image = models.ImageField(upload_to="blog/", help_text="Featured image for the blog post")
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='hair_care')
+    author = models.CharField(max_length=150, default="HairGlow Team")
+    read_time = models.PositiveIntegerField(default=5, help_text="Estimated read time in minutes")
+    is_published = models.BooleanField(default=True, help_text="Show on website?")
+    is_featured = models.BooleanField(default=False, help_text="Show on homepage journal section?")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Blog Post"
+        verbose_name_plural = "Blog Posts"
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def category_label(self):
+        return dict(self.CATEGORY_CHOICES).get(self.category, self.category)
+
+
 # ///////////////////////
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200)

@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.html import escape
 from django.db import models
-from .models import Hero, Benefit, Product, Order, OrderItem, FormulaSection, ContactMessage, Review, ReviewSectionSettings
+from .models import Hero, Benefit, Product, Order, OrderItem, FormulaSection, ContactMessage, Review, ReviewSectionSettings, BlogPost
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +20,7 @@ def home(request):
     formula = FormulaSection.objects.first()
     reviews = Review.objects.filter(is_approved=True).order_by('order', '-created_at')
     review_settings = ReviewSectionSettings.objects.first()
+    blog_posts = BlogPost.objects.filter(is_published=True, is_featured=True)[:3]
 
     return render(request, "index.html", {
         "hero": hero,
@@ -29,6 +30,7 @@ def home(request):
         "formula": formula,
         "reviews": reviews,
         "review_settings": review_settings,
+        "blog_posts": blog_posts,
     })
 
 
@@ -1028,3 +1030,182 @@ def admin_benefit_delete(request, pk):
     return redirect('admin_benefits')
 
 
+# ════════════════════════════════════════════════════════════════
+# HERO SECTION MANAGEMENT
+# ════════════════════════════════════════════════════════════════
+
+def admin_hero(request):
+    if not _admin_required(request):
+        messages.error(request, "Access denied.")
+        return redirect('admin_login')
+
+    hero = Hero.objects.first()
+    return render(request, "admin_dashboard.html", {
+        "section": "hero",
+        "hero": hero,
+    })
+
+
+def admin_hero_edit(request):
+    if not _admin_required(request):
+        messages.error(request, "Access denied.")
+        return redirect('admin_login')
+
+    hero = Hero.objects.first()
+
+    if request.method == "POST":
+        if not hero:
+            hero = Hero()
+
+        # Main Content
+        hero.heading = request.POST.get("heading", "").strip()
+        hero.heading_green = request.POST.get("heading_green", "").strip()
+        hero.sub_heading = request.POST.get("sub_heading", "").strip()
+        hero.button_text = request.POST.get("button_text", "Shop Now").strip()
+        hero.button_link = request.POST.get("button_link", "#shop").strip()
+
+        # Badge
+        hero.badge_text = request.POST.get("badge_text", "100% Natural Hair Care").strip()
+
+        # Trust Points
+        hero.trust_point_1 = request.POST.get("trust_point_1", "Natural").strip()
+        hero.trust_point_2 = request.POST.get("trust_point_2", "Chemical Free").strip()
+        hero.trust_point_3 = request.POST.get("trust_point_3", "Cruelty Free").strip()
+
+        # Floating Card
+        hero.floating_card_label = request.POST.get("floating_card_label", "Natural Care").strip()
+        hero.floating_card_value = request.POST.get("floating_card_value", "For Healthy Hair").strip()
+
+        # Rating Card
+        hero.rating_card_text = request.POST.get("rating_card_text", "Loved by customers").strip()
+
+        # Image (only update if new file uploaded)
+        if request.FILES.get("image"):
+            hero.image = request.FILES["image"]
+
+        hero.save()
+        messages.success(request, "Hero Section updated successfully!")
+        return redirect('admin_hero')
+
+    return render(request, "admin_dashboard.html", {
+        "section": "hero_form",
+        "form_title": "Edit Hero Section",
+        "hero": hero,
+    })
+
+
+# ════════════════════════════════════════════════════════════════
+# BLOG / JOURNAL
+# ════════════════════════════════════════════════════════════════
+
+def blog_detail(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug, is_published=True)
+    related_posts = BlogPost.objects.filter(
+        is_published=True
+    ).exclude(id=post.id)[:3]
+
+    return render(request, "blog_detail.html", {
+        "post": post,
+        "related_posts": related_posts,
+    })
+
+
+# ════════════════════════════════════════════════════════════════
+# ADMIN - BLOG MANAGEMENT
+# ════════════════════════════════════════════════════════════════
+
+def admin_blogs(request):
+    if not _admin_required(request):
+        messages.error(request, "Access denied.")
+        return redirect('admin_login')
+
+    posts = BlogPost.objects.all().order_by('-created_at')
+    return render(request, "admin_dashboard.html", {
+        "section": "blogs",
+        "blog_posts_list": posts,
+    })
+
+
+def admin_blog_add(request):
+    if not _admin_required(request):
+        messages.error(request, "Access denied.")
+        return redirect('admin_login')
+
+    if request.method == "POST":
+        from django.utils.text import slugify
+        title = request.POST.get("title", "").strip()
+        slug = slugify(title)
+
+        # Ensure unique slug
+        base_slug = slug
+        counter = 1
+        while BlogPost.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+
+        try:
+            BlogPost.objects.create(
+                title=title,
+                slug=slug,
+                excerpt=request.POST.get("excerpt", "").strip(),
+                content=request.POST.get("content", "").strip(),
+                category=request.POST.get("category", "hair_care"),
+                author=request.POST.get("author", "HairGlow Team").strip(),
+                read_time=int(request.POST.get("read_time", 5)),
+                is_published=request.POST.get("is_published") == "on",
+                is_featured=request.POST.get("is_featured") == "on",
+                image=request.FILES.get("image"),
+            )
+            messages.success(request, "Blog post added!")
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+        return redirect('admin_blogs')
+
+    return render(request, "admin_dashboard.html", {
+        "section": "blog_form",
+        "form_title": "Add Blog Post",
+        "form_action": "add",
+    })
+
+
+def admin_blog_edit(request, pk):
+    if not _admin_required(request):
+        messages.error(request, "Access denied.")
+        return redirect('admin_login')
+
+    post = get_object_or_404(BlogPost, pk=pk)
+
+    if request.method == "POST":
+        post.title = request.POST.get("title", post.title).strip()
+        post.excerpt = request.POST.get("excerpt", post.excerpt).strip()
+        post.content = request.POST.get("content", post.content).strip()
+        post.category = request.POST.get("category", post.category)
+        post.author = request.POST.get("author", post.author).strip()
+        post.read_time = int(request.POST.get("read_time", post.read_time))
+        post.is_published = request.POST.get("is_published") == "on"
+        post.is_featured = request.POST.get("is_featured") == "on"
+
+        if request.FILES.get("image"):
+            post.image = request.FILES["image"]
+
+        post.save()
+        messages.success(request, "Blog post updated!")
+        return redirect('admin_blogs')
+
+    return render(request, "admin_dashboard.html", {
+        "section": "blog_form",
+        "form_title": f"Edit: {post.title}",
+        "form_action": "edit",
+        "blog_post": post,
+    })
+
+
+def admin_blog_delete(request, pk):
+    if not _admin_required(request):
+        messages.error(request, "Access denied.")
+        return redirect('admin_login')
+    if request.method == "POST":
+        post = get_object_or_404(BlogPost, pk=pk)
+        post.delete()
+        messages.success(request, "Blog post deleted.")
+    return redirect('admin_blogs')

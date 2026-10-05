@@ -1,7 +1,29 @@
 from django.contrib import admin
-from .models import Benefit, Hero, Product, Order, OrderItem, FormulaSection, ContactMessage, Review, ReviewSectionSettings
+from .models import Benefit, Hero, Product, Order, OrderItem, FormulaSection, ContactMessage, Review, ReviewSectionSettings, BlogPost
 
-admin.site.register(Hero)
+@admin.register(Hero)
+class HeroAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Main Content', {
+            'fields': ('heading', 'heading_green', 'sub_heading', 'image')
+        }),
+        ('Button', {
+            'fields': ('button_text', 'button_link')
+        }),
+        ('Top Badge', {
+            'fields': ('badge_text',)
+        }),
+        ('Trust Points (Checkmarks)', {
+            'fields': ('trust_point_1', 'trust_point_2', 'trust_point_3')
+        }),
+        ('Floating Card (Bottom Left)', {
+            'fields': ('floating_card_label', 'floating_card_value')
+        }),
+        ('Rating Card (Top Right)', {
+            'fields': ('rating_card_text',)
+        }),
+    )
+
 admin.site.register(FormulaSection)
 
 @admin.register(ReviewSectionSettings)

@@ -698,6 +698,86 @@
             .stats-grid { grid-template-columns: 1fr; }
             .page-content { padding: 16px; }
         }
+
+        /* ── Mobile Order Cards ── */
+        .order-mobile-cards { display: none; }
+
+        .order-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.04);
+        }
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 8px;
+        }
+        .order-card-id {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .order-card-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            font-size: 12.5px;
+            color: #374151;
+        }
+        .order-card-label {
+            font-weight: 700;
+            color: var(--muted);
+            min-width: 68px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding-top: 1px;
+        }
+        .order-card-val { flex: 1; word-break: break-word; }
+        .order-card-address {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 12px;
+            color: #166534;
+            word-break: break-word;
+            margin-bottom: 10px;
+        }
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #15803d;
+            text-decoration: none;
+            background: #dcfce7;
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-top: 4px;
+        }
+        .map-link:hover { background: #bbf7d0; }
+        .order-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 760px) {
+            .order-desktop-table { display: none; }
+            .order-mobile-cards { display: block; }
+        }
     </style>
 </head>
 <body>
@@ -735,6 +815,14 @@
             <span class="nav-icon">✨</span>
             Benefits
         </a>
+        <a href="{% url 'admin_hero' %}" class="{% if section == 'hero' or section == 'hero_form' %}active{% endif %}">
+            <span class="nav-icon">🎯</span>
+            Hero Section
+        </a>
+        <a href="{% url 'admin_blogs' %}" class="{% if section == 'blogs' or section == 'blog_form' %}active{% endif %}">
+            <span class="nav-icon">📝</span>
+            Blog / Journal
+        </a>
     </nav>
 
     <div class="sidebar-label">System</div>
@@ -768,6 +856,10 @@
                 {% elif section == 'messages' %}💬 Contact <span>Messages</span>
                 {% elif section == 'benefits' %}✨ <span>Benefits</span> Management
                 {% elif section == 'benefit_form' %}<span>{{ form_title }}</span>
+                {% elif section == 'hero' %}🎯 <span>Hero</span> Section
+                {% elif section == 'hero_form' %}<span>{{ form_title }}</span>
+                {% elif section == 'blogs' %}📝 Blog / <span>Journal</span>
+                {% elif section == 'blog_form' %}<span>{{ form_title }}</span>
                 {% else %}Admin <span>Panel</span>
                 {% endif %}
             </div>
@@ -949,12 +1041,14 @@
             <div class="card-header">
                 <h3>Total: {{ orders.count }} Orders &nbsp;|&nbsp; Revenue: Rs. {{ total_revenue|floatformat:0 }}</h3>
             </div>
-            <div class="table-wrap">
+
+            <!-- ── Desktop Table ── -->
+            <div class="table-wrap order-desktop-table">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Customer</th>
+                            <th>Customer &amp; Location</th>
                             <th>Contact</th>
                             <th>Items</th>
                             <th>Amount</th>
@@ -970,11 +1064,14 @@
                             <td><strong>#HG-{{ order.id }}</strong></td>
                             <td>
                                 <strong>{{ order.full_name }}</strong><br>
-                                <span style="font-size:11.5px;color:var(--muted);">{{ order.city }}{% if order.postal_code %}, {{ order.postal_code }}{% endif %}</span>
+                                <span style="font-size:11.5px;color:var(--muted);">{{ order.city }}{% if order.postal_code %}, {{ order.postal_code }}{% endif %}</span><br>
+                                <span style="font-size:11px;color:#6b7280;display:block;max-width:180px;word-break:break-word;margin-top:2px;">📍 {{ order.address }}</span>
+                                <a href="https://maps.google.com/?q={{ order.address|urlencode }},{{ order.city|urlencode }}"
+                                   target="_blank" class="map-link" style="margin-top:4px;">🗺️ Map</a>
                             </td>
                             <td>
-                                <div style="font-size:12.5px;">{{ order.phone }}</div>
-                                <div style="font-size:11.5px;color:var(--muted);">{{ order.email }}</div>
+                                <div style="font-size:12.5px;">📞 <a href="tel:{{ order.phone }}" style="color:inherit;text-decoration:none;">{{ order.phone }}</a></div>
+                                <div style="font-size:11.5px;color:var(--muted);">✉️ {{ order.email }}</div>
                             </td>
                             <td class="order-items-cell">
                                 {% for item in order.items.all %}
@@ -1008,6 +1105,73 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- ── Mobile Cards ── -->
+            <div class="order-mobile-cards" style="padding:16px;">
+                {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div>
+                            <div class="order-card-id">#HG-{{ order.id }}</div>
+                            <div style="font-size:11px;color:var(--muted);margin-top:2px;">{{ order.created_at|date:"d M Y" }} &bull; {{ order.created_at|date:"h:i A" }}</div>
+                        </div>
+                        <span class="badge badge-{{ order.status }}">{{ order.get_status_display }}</span>
+                    </div>
+
+                    <div class="order-card-row">
+                        <span class="order-card-label">👤 Name</span>
+                        <span class="order-card-val"><strong>{{ order.full_name }}</strong></span>
+                    </div>
+
+                    <div class="order-card-row">
+                        <span class="order-card-label">📞 Phone</span>
+                        <span class="order-card-val">
+                            <a href="tel:{{ order.phone }}" style="color:var(--primary);font-weight:700;text-decoration:none;">{{ order.phone }}</a>
+                        </span>
+                    </div>
+
+                    <div class="order-card-row">
+                        <span class="order-card-label">📦 Items</span>
+                        <span class="order-card-val">
+                            {% for item in order.items.all %}{{ item.quantity }}× {{ item.product_name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        </span>
+                    </div>
+
+                    <div class="order-card-row">
+                        <span class="order-card-label">💰 Total</span>
+                        <span class="order-card-val"><strong style="color:var(--primary);">Rs. {{ order.total_amount|floatformat:0 }}</strong> &bull; {{ order.get_payment_method_display }}</span>
+                    </div>
+
+                    <!-- Address Block -->
+                    <div style="margin:8px 0 4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">📍 Delivery Address</div>
+                    <div class="order-card-address">
+                        {{ order.address }}, {{ order.city }}{% if order.postal_code %} – {{ order.postal_code }}{% endif %}
+                        <br>
+                        <a href="https://maps.google.com/?q={{ order.address|urlencode }},{{ order.city|urlencode }}"
+                           target="_blank" class="map-link" style="display:inline-flex;margin-top:6px;">🗺️ Open in Google Maps</a>
+                    </div>
+
+                    <div class="order-card-actions">
+                        <form class="status-form" method="post" action="{% url 'admin_order_update_status' order.id %}" onsubmit="updateStatus(event, this, {{ order.id }})" style="flex:1;">
+                            {% csrf_token %}
+                            <select name="status" class="status-select" style="width:100%;" onchange="this.form.querySelector('button').click()">
+                                {% for val, label in status_choices %}
+                                <option value="{{ val }}" {% if order.status == val %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" style="display:none;"></button>
+                        </form>
+                        <form class="delete-form" method="post" action="{% url 'admin_order_delete' order.id %}" onsubmit="return confirm('Delete Order #HG-{{ order.id }}?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-xs">🗑</button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state"><div class="icon">🛍️</div><p>No orders found</p></div>
+                {% endfor %}
+            </div>
+
         </div>
 
         {% endif %}
@@ -1371,7 +1535,399 @@
         {% endif %}
         <!-- END BENEFIT FORM -->
 
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- HERO SECTION MANAGEMENT -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'hero' %}
+
+        <div class="section-header">
+            <h2>🎯 Hero Section</h2>
+            {% if hero %}
+            <a href="{% url 'admin_hero_edit' %}" class="btn btn-primary">✏️ Edit Hero</a>
+            {% else %}
+            <a href="{% url 'admin_hero_edit' %}" class="btn btn-primary">➕ Create Hero</a>
+            {% endif %}
+        </div>
+
+        {% if hero %}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+
+            <!-- Left: Text Details -->
+            <div class="card">
+                <div class="card-header"><h3>📝 Content</h3></div>
+                <div class="card-body">
+                    <table class="data-table" style="width:100%;">
+                        <tbody>
+                            <tr><td style="font-weight:600;width:35%;color:var(--muted);">Badge Text</td><td>{{ hero.badge_text }}</td></tr>
+                            <tr><td style="font-weight:600;color:var(--muted);">Heading</td><td>{{ hero.heading }}</td></tr>
+                            <tr><td style="font-weight:600;color:var(--muted);">Heading (Green)</td><td style="color:var(--primary);font-weight:600;">{{ hero.heading_green }}</td></tr>
+                            <tr><td style="font-weight:600;color:var(--muted);">Sub Heading</td><td>{{ hero.sub_heading }}</td></tr>
+                            <tr><td style="font-weight:600;color:var(--muted);">Button Text</td><td><span style="background:var(--primary);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;">{{ hero.button_text }}</span></td></tr>
+                            <tr><td style="font-weight:600;color:var(--muted);">Button Link</td><td><code>{{ hero.button_link }}</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right: Image -->
+            <div class="card">
+                <div class="card-header"><h3>🖼️ Hero Image</h3></div>
+                <div class="card-body" style="text-align:center;padding:20px;">
+                    {% if hero.image %}
+                    <img src="{{ hero.image.url }}" alt="Hero Image" style="max-width:100%;max-height:300px;border-radius:12px;object-fit:contain;">
+                    {% else %}
+                    <div class="empty-state"><div class="icon">🖼️</div><p>No image uploaded</p></div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Trust Points & Cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:18px;">
+            <div class="card">
+                <div class="card-header"><h3>✅ Trust Points</h3></div>
+                <div class="card-body">
+                    <div style="display:flex;flex-direction:column;gap:8px;">
+                        <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--primary);font-weight:700;">✓</span> {{ hero.trust_point_1 }}</div>
+                        <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--primary);font-weight:700;">✓</span> {{ hero.trust_point_2 }}</div>
+                        <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--primary);font-weight:700;">✓</span> {{ hero.trust_point_3 }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>💳 Floating Card</h3></div>
+                <div class="card-body">
+                    <p style="font-size:12px;color:var(--muted);">{{ hero.floating_card_label }}</p>
+                    <p style="font-weight:700;font-size:15px;">{{ hero.floating_card_value }}</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>⭐ Rating Card</h3></div>
+                <div class="card-body">
+                    <div style="color:#eab308;font-size:18px;">★★★★★</div>
+                    <p style="font-size:12px;color:var(--muted);margin-top:4px;">{{ hero.rating_card_text }}</p>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state">
+                    <div class="icon">🎯</div>
+                    <p>No Hero Section created yet. Click "Create Hero" to add one!</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% endif %}
+        <!-- END HERO SECTION -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- HERO FORM (EDIT / CREATE) -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'hero_form' %}
+
+        <div style="margin-bottom:16px;">
+            <a href="{% url 'admin_hero' %}" class="btn btn-ghost btn-sm">← Back to Hero Section</a>
+        </div>
+
+        <div class="card" style="max-width:680px;">
+            <div class="card-header"><h3>{{ form_title }}</h3></div>
+            <div class="card-body">
+                <form method="post" action="{% url 'admin_hero_edit' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Main Content -->
+                    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">📝 Main Content</h4>
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label class="form-label">Heading *</label>
+                            <input type="text" name="heading" class="form-control" required value="{{ hero.heading|default:'' }}" placeholder="e.g. 100% Natural Hair Care">
+                        </div>
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label class="form-label">Heading (Green Text) *</label>
+                            <input type="text" name="heading_green" class="form-control" required value="{{ hero.heading_green|default:'' }}" placeholder="e.g. Stronger, Healthier">
+                        </div>
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label class="form-label">Sub Heading *</label>
+                            <textarea name="sub_heading" class="form-control" rows="3" required placeholder="Description text under the heading">{{ hero.sub_heading|default:'' }}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Badge -->
+                    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">🏷️ Top Badge</h4>
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label class="form-label">Badge Text</label>
+                            <input type="text" name="badge_text" class="form-control" value="{{ hero.badge_text|default:'100% Natural Hair Care' }}" placeholder="e.g. 100% Natural Hair Care">
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">🔘 Button</h4>
+                        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Button Text</label>
+                                <input type="text" name="button_text" class="form-control" value="{{ hero.button_text|default:'Shop Now' }}" placeholder="e.g. Shop Now">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Button Link</label>
+                                <input type="text" name="button_link" class="form-control" value="{{ hero.button_link|default:'#shop' }}" placeholder="e.g. #shop or /shop/">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trust Points -->
+                    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">✅ Trust Points (3 Checkmarks)</h4>
+                        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Point 1</label>
+                                <input type="text" name="trust_point_1" class="form-control" value="{{ hero.trust_point_1|default:'Natural' }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Point 2</label>
+                                <input type="text" name="trust_point_2" class="form-control" value="{{ hero.trust_point_2|default:'Chemical Free' }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Point 3</label>
+                                <input type="text" name="trust_point_3" class="form-control" value="{{ hero.trust_point_3|default:'Cruelty Free' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Card -->
+                    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">💳 Floating Card (Bottom Left)</h4>
+                        <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                            <div class="form-group">
+                                <label class="form-label">Label</label>
+                                <input type="text" name="floating_card_label" class="form-control" value="{{ hero.floating_card_label|default:'Natural Care' }}" placeholder="e.g. Natural Care">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bold Text</label>
+                                <input type="text" name="floating_card_value" class="form-control" value="{{ hero.floating_card_value|default:'For Healthy Hair' }}" placeholder="e.g. For Healthy Hair">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rating Card -->
+                    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">⭐ Rating Card (Top Right)</h4>
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label class="form-label">Rating Text</label>
+                            <input type="text" name="rating_card_text" class="form-control" value="{{ hero.rating_card_text|default:'Loved by customers' }}" placeholder="e.g. Loved by customers">
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div style="margin-bottom:20px;">
+                        <h4 style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;">🖼️ Hero Image</h4>
+                        {% if hero and hero.image %}
+                        <div style="margin-bottom:12px;">
+                            <img src="{{ hero.image.url }}" alt="Current" style="max-height:150px;border-radius:10px;border:1px solid var(--border);">
+                            <p style="font-size:11px;color:var(--muted);margin-top:4px;">Current image (upload new to replace)</p>
+                        </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="form-label">Upload Image {% if not hero or not hero.image %}*{% endif %}</label>
+                            <input type="file" name="image" class="form-control" accept="image/*" {% if not hero or not hero.image %}required{% endif %}>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">💾 Save Hero Section</button>
+                        <a href="{% url 'admin_hero' %}" class="btn btn-ghost">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END HERO FORM -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- BLOG / JOURNAL SECTION -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'blogs' %}
+
+        <div class="section-header">
+            <h2>&#128221; Blog / Journal</h2>
+            <a href="{% url 'admin_blog_add' %}" class="btn btn-primary">&#10133; Add Post</a>
+        </div>
+
+        <div class="card">
+            <div class="card-body" style="padding:0;">
+                <table class="data-table" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th style="width:40%;">Title</th>
+                            <th>Category</th>
+                            <th>Author</th>
+                            <th>Read Time</th>
+                            <th>Featured</th>
+                            <th>Published</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in blog_posts_list %}
+                        <tr>
+                            <td style="font-weight:600;">
+                                <a href="{% url 'blog_detail' post.slug %}" target="_blank" style="color:var(--primary);text-decoration:none;hover:underline;">
+                                    {{ post.title|truncatechars:60 }}
+                                </a>
+                            </td>
+                            <td><span style="background:var(--primary-light);color:var(--primary);font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;">{{ post.category_label }}</span></td>
+                            <td style="color:var(--muted);">{{ post.author }}</td>
+                            <td style="color:var(--muted);">{{ post.read_time }} min</td>
+                            <td>{% if post.is_featured %}<span style="color:#15803d;font-weight:700;">&#11088; Yes</span>{% else %}<span style="color:var(--muted);">No</span>{% endif %}</td>
+                            <td>{% if post.is_published %}<span style="color:#15803d;font-weight:600;">&#10003; Live</span>{% else %}<span style="color:var(--danger);">&#10005; Draft</span>{% endif %}</td>
+                            <td style="color:var(--muted);font-size:12px;">{{ post.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <div style="display:flex;gap:6px;">
+                                    <a href="{% url 'admin_blog_edit' post.pk %}" class="btn btn-warning btn-xs">&#9999;&#65039;</a>
+                                    <form method="post" action="{% url 'admin_blog_delete' post.pk %}" onsubmit="return confirm('Delete this blog post?')" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-xs">&#128465;</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <div class="icon">&#128221;</div>
+                                    <p>No blog posts yet. Click "Add Post" to create your first article!</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END BLOG LIST -->
+
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- BLOG FORM (ADD / EDIT) -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        {% if section == 'blog_form' %}
+
+        <div style="margin-bottom:16px;">
+            <a href="{% url 'admin_blogs' %}" class="btn btn-ghost btn-sm">&larr; Back to Blog Posts</a>
+        </div>
+
+        <div class="card" style="max-width:720px;">
+            <div class="card-header"><h3>{{ form_title }}</h3></div>
+            <div class="card-body">
+                <form method="post"
+                    action="{% if form_action == 'edit' %}{% url 'admin_blog_edit' blog_post.pk %}{% else %}{% url 'admin_blog_add' %}{% endif %}"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Title -->
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Title *</label>
+                        <input type="text" name="title" class="form-control" required
+                               value="{{ blog_post.title|default:'' }}"
+                               placeholder="e.g. 5 Natural Oils for Hair Growth">
+                    </div>
+
+                    <!-- Excerpt -->
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Excerpt / Summary *</label>
+                        <textarea name="excerpt" class="form-control" rows="2" required
+                                  placeholder="Short 2-3 line description shown on blog card...">{{ blog_post.excerpt|default:'' }}</textarea>
+                        <div class="form-hint">This shows on the homepage blog card (max 150 words)</div>
+                    </div>
+
+                    <!-- Category + Author + Read Time -->
+                    <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select name="category" class="form-control">
+                                <option value="hair_care" {% if blog_post.category == 'hair_care' %}selected{% endif %}>Hair Care</option>
+                                <option value="tips" {% if blog_post.category == 'tips' %}selected{% endif %}>Tips &amp; Tricks</option>
+                                <option value="ingredients" {% if blog_post.category == 'ingredients' %}selected{% endif %}>Ingredients</option>
+                                <option value="lifestyle" {% if blog_post.category == 'lifestyle' %}selected{% endif %}>Lifestyle</option>
+                                <option value="guides" {% if blog_post.category == 'guides' %}selected{% endif %}>Guides</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Author</label>
+                            <input type="text" name="author" class="form-control"
+                                   value="{{ blog_post.author|default:'HairGlow Team' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Read Time (mins)</label>
+                            <input type="number" name="read_time" class="form-control" min="1" max="60"
+                                   value="{{ blog_post.read_time|default:5 }}">
+                        </div>
+                    </div>
+
+                    <!-- Full Content -->
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Full Article Content *</label>
+                        <textarea name="content" class="form-control" rows="15" required
+                                  placeholder="Write full article here. You can use HTML tags like &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;blockquote&gt; etc.">{{ blog_post.content|default:'' }}</textarea>
+                        <div class="form-hint">HTML supported: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;&lt;li&gt;, &lt;strong&gt;, &lt;blockquote&gt;</div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="form-group" style="margin-bottom:14px;">
+                        <label class="form-label">Featured Image {% if not blog_post %}*{% endif %}</label>
+                        {% if blog_post and blog_post.image %}
+                        <div style="margin-bottom:8px;">
+                            <img src="{{ blog_post.image.url }}" style="max-height:120px;border-radius:8px;border:1px solid var(--border);">
+                            <p style="font-size:11px;color:var(--muted);margin-top:4px;">Current image (upload new to replace)</p>
+                        </div>
+                        {% endif %}
+                        <input type="file" name="image" class="form-control" accept="image/*"
+                               {% if not blog_post or not blog_post.image %}required{% endif %}>
+                    </div>
+
+                    <!-- Toggles -->
+                    <div style="display:flex;gap:24px;margin-bottom:20px;">
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;">
+                            <input type="checkbox" name="is_published" {% if blog_post.is_published or not blog_post %}checked{% endif %}
+                                   style="width:16px;height:16px;accent-color:var(--primary);">
+                            &#10003; Published (visible on website)
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;">
+                            <input type="checkbox" name="is_featured" {% if blog_post.is_featured %}checked{% endif %}
+                                   style="width:16px;height:16px;accent-color:var(--primary);">
+                            &#11088; Featured (show on homepage)
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form_action == 'edit' %}&#128190; Save Changes{% else %}&#10133; Publish Post{% endif %}
+                        </button>
+                        <a href="{% url 'admin_blogs' %}" class="btn btn-ghost">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- END BLOG FORM -->
+
     </div><!-- /page-content -->
+
 </div><!-- /main-wrap -->
 
 <script>

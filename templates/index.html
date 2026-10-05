@@ -204,7 +204,7 @@
                     <span class="w-2 h-2 bg-green-600 rounded-full"></span>
 
                     <span class="text-xs sm:text-sm font-semibold text-green-700 tracking-wide">
-                        100% Natural Hair Care
+                        {{ hero.badge_text|default:"100% Natural Hair Care" }}
                     </span>
 
                 </div>
@@ -280,7 +280,7 @@
                         </div>
 
                         <span class="text-sm font-medium text-gray-700">
-                            Natural
+                            {{ hero.trust_point_1|default:"Natural" }}
                         </span>
 
                     </div>
@@ -309,7 +309,7 @@
                         </div>
 
                         <span class="text-sm font-medium text-gray-700">
-                            Chemical Free
+                            {{ hero.trust_point_2|default:"Chemical Free" }}
                         </span>
 
                     </div>
@@ -338,7 +338,7 @@
                         </div>
 
                         <span class="text-sm font-medium text-gray-700">
-                            Cruelty Free
+                            {{ hero.trust_point_3|default:"Cruelty Free" }}
                         </span>
 
                     </div>
@@ -398,11 +398,11 @@
                     <div>
 
                         <p class="text-xs text-gray-500">
-                            Natural Care
+                            {{ hero.floating_card_label|default:"Natural Care" }}
                         </p>
 
                         <p class="text-sm font-bold text-gray-900">
-                            For Healthy Hair
+                            {{ hero.floating_card_value|default:"For Healthy Hair" }}
                         </p>
 
                     </div>
@@ -424,7 +424,7 @@
                     </div>
 
                     <p class="text-xs text-gray-500 mt-1">
-                        Loved by customers
+                        {{ hero.rating_card_text|default:"Loved by customers" }}
                     </p>
 
                 </div>
@@ -1155,382 +1155,117 @@
 
 </section>
 
-<!-- ================================= INGREDIENTS SECTION ============================================= -->
-<section class="bg-[#f7f9f3] py-20 sm:py-24 overflow-hidden">
+<!-- ================================= HAIRGLOW JOURNAL ============================================= -->
+<section class="bg-white py-20 sm:py-24 overflow-hidden">
 
     <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
 
         <!-- Heading -->
-        <div class="text-center max-w-2xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-14">
 
-            <p class="text-green-700 uppercase tracking-[4px]
-                      text-xs sm:text-sm font-semibold mb-4">
-                {{ formula.sub_title|default:"Natural Formula" }}
+            <p class="text-green-700 uppercase tracking-[4px] text-xs sm:text-sm font-semibold mb-4">
+                Our Blog
             </p>
 
-            <h2 class="heading-font text-3xl sm:text-4xl md:text-5xl
-                       font-bold text-gray-900 leading-tight">
-                {{ formula.title|default:"Powered By Nature" }}
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                Hair<span class="text-green-600">Glow</span> Journal
             </h2>
 
             <p class="mt-5 text-gray-500 text-sm sm:text-base leading-7">
-                {{ formula.description|default:"Carefully selected natural ingredients come together to create a nourishing hair-care formula." }}
+                Expert hair care tips, ingredient guides, and everything you need for healthier, stronger hair.
             </p>
 
         </div>
 
+        <!-- Blog Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
 
-        <!-- Ingredients Area -->
-        <div class="mt-16 grid grid-cols-1 lg:grid-cols-3
-                    gap-10 lg:gap-8 items-center">
+            {% for post in blog_posts %}
+            <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-green-200 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 flex flex-col">
 
-
-            <!-- LEFT INGREDIENTS -->
-            <div class="space-y-6">
-
-                <!-- Rosemary -->
-                <div class="ingredient-card group bg-white rounded-3xl
-                            p-6 border border-gray-100
-                            hover:border-green-200
-                            hover:-translate-y-1
-                            transition-all duration-500">
-
-                    <div class="flex items-start gap-5">
-
-                        <div class="w-14 h-14 shrink-0 rounded-2xl
-                                    bg-green-100 flex items-center
-                                    justify-center
-                                    group-hover:bg-green-700
-                                    transition-all duration-500">
-
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke-width="1.6"
-                                 stroke="currentColor"
-                                 class="w-7 h-7 text-green-700
-                                        group-hover:text-white">
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M12 21V5m0 0c-2.5 0-5-1.5-6-4 3.5-.2 6 1.5 6 4Zm0 0c2.5 0 5-1.5 6-4-3.5-.2-6 1.5-6 4Z"/>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <h3 class="heading-font text-xl font-bold
-                                       text-gray-900">
-                                Rosemary
-                            </h3>
-
-                            <p class="text-sm text-gray-500
-                                      leading-6 mt-2">
-                                Traditionally used to nourish the scalp
-                                and support healthy-looking hair.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Amla -->
-                <div class="ingredient-card group bg-white rounded-3xl
-                            p-6 border border-gray-100
-                            hover:border-green-200
-                            hover:-translate-y-1
-                            transition-all duration-500">
-
-                    <div class="flex items-start gap-5">
-
-                        <div class="w-14 h-14 shrink-0 rounded-2xl
-                                    bg-green-100 flex items-center
-                                    justify-center
-                                    group-hover:bg-green-700
-                                    transition-all duration-500">
-
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke-width="1.6"
-                                 stroke="currentColor"
-                                 class="w-7 h-7 text-green-700
-                                        group-hover:text-white">
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M12 4c3.5 0 6 2.5 6 6 0 4.5-6 10-6 10S6 14.5 6 10c0-3.5 2.5-6 6-6Z"/>
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M9 10h.01M12 8h.01M15 10h.01"/>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <h3 class="heading-font text-xl font-bold
-                                       text-gray-900">
-                                Amla
-                            </h3>
-
-                            <p class="text-sm text-gray-500
-                                      leading-6 mt-2">
-                                A classic botanical ingredient known
-                                for its nourishing hair-care properties.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- CENTER PRODUCT -->
-            <div class="relative flex justify-center py-8 lg:py-0">
-
-                <!-- Decorative Circle -->
-                <div class="absolute w-64 h-64 sm:w-80 sm:h-80
-                            bg-green-100 rounded-full
-                            blur-[1px]">
-                </div>
-
-
-                <!-- Decorative Ring -->
-                <div class="absolute w-72 h-72 sm:w-96 sm:h-96
-                            border border-green-200
-                            rounded-full">
-                </div>
-
-
-                <div class="relative z-10 text-center">
-
-                    {% if formula and formula.center_image %}
-                    <img
-                        src="{{ formula.center_image.url }}"
-                        alt="{{ formula.title }}"
-                        class="w-[260px] sm:w-[330px] lg:w-[360px]
-                               max-h-[500px] 
-                               rounded-lg
-                               object-contain
-                               drop-shadow-2xl
-                               transition-transform duration-500
-                               hover:scale-105"
-                    >
-                    {% elif product and product.image %}
-                    <img
-                        src="{{ product.image.url }}"
-                        alt="{{ product.name }}"
-                        class="w-[260px] sm:w-[330px] lg:w-[360px]
-                               max-h-[500px] 
-                               rounded-lg
-                               object-contain
-                               drop-shadow-2xl
-                               transition-transform duration-500
-                               hover:scale-105"
-                    >
+                <!-- Image -->
+                <div class="relative overflow-hidden h-52">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}"
+                         alt="{{ post.title }}"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                     {% else %}
-                    <img
-                        src="{% static 'images/hair oil 3.png' %}"
-                        alt="Natural Hair Growth Oil"
-                        class="w-[260px] sm:w-[330px] lg:w-[360px]
-                               max-h-[500px] 
-                               rounded-lg
-                               object-contain
-                               drop-shadow-2xl
-                               transition-transform duration-500
-                               hover:scale-105"
-                    >
+                    <div class="w-full h-full bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center">
+                        <span class="text-5xl opacity-40">🌿</span>
+                    </div>
                     {% endif %}
 
-                    <div class="mt-3">
+                    <!-- Dark overlay gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
-                        <span class="inline-block
-                                     bg-white shadow-sm
-                                     px-5 py-2 rounded-full
-                                     text-xs font-semibold
-                                     text-green-700">
-                            100% Natural Formula
+                    <!-- Category Badge -->
+                    <div class="absolute top-4 left-4">
+                        <span class="inline-flex items-center gap-1.5 bg-green-600 text-white text-[10px] font-bold px-3 py-1 rounded-sm uppercase tracking-widest">
+                            {{ post.category_label }}
                         </span>
-
                     </div>
 
+                    <!-- Read Time -->
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-black/50 backdrop-blur-sm text-white text-[10px] font-medium px-2.5 py-1 rounded">
+                            {{ post.read_time }} min read
+                        </span>
+                    </div>
                 </div>
 
-            </div>
+                <!-- Content -->
+                <div class="p-6 flex-1 flex flex-col">
 
+                    <!-- Date -->
+                    <p class="text-gray-400 text-xs mb-3 tracking-wide">
+                        {{ post.created_at|date:"F d, Y" }}
+                    </p>
 
-            <!-- RIGHT INGREDIENTS -->
-            <div class="space-y-6">
+                    <!-- Title -->
+                    <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-3 leading-snug group-hover:text-green-700 transition-colors duration-300 flex-1">
+                        {{ post.title }}
+                    </h3>
 
-                <!-- Fenugreek -->
-                <div class="ingredient-card group bg-white rounded-3xl
-                            p-6 border border-gray-100
-                            hover:border-green-200
-                            hover:-translate-y-1
-                            transition-all duration-500">
+                    <!-- Excerpt -->
+                    <p class="text-sm text-gray-500 leading-relaxed mb-6 line-clamp-3">
+                        {{ post.excerpt|truncatewords:20 }}
+                    </p>
 
-                    <div class="flex items-start gap-5">
+                    <!-- Divider -->
+                    <div class="border-t border-gray-100 pt-4">
+                        <!-- Read Article -->
+                        <a href="{% url 'blog_detail' post.slug %}"
+                           class="inline-flex items-center gap-2 text-xs font-bold text-green-700 hover:text-green-800 uppercase tracking-widest group/btn transition-colors">
 
-                        <div class="w-14 h-14 shrink-0 rounded-2xl
-                                    bg-green-100 flex items-center
-                                    justify-center
-                                    group-hover:bg-green-700
-                                    transition-all duration-500">
+                            Read Article
 
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke-width="1.6"
-                                 stroke="currentColor"
-                                 class="w-7 h-7 text-green-700
-                                        group-hover:text-white">
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M12 4v16M5 8c2 0 3.5 1 5 2.5M19 8c-2 0-3.5 1-5 2.5M6 16c2 0 3.5-1 5-2.5M18 16c-2 0-3.5-1-5-2.5"/>
-
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="2.5" stroke="currentColor"
+                                 class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
                             </svg>
 
-                        </div>
-
-                        <div>
-
-                            <h3 class="heading-font text-xl font-bold
-                                       text-gray-900">
-                                Fenugreek
-                            </h3>
-
-                            <p class="text-sm text-gray-500
-                                      leading-6 mt-2">
-                                A traditional ingredient used to
-                                condition and nourish hair.
-                            </p>
-
-                        </div>
-
+                        </a>
                     </div>
 
                 </div>
 
-
-                <!-- Bhringraj -->
-                <div class="ingredient-card group bg-white rounded-3xl
-                            p-6 border border-gray-100
-                            hover:border-green-200
-                            hover:-translate-y-1
-                            transition-all duration-500">
-
-                    <div class="flex items-start gap-5">
-
-                        <div class="w-14 h-14 shrink-0 rounded-2xl
-                                    bg-green-100 flex items-center
-                                    justify-center
-                                    group-hover:bg-green-700
-                                    transition-all duration-500">
-
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke-width="1.6"
-                                 stroke="currentColor"
-                                 class="w-7 h-7 text-green-700
-                                        group-hover:text-white">
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M12 21c4.5-3.2 7-7 7-11a7 7 0 0 0-14 0c0 4 2.5 7.8 7 11Z"/>
-
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M12 7v7m-3-3 3 3 3-3"/>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <h3 class="heading-font text-xl font-bold
-                                       text-gray-900">
-                                Bhringraj
-                            </h3>
-
-                            <p class="text-sm text-gray-500
-                                      leading-6 mt-2">
-                                A popular Ayurvedic botanical included
-                                in traditional hair-care routines.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+            </article>
+            {% empty %}
+            <!-- Empty State -->
+            <div class="col-span-full text-center py-16">
+                <div class="text-5xl mb-4">📝</div>
+                <p class="text-gray-400 text-base">Blog articles coming soon — stay tuned!</p>
             </div>
-
-        </div>
-
-
-        <!-- Bottom Feature Row -->
-        <div class="mt-16 pt-8 border-t border-green-100
-                    grid grid-cols-1 sm:grid-cols-3
-                    gap-6 text-center">
-
-            <div>
-
-                <p class="text-2xl font-bold text-green-700">
-                    4+
-                </p>
-
-                <p class="text-sm text-gray-500 mt-1">
-                    Natural Botanicals
-                </p>
-
-            </div>
-
-
-            <div class="sm:border-x border-green-100">
-
-                <p class="text-2xl font-bold text-green-700">
-                    100%
-                </p>
-
-                <p class="text-sm text-gray-500 mt-1">
-                    Carefully Selected
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <p class="text-2xl font-bold text-green-700">
-                    0%
-                </p>
-
-                <p class="text-sm text-gray-500 mt-1">
-                    Harsh Feel
-                </p>
-
-            </div>
+            {% endfor %}
 
         </div>
 
     </div>
 
 </section>
+
+
 
 <!-- =============================== CUSTOMER REVIEWS SECTION =================================== -->
 
